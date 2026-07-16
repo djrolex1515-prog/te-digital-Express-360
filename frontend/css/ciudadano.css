@@ -46,14 +46,9 @@
   transition: all 250ms ease;
 }
 
-.sidebar-toggle.is-active span:nth-child(1) {
-  transform: translateY(3.75px) rotate(45deg);
-}
-.sidebar-toggle.is-active span:nth-child(2) {
+.sidebar-toggle.is-active {
   opacity: 0;
-}
-.sidebar-toggle.is-active span:nth-child(3) {
-  transform: translateY(-3.75px) rotate(-45deg);
+  pointer-events: none;
 }
 
 .sidebar-nav {
