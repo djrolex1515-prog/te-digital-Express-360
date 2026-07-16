@@ -582,6 +582,17 @@ CREATE TABLE IF NOT EXISTS services (
     updated_at VARCHAR(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS citizens (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    full_name VARCHAR(255) NOT NULL,
+    cedula VARCHAR(50) NOT NULL DEFAULT '',
+    password_salt TEXT NOT NULL,
+    password_hash TEXT NOT NULL,
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
+    created_at VARCHAR(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS citizen_requests (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tracking_code VARCHAR(32) NOT NULL UNIQUE,
@@ -600,17 +611,6 @@ CREATE TABLE IF NOT EXISTS citizen_requests (
     CONSTRAINT fk_requests_citizen
         FOREIGN KEY (citizen_id) REFERENCES citizens(id)
         ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE IF NOT EXISTS citizens (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    full_name VARCHAR(255) NOT NULL,
-    cedula VARCHAR(50) NOT NULL DEFAULT '',
-    password_salt TEXT NOT NULL,
-    password_hash TEXT NOT NULL,
-    is_active TINYINT(1) NOT NULL DEFAULT 1,
-    created_at VARCHAR(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS citizen_sessions (
