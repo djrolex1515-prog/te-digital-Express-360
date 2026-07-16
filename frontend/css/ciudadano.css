@@ -24,38 +24,36 @@
   top: 86px;
   left: 12px;
   z-index: 40;
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--white);
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
   cursor: pointer;
   padding: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 5px;
 }
 
 .sidebar-toggle span {
   display: block;
-  width: 20px;
-  height: 2px;
+  width: 22px;
+  height: 2.5px;
   border-radius: 2px;
   background: var(--ink);
   transition: all 250ms ease;
 }
-.sidebar-toggle span:nth-child(1) { transform: translateY(0); }
-.sidebar-toggle span:nth-child(2) { opacity: 1; }
-.sidebar-toggle span:nth-child(3) { transform: translateY(0); }
 
 .sidebar-toggle.is-active span:nth-child(1) {
-  transform: translateY(6px) rotate(45deg);
+  transform: translateY(3.75px) rotate(45deg);
 }
 .sidebar-toggle.is-active span:nth-child(2) {
   opacity: 0;
 }
 .sidebar-toggle.is-active span:nth-child(3) {
-  transform: translateY(-6px) rotate(-45deg);
+  transform: translateY(-3.75px) rotate(-45deg);
 }
 
 .sidebar-nav {
