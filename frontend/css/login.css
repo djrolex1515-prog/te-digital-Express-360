@@ -1,0 +1,20 @@
+.login-section {
+  min-height: calc(100vh - 76px);
+  display: grid;
+  align-items: center;
+}
+
+.login-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+
+.login-copy { max-width: 640px; }
+
+.login-card { margin: 0; }
+
+.login-card .secondary-action { width: 100%; }

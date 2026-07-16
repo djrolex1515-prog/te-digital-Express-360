@@ -1,0 +1,26 @@
+# Base de datos
+*.db
+backend/data/
+
+# Variables de entorno (NO subir credenciales)
+.env
+.env.local
+.env.production
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log
+cookies.txt
+trace.txt
+
+# IDE
+.vscode/
+.idea/

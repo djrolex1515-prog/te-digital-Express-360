@@ -1,0 +1,62 @@
+.assistant-section {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1fr);
+  gap: 28px;
+  align-items: center;
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.assistant-copy p {
+  max-width: 540px;
+  margin-top: 16px;
+  font-size: 17px;
+}
+
+.quick-questions { margin-top: 24px; }
+
+.quick-questions button { color: var(--ink); }
+
+.chat-card { overflow: hidden; }
+
+.chat-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.chat-head strong, .chat-head small { display: block; }
+
+.final-band {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: clamp(34px, 5vw, 56px) clamp(18px, 4vw, 56px);
+  background: var(--navy-2);
+  color: var(--white);
+}
+
+.final-band div { max-width: 760px; }
+
+.final-band h2 { color: var(--white); }
+
+.final-band p {
+  margin-bottom: 0;
+  color: #d6e0ec;
+}
+
+@media (max-width: 980px) {
+  .assistant-section { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 680px) {
+  .final-band {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .final-band a { width: 100%; }
+}

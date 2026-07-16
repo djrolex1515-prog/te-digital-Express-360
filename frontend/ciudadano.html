@@ -1,0 +1,999 @@
+﻿<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portal Ciudadano | TE Digital Express 360</title>
+    <meta name="description" content="Portal ciudadano del Tribunal Electoral: trámites, consultas, certificados y seguimiento en un solo lugar." />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/ciudadano.css" />
+    <script src="app.js" defer></script>
+    <script src="ciudadano.js" defer></script>
+  </head>
+  <body style="display:none" id="bodyRoot">
+    <header class="topbar">
+      <a class="brand" href="principal.html" aria-label="TE Digital Express 360">
+        <span class="brand-mark">TE</span>
+        <span>
+          <strong>TE Digital Express</strong>
+          <em>360</em>
+        </span>
+      </a>
+      <nav class="main-nav" aria-label="Navegación principal">
+        <a href="principal.html">Inicio</a>
+        <a href="ciudadano.html">Portal ciudadano</a>
+      </nav>
+    </header>
+
+    <div class="portal-layout">
+      <aside class="portal-sidebar" id="portalSidebar">
+        <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="sidebar-nav" aria-label="Secciones del portal">
+          <button class="sidebar-link is-active" data-section="inicio">Inicio</button>
+          <button class="sidebar-link" data-section="mi-identidad">Mi Identidad</button>
+          <button class="sidebar-link" data-section="registro-civil">Registro Civil</button>
+          <button class="sidebar-link" data-section="certificados">Certificados</button>
+          <button class="sidebar-link" data-section="servicios-electorales">Servicios Electorales</button>
+          <button class="sidebar-link" data-section="citas">Citas</button>
+          <button class="sidebar-link" data-section="solicitar">Solicitudes</button>
+          <button class="sidebar-link" data-section="mis-tramites">Mis Trámites</button>
+          <button class="sidebar-link" data-section="pagos">Pagos</button>
+          <button class="sidebar-link" data-section="centro-ayuda">Centro de Ayuda</button>
+          <button class="sidebar-link" data-section="notificaciones">Notificaciones</button>
+          <button class="sidebar-link" data-section="mi-perfil">Mi Perfil</button>
+        </nav>
+      </aside>
+
+      <main class="portal-content">
+
+        <!-- ===== INICIO ===== -->
+        <section id="section-inicio" class="portal-section is-visible">
+          <header class="section-header">
+            <div>
+              <h2>Bienvenido al Portal Ciudadano</h2>
+            </div>
+          </header>
+
+          <div class="dashboard-home-layout">
+            <div class="dashboard-grid">
+              <div class="dash-card">
+                <h3>Accesos rápidos</h3>
+                <div class="quick-access-grid" id="quickAccessGrid">
+                  <button class="qa-item" type="button" data-section="solicitar" data-subtype="renovacion">
+                    <span>🪪</span> Renovar cédula
+                  </button>
+                  <button class="qa-item" type="button" data-section="solicitar" data-subtype="duplicado">
+                    <span>🆔</span> Duplicado de cédula
+                  </button>
+                  <button class="qa-item" type="button" data-section="solicitar" data-subtype="reemplazo">
+                    <span>🔁</span> Reemplazo por deterioro
+                  </button>
+                  <button class="qa-item" type="button" data-section="solicitar" data-subtype="primera_vez">
+                    <span>✨</span> Primera vez
+                  </button>
+                  <button class="qa-item" type="button" data-section="solicitar" data-subtype="reportar_perdida">
+                    <span>⚠️</span> Reportar pérdida o robo
+                  </button>
+                  <button class="qa-item" type="button" data-section="certificados">
+                    <span>📄</span> Pedir certificado
+                  </button>
+                  <button class="qa-item" type="button" data-section="citas">
+                    <span>📅</span> Agendar cita
+                  </button>
+                  <button class="qa-item" type="button" data-section="servicios-electorales">
+                    <span>🗳️</span> Centro de votación
+                  </button>
+                  <button class="qa-item" type="button" data-section="mis-tramites">
+                    <span>📂</span> Mis trámites
+                  </button>
+                  <button class="qa-item" type="button" data-section="pagos">
+                    <span>💳</span> Pagar trámite
+                  </button>
+                </div>
+              </div>
+
+              <div class="dash-card">
+                <h3>Noticias y avisos</h3>
+                <div class="news-list">
+                  <article class="news-item">
+                    <span class="news-tag">Aviso</span>
+                    <p>Nuevo horario de atención en oficinas regionales a partir de septiembre.</p>
+                    <small>Hace 2 días</small>
+                  </article>
+                  <article class="news-item">
+                    <span class="news-tag info">Información</span>
+                    <p>El sistema de citas en línea estará en mantenimiento el domingo 12 de julio.</p>
+                    <small>Hace 5 días</small>
+                  </article>
+                  <article class="news-item">
+                    <span class="news-tag success">Actualización</span>
+                    <p>Ahora puedes solicitar certificados digitales con código QR directamente desde Certificados.</p>
+                    <small>Hace 1 semana</small>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <aside class="home-eagle" aria-label="Pacto Ético Digital">
+              <img
+                src="Imagenes/PED-saludar.png"
+                alt="PED"
+                class="home-eagle-img"
+              />
+            </aside>
+          </div>
+        </section>
+
+        <!-- ===== MI IDENTIDAD ===== -->
+        <section id="section-mi-identidad" class="portal-section">
+          <header class="section-header">
+            <div>
+              <h2>Mi Identidad</h2>
+              <p class="section-desc">Tu cédula de identidad oficial del Tribunal Electoral.</p>
+            </div>
+          </header>
+
+          <div class="identidad-layout">
+            <div class="identidad-left">
+              <div class="id-card">
+                <div class="id-card-front">
+                  <div class="id-header">
+                    <span class="id-logo">🏛️</span>
+                    <div>
+                      <strong>TRIBUNAL ELECTORAL</strong>
+                      <small>República de Panamá</small>
+                    </div>
+                  </div>
+                  <div class="id-body">
+                    <div class="id-photo" id="idPhoto">
+                      <span class="photo-placeholder">📷</span>
+                    </div>
+                    <dl class="id-fields">
+                      <div><dt>Cédula</dt><dd id="idCedula">Cargando...</dd></div>
+                      <div><dt>Nombre</dt><dd id="idName">Cargando...</dd></div>
+                      <div><dt>Correo</dt><dd id="idEmail">Cargando...</dd></div>
+                      <div><dt>Fecha de emisión</dt><dd id="idIssued">—</dd></div>
+                      <div><dt>Fecha de vencimiento</dt><dd id="idExpiry">—</dd></div>
+                      <div><dt>Estado</dt><dd><span class="status-badge success" id="idStatus">Activo</span></dd></div>
+                    </dl>
+                  </div>
+                  <div class="id-footer">
+                    <span class="id-qr">◆◆◆◆◆◆◆◆◆◆</span>
+                    <small>Documento oficial con validez legal</small>
+                  </div>
+                </div>
+              </div>
+              <div class="identity-actions">
+                <button class="secondary-action" type="button" data-section="solicitar" data-service="cedula" data-subtype="reportar_perdida">Reportar pérdida o robo</button>
+                <a class="primary-action" href="#" data-section="solicitar" data-service="cedula" data-subtype="renovacion">Solicitar renovación</a>
+              </div>
+            </div>
+<!-- ===== Mi identidad ===== -->
+            <aside class="identidad-eagle" aria-label="Pacto Ético Digital">
+              <img src="imagenes/Ped cedula 1.2.png" alt="PED" class="identidad-eagle-img" />
+            </aside>
+          </div>
+        </section>
+
+        <!-- ===== REGISTRO CIVIL ===== -->
+        <section id="section-registro-civil" class="portal-section">
+          <header class="section-header">
+            <div>
+              <h2>Registro Civil</h2>
+              <p class="section-desc">Servicios relacionados con el estado civil de las personas.</p>
+            </div>
+          </header>
+          <div class="service-grid">
+            <article class="mini-card">
+              <span class="card-icon">👶</span>
+              <h4>Inscripción de nacimiento</h4>
+              <p>Registra el nacimiento de un ciudadano.</p>
+            </article>
+            <article class="mini-card">
+              <span class="card-icon">💍</span>
+              <h4>Registro de matrimonio</h4>
+              <p>Inscripción y certificación de matrimonios civiles.</p>
+            </article>
+            <article class="mini-card">
+              <span class="card-icon">🕊️</span>
+              <h4>Registro de defunción</h4>
+              <p>Inscripción de fallecimiento.</p>
+            </article>
+            <article class="mini-card">
+              <span class="card-icon">👪</span>
+              <h4>Reconocimiento de hijos</h4>
+              <p>Reconocimiento voluntario de paternidad o maternidad.</p>
+            </article>
+            <article class="mini-card">
+              <span class="card-icon">✏️</span>
+              <h4>Corrección de datos</h4>
+              <p>Rectificación de errores en actas del Registro Civil.</p>
+            </article>
+            <article class="mini-card">
+              <span class="card-icon">📛</span>
+              <h4>Cambio de nombre</h4>
+              <p>Solicitud de cambio de nombre cuando corresponda.</p>
+            </article>
+          </div>
+        </section>
+
+        <!-- ===== CERTIFICADOS ===== -->
+        <section id="section-certificados" class="portal-section">
+          <header class="section-header">
+            <div>
+              <h2>Certificados</h2>
+              <p class="section-desc">Solicita certificados digitales con código QR.</p>
+            </div>
+          </header>
+          <div class="service-grid" id="certificados-grid">
+            <article class="mini-card cert-card">
+              <span class="card-icon teal-bg">📄</span>
+              <h4>Certificado de nacimiento</h4>
+              <p>Solicita el certificado oficial de nacimiento.</p>
+              <button class="secondary-action cert-pedir-btn" type="button" data-tipo="certificado_nacimiento">Pedir</button>
+            </article>
+            <article class="mini-card cert-card">
+              <span class="card-icon gold-bg">📄</span>
+              <h4>Certificado de matrimonio</h4>
+              <p>Solicita el certificado oficial de matrimonio.</p>
+              <button class="secondary-action cert-pedir-btn" type="button" data-tipo="certificado_matrimonio">Pedir</button>
+            </article>
+            <article class="mini-card cert-card">
+              <span class="card-icon navy-bg">📄</span>
+              <h4>Certificado de defunción</h4>
+              <p>Solicita el certificado oficial de defunción.</p>
+              <button class="secondary-action cert-pedir-btn" type="button" data-tipo="certificado_defuncion">Pedir</button>
+            </article>
+            <article class="mini-card cert-card">
+              <span class="card-icon red-bg">📄</span>
+              <h4>Certificaciones del Registro Civil</h4>
+              <p>Otras certificaciones y constancias registrales.</p>
+              <button class="secondary-action cert-pedir-btn" type="button" data-tipo="certificado">Pedir</button>
+            </article>
+          </div>
+          <div class="info-banner">
+            <span>🔒</span>
+            <p>Todos los certificados incluyen un código QR para verificación de autenticidad.</p>
+          </div>
+        </section>
+
+        <!-- ===== SERVICIOS ELECTORALES ===== -->
+        <section id="section-servicios-electorales" class="portal-section">
+          <header class="section-header">
+            <div>
+              <h2>Servicios Electorales</h2>
+              <p class="section-desc">Información para la participación electoral.</p>
+            </div>
+          </header>
+          <div class="service-grid">
+            <article class="mini-card">
+              <span class="card-icon">🗳️</span>
+              <h4>Centro de votación</h4>
+              <p>Consulta tu centro de votación asignado.</p>
+              <button class="secondary-action" type="button">Consultar</button>
+            </article>
+            <article class="mini-card">
+              <span class="card-icon">📋</span>
+              <h4>Padrón electoral</h4>
+              <p>Consulta el padrón electoral preliminar y definitivo.</p>
+              <button class="secondary-action" type="button">Consultar</button>
+            </article>
+            <article class="mini-card">
+              <span class="card-icon">📍</span>
+              <h4>Cambio de residencia</h4>
+              <p>Solicita el cambio de residencia electoral.</p>
+              <button class="secondary-action" type="button">Solicitar</button>
+            </article>
+            <article class="mini-card">
+              <span class="card-icon">✅</span>
+              <h4>Habilitación para votar</h4>
+              <p>Verifica si estás habilitado para votar.</p>
+              <button class="secondary-action" type="button">Verificar</button>
+            </article>
+            <article class="mini-card">
+              <span class="card-icon">📊</span>
+              <h4>Resultados electorales</h4>
+              <p>Consulta resultados de elecciones anteriores.</p>
+              <button class="secondary-action" type="button">Ver resultados</button>
+            </article>
+          </div>
+        </section>
+
+        <!-- ===== CITAS ===== -->
+        <section id="section-citas" class="portal-section">
+          <header class="section-header">
+            <div>
+              <h2>Citas</h2>
+              <p class="section-desc">Agenda, reprograma o cancela tus citas en línea.</p>
+            </div>
+          </header>
+          <div id="citaFormPanel" hidden>
+            <div class="dash-card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                <h3 id="citaFormTitle">Agendar nueva cita</h3>
+                <button type="button" class="secondary-action" id="btnCerrarFormCita" style="font-size:13px;">Volver</button>
+              </div>
+              <form id="citaForm" style="display:grid;gap:14px;">
+                <input type="hidden" id="citaEditId">
+                <div>
+                  <label for="citaServiceType">Tipo de trámite</label>
+                  <select id="citaServiceType" required>
+                    <option value="">Selecciona un tipo</option>
+                    <option value="renovacion">Renovación de cédula</option>
+                    <option value="duplicado">Duplicado de cédula</option>
+                    <option value="reportar_perdida">Reportar pérdida o robo</option>
+                    <option value="certificado">Certificado (nacimiento, matrimonio, defunción)</option>
+                    <option value="electoral">Inscripción o consulta electoral</option>
+                    <option value="general">Consulta general</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="citaOffice">Oficina</label>
+                  <select id="citaOffice" required>
+                    <option value="">Selecciona una oficina</option>
+                    <option value="Oficina Central">Oficina Central — Ciudad de Panamá</option>
+                    <option value="Panamá Oeste">Dirección Regional de Panamá Oeste — La Chorrera</option>
+                    <option value="Colón">Dirección Regional de Colón</option>
+                    <option value="Chiriquí">Dirección Regional de Chiriquí — David</option>
+                    <option value="Veraguas">Dirección Regional de Veraguas — Santiago</option>
+                    <option value="Los Santos">Dirección Regional de Los Santos — Las Tablas</option>
+                    <option value="Herrera">Dirección Regional de Herrera — Chitré</option>
+                    <option value="Coclé">Dirección Regional de Coclé — Penonomé</option>
+                    <option value="Bocas del Toro">Dirección Regional de Bocas del Toro</option>
+                    <option value="Darién">Dirección Regional de Darién</option>
+                  </select>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                  <div>
+                    <label for="citaDate">Fecha</label>
+                    <input type="date" id="citaDate" required>
+                  </div>
+                  <div>
+                    <label for="citaTime">Horario</label>
+                    <select id="citaTime" required>
+                      <option value="">Selecciona horario</option>
+                      <option value="08:00">8:00 a.m.</option>
+                      <option value="08:30">8:30 a.m.</option>
+                      <option value="09:00">9:00 a.m.</option>
+                      <option value="09:30">9:30 a.m.</option>
+                      <option value="10:00">10:00 a.m.</option>
+                      <option value="10:30">10:30 a.m.</option>
+                      <option value="11:00">11:00 a.m.</option>
+                      <option value="11:30">11:30 a.m.</option>
+                      <option value="12:00">12:00 p.m.</option>
+                      <option value="13:00">1:00 p.m.</option>
+                      <option value="13:30">1:30 p.m.</option>
+                      <option value="14:00">2:00 p.m.</option>
+                      <option value="14:30">2:30 p.m.</option>
+                      <option value="15:00">3:00 p.m.</option>
+                      <option value="15:30">3:30 p.m.</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label for="citaPhone">Teléfono de contacto</label>
+                  <input type="tel" id="citaPhone" placeholder="Ej: 6000-0000">
+                </div>
+                <div>
+                  <label for="citaNotes">Notas (opcional)</label>
+                  <textarea id="citaNotes" rows="2" placeholder="Indica cualquier detalle adicional..."></textarea>
+                </div>
+                <div style="display:flex;gap:10px;">
+                  <button type="submit" class="primary-action" id="btnGuardarCita">Agendar cita</button>
+                  <button type="button" class="secondary-action" id="btnCancelarFormCita">Cancelar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div id="citaListPanel">
+            <div class="dashboard-stats">
+              <button class="stat-card clickable" type="button" id="btnAgendarCita">
+                <span class="stat-icon teal">📅</span>
+                <div>
+                  <strong class="stat-value">Agendar</strong>
+                  <small class="stat-label">Nueva cita</small>
+                </div>
+              </button>
+              <button class="stat-card clickable" type="button" id="btnReprogramarCita">
+                <span class="stat-icon gold">🔄</span>
+                <div>
+                  <strong class="stat-value">Reprogramar</strong>
+                  <small class="stat-label">Cita existente</small>
+                </div>
+              </button>
+              <button class="stat-card clickable" type="button" id="btnCancelarCita">
+                <span class="stat-icon red">❌</span>
+                <div>
+                  <strong class="stat-value">Cancelar</strong>
+                  <small class="stat-label">Cita agendada</small>
+                </div>
+              </button>
+            </div>
+            <div class="dash-card">
+              <h3>Próximas citas</h3>
+              <div class="appointment-list" id="citaList">
+                <p id="citaListEmpty" style="color:var(--muted);text-align:center;padding:24px 0;">No tienes citas agendadas.</p>
+              </div>
+            </div>
+          </div>
+          <div id="citaReprogramarPanel" hidden>
+            <div class="dash-card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                <h3>Reprogramar cita</h3>
+                <button type="button" class="secondary-action" id="btnCerrarReprogramar" style="font-size:13px;">Volver</button>
+              </div>
+              <form id="repForm" style="display:grid;gap:14px;">
+                <div>
+                  <label for="repSelect">Selecciona la cita a reprogramar</label>
+                  <select id="repSelect" required>
+                    <option value="">Selecciona una cita</option>
+                  </select>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                  <div>
+                    <label for="repDate">Nueva fecha</label>
+                    <input type="date" id="repDate" required>
+                  </div>
+                  <div>
+                    <label for="repTime">Nuevo horario</label>
+                    <select id="repTime" required>
+                      <option value="">Selecciona horario</option>
+                    </select>
+                  </div>
+                </div>
+                <div style="display:flex;gap:10px;">
+                  <button type="submit" class="primary-action">Guardar cambios</button>
+                  <button type="button" class="secondary-action" id="btnCancelarReprogramar">Cancelar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div id="citaCancelarPanel" hidden>
+            <div class="dash-card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                <h3>Cancelar cita</h3>
+                <button type="button" class="secondary-action" id="btnCerrarCancelar" style="font-size:13px;">Volver</button>
+              </div>
+              <form id="cancelForm" style="display:grid;gap:14px;">
+                <div>
+                  <label for="cancelSelect">Selecciona la cita a cancelar</label>
+                  <select id="cancelSelect" required>
+                    <option value="">Selecciona una cita</option>
+                  </select>
+                </div>
+                <div style="display:flex;gap:10px;">
+                  <button type="submit" class="primary-action" style="background:var(--red);">Sí, cancelar cita</button>
+                  <button type="button" class="secondary-action" id="btnCancelarCancelar">Volver</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== SOLICITUD DE TRAMITES ===== -->
+        <section id="section-solicitar" class="portal-section">
+          <header class="section-header">
+            <div>
+              <h2>Solicitudes</h2>
+              <p class="section-desc">Inicia un nuevo trámite de cédula paso a paso.</p>
+            </div>
+          </header>
+
+          <div class="steps-indicator" id="stepsIndicator">
+            <span class="step-tab is-active" data-step="1"><span class="step-num">1</span> Servicio</span>
+            <span class="step-tab" data-step="2"><span class="step-num">2</span> Requisitos</span>
+            <span class="step-tab" data-step="3"><span class="step-num">3</span> Tus datos</span>
+            <span class="step-tab" data-step="4"><span class="step-num">4</span> Confirmar</span>
+          </div>
+
+          <div class="step-panel is-visible" id="step1">
+            <div class="wizard-card">
+              <h3>¿Qué trámite deseas realizar?</h3>
+              <p style="color:var(--muted);font-size:14px;margin:0 0 20px;">Elige una opción para comenzar.</p>
+              <div class="service-wizard-grid" id="serviceGrid"></div>
+            </div>
+          </div>
+
+          <div class="step-panel" id="step2">
+            <div class="wizard-card" id="serviceInfo"></div>
+            <div class="wizard-actions">
+              <button class="secondary-action" type="button" data-goto="1">Atrás</button>
+              <button class="primary-action" type="button" data-goto="3">Continuar</button>
+            </div>
+          </div>
+
+          <div class="step-panel" id="step3">
+            <div class="wizard-card">
+              <h3>Tus datos</h3>
+              <p style="color:var(--muted);font-size:14px;margin:0 0 16px;">Tus datos se cargan automáticamente desde tu perfil registrado.</p>
+              <form class="wizard-form" id="wizardForm">
+                <label>
+                  Nombre completo
+                  <input name="citizen_name" id="wizName" readonly required />
+                </label>
+                <label>
+                  Correo electrónico
+                  <input type="email" name="citizen_contact" id="wizEmail" readonly required placeholder="correo@ejemplo.com" />
+                </label>
+                <label>
+                  Teléfono de contacto
+                  <input type="tel" name="citizen_phone" id="wizPhone" placeholder="+507 6000-0000" />
+                </label>
+              </form>
+            </div>
+            <div class="wizard-actions">
+              <button class="secondary-action" type="button" data-goto="2">Atrás</button>
+              <button class="primary-action" type="button" data-goto="4">Continuar</button>
+            </div>
+          </div>
+
+          <div class="step-panel" id="step4">
+            <div class="wizard-card" id="confirmCard">
+              <h3>Revisa tu solicitud</h3>
+              <div id="confirmDetails" style="display:grid;gap:12px;font-size:14px;"></div>
+            </div>
+            <div class="wizard-actions">
+              <button class="secondary-action" type="button" data-goto="3">Atrás</button>
+              <button class="primary-action" type="button" id="wizSubmit">Enviar solicitud</button>
+            </div>
+          </div>
+
+          <div class="step-panel" id="step5">
+            <div class="wizard-card success-card">
+              <div class="success-icon">✅</div>
+              <h3>Solicitud creada exitosamente</h3>
+              <p style="color:var(--muted);font-size:15px;">Guarda este código para dar seguimiento a tu trámite:</p>
+              <div class="tracking-code" id="trackingCode">—</div>
+              <div class="success-monto" id="successMontoStep5" hidden>
+                <span class="monto-label">Total a pagar:</span>
+                <span class="monto-value" id="montoValueStep5">B/. 25.00</span>
+              </div>
+              <p class="success-note">Dirígete a Pagos para realizar el depósito.</p>
+              <div class="wizard-actions" style="justify-content:center;margin-top:24px;">
+                <a class="primary-action" href="ciudadano.html#pagos" id="trackingLinkPagos">Ir a Pagos</a>
+                <a class="secondary-action" href="ciudadano.html#section-solicitar">Nueva solicitud</a>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ===== MIS TRÁMITES ===== -->
+        <section id="section-mis-tramites" class="portal-section">
+          <header class="section-header">
+            <div>
+              <h2>Mis Trámites</h2>
+              <p class="section-desc">Seguimiento de todas tus solicitudes activas.</p>
+            </div>
+          </header>
+          <div id="tramiteListContainer" style="margin-bottom:20px;"></div>
+          <div class="empty-state" id="tramiteEmpty">
+            <span class="empty-icon">📂</span>
+            <h3>No has realizado ningún trámite</h3>
+            <p>Aún no tienes solicitudes registradas. Inicia uno ahora.</p>
+          </div>
+
+          <div class="new-tramite-form" id="newTramiteForm">
+            <h3>Nuevo trámite</h3>
+            <div class="tramite-form-grid">
+              <div class="tramite-field">
+                <label>Nombre completo</label>
+                <input type="text" id="tramiteName" readonly />
+              </div>
+              <div class="tramite-field">
+                <label>Cédula</label>
+                <input type="text" id="tramiteCedula" readonly />
+              </div>
+              <div class="tramite-field">
+                <label>Tipo de trámite</label>
+                <select id="tramiteTipo">
+                  <option value="">— Selecciona —</option>
+                  <option value="cedula_renovacion">Renovación de cédula</option>
+                  <option value="cedula_duplicado">Duplicado de cédula</option>
+                  <option value="cedula_reemplazo">Reemplazo de cédula</option>
+                  <option value="cedula_primera_vez">Primera vez</option>
+                  <option value="cedula_reportar_perdida">Reportar pérdida o robo</option>
+                </select>
+              </div>
+              <div class="tramite-field">
+                <label>Notas (opcional)</label>
+                <textarea id="tramiteNotes" rows="2" placeholder="Comentarios adicionales..."></textarea>
+              </div>
+            </div>
+            <button class="primary-action" id="btnSolicitarTramite" type="button">Solicitudes</button>
+            <div id="tramiteError" class="form-error" hidden></div>
+          </div>
+
+          <div class="tramite-success" id="tramiteSuccess" hidden>
+            <div class="success-icon">✅</div>
+            <h3>Trámite solicitado con éxito</h3>
+            <div class="success-details">
+              <div class="success-row">
+                <span class="success-label">Código de seguimiento</span>
+                <span class="success-value mono" id="successCode">—</span>
+              </div>
+              <div class="success-row">
+                <span class="success-label">Trámite</span>
+                <span class="success-value" id="successTipo">—</span>
+              </div>
+              <div class="success-row">
+                <span class="success-label">Monto a pagar</span>
+                <span class="success-value" id="successMonto">—</span>
+              </div>
+            </div>
+            <div class="success-actions">
+              <button class="primary-action" id="btnIrAPagos" type="button">Ir a Pagos</button>
+              <button class="secondary-action" id="btnNuevoTramite" type="button">Solicitar otro trámite</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== MIS DOCUMENTOS ===== -->
+
+        <!-- ===== PAGOS ===== -->
+        <section id="section-pagos" class="portal-section">
+          <header class="section-header">
+            <div>
+              <h2>Pagos</h2>
+              <p class="section-desc">Gestiona tus pagos, comprobantes y recibos de solicitud.</p>
+            </div>
+          </header>
+
+          <div id="pendingPaymentBanner" class="pending-payment-bar" hidden>
+            <span>💳</span>
+            <div>
+              <strong>Pago pendiente</strong>
+              <span id="pendingPaymentInfo">Tienes un trámite pendiente de pago.</span>
+            </div>
+            <button class="secondary-action compact" id="btnVerPagoPendiente" type="button">Ver detalles</button>
+          </div>
+
+          <div class="pagos-layout">
+            <!-- Columna izquierda: Datos bancarios + Monto -->
+            <div class="pagos-col-main">
+              <div class="dash-card banco-card">
+                <div class="banco-head">
+                  <span class="banco-logo">🏦</span>
+                  <div>
+                    <strong>Banco Nacional de Panamá</strong>
+                    <small>Depósito en cuenta corriente</small>
+                  </div>
+                </div>
+                <div class="banco-body" id="bancoBodyStatic">
+                  <div class="banco-row">
+                    <span class="banco-label">Beneficiario</span>
+                    <span class="banco-value">Tribunal Electoral — Tesorería General</span>
+                  </div>
+                  <div class="banco-row">
+                    <span class="banco-label">Cuenta corriente</span>
+                    <span class="banco-value mono">01-234-56789-0</span>
+                  </div>
+                  <div class="banco-row">
+                    <span class="banco-label">RUC</span>
+                    <span class="banco-value mono">12345-6789-12345</span>
+                  </div>
+                </div>
+                <div class="banco-body" id="bancoBodyDynamic" hidden>
+                  <div class="banco-row">
+                    <span class="banco-label">Beneficiario</span>
+                    <span class="banco-value">Tribunal Electoral — Tesorería General</span>
+                  </div>
+                  <div class="banco-row">
+                    <span class="banco-label">Cuenta corriente</span>
+                    <span class="banco-value mono">01-234-56789-0</span>
+                  </div>
+                  <div class="banco-row">
+                    <span class="banco-label">RUC</span>
+                    <span class="banco-value mono">12345-6789-12345</span>
+                  </div>
+                  <div class="banco-row">
+                    <span class="banco-label">Referencia</span>
+                    <span class="banco-value mono" id="bancoRefDynamic">—</span>
+                  </div>
+                  <div class="banco-row">
+                    <span class="banco-label">Monto</span>
+                    <span class="banco-value" id="bancoMontoDynamic">—</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dash-card qr-card">
+                <div class="qr-head">
+                  <strong>Monto a pagar</strong>
+                  <small>Selecciona tu trámite</small>
+                </div>
+                <div class="qr-tramite-selector">
+                  <select id="qrTramiteSelect" class="tramite-select">
+                    <option value="">— Selecciona un trámite —</option>
+                    <option value="cedula_renovacion">Renovación de cédula — B/. 25.00</option>
+                    <option value="cedula_duplicado">Duplicado de cédula — B/. 30.00</option>
+                    <option value="cedula_reemplazo">Reemplazo de cédula — B/. 15.00</option>
+                    <option value="cedula_primera_vez">Primera vez — B/. 20.00</option>
+                    <option value="cedula_reportar_perdida">Reportar pérdida o robo — B/. 10.00</option>
+                  </select>
+                  <div class="selected-monto" id="selectedMonto" hidden>
+                    <span class="monto-label">Total a pagar:</span>
+                    <span class="monto-value" id="montoValue">B/. 0.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Columna derecha: Comprobante + Recibo -->
+            <div class="pagos-col-side">
+              <div class="dash-card pagos-action-card">
+                <div class="pagos-action-icon">🧾</div>
+                <h3>Comprobante de pago</h3>
+                <p>Sube el comprobante de tu depósito bancario para que sea revisado.</p>
+                <button class="primary-action" type="button" id="btnSubirComprobante">Subir comprobante</button>
+                <input type="file" id="fileUploadInput" accept=".pdf,.png,.jpg,.jpeg" style="display:none">
+              </div>
+
+              <div class="dash-card pagos-action-card">
+                <div class="pagos-action-icon">📋</div>
+                <h3>Recibo de solicitud</h3>
+                <p>Genera el comprobante de una solicitud existente.</p>
+                <div style="display:flex;gap:8px;margin-top:8px;">
+                  <select id="reciboTrackingSelect" style="flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;">
+                    <option value="">Selecciona una solicitud</option>
+                  </select>
+                </div>
+                <button class="primary-action" type="button" id="btnGenerarRecibo" style="margin-top:8px;">Generar recibo</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Documentos guardados -->
+          <div class="dash-card" style="margin-top:20px;">
+            <h3>Documentos guardados</h3>
+            <div id="documentosList" style="display:grid;gap:10px;margin-top:12px;">
+              <p id="docsEmpty" style="color:var(--muted);text-align:center;padding:16px 0;">No tienes documentos guardados.</p>
+            </div>
+          </div>
+
+          <!-- Historial de pagos -->
+          <div class="dash-card" style="margin-top:20px;">
+            <h3>Historial de pagos</h3>
+            <div class="payment-table">
+              <div class="payment-row header">
+                <span>Fecha</span>
+                <span>Trámite</span>
+                <span>Monto</span>
+                <span>Estado</span>
+              </div>
+              <div class="payment-row">
+                <span>12/06/2026</span>
+                <span>Certificado de nacimiento</span>
+                <span>B/. 10.00</span>
+                <span><span class="status-badge success">Pagado</span></span>
+              </div>
+              <div class="payment-row">
+                <span>03/08/2026</span>
+                <span>Reposición de cédula</span>
+                <span>B/. 25.00</span>
+                <span><span class="status-badge pending">Pendiente</span></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== CENTRO DE AYUDA ===== -->
+        <section id="section-centro-ayuda" class="portal-section">
+          <header class="section-header">
+            <div>
+              <h2>Centro de Ayuda</h2>
+              <p class="section-desc">Preguntas frecuentes, asistente virtual y soporte.</p>
+            </div>
+          </header>
+          <div class="help-grid">
+            <div class="dash-card">
+              <h3>Preguntas frecuentes</h3>
+              <details class="faq-item">
+                <summary>¿Cómo renuevo mi cédula?</summary>
+                <p>Puedes solicitarlo desde Mi Identidad o ir directamente a Solicitud. El trámite requiere cédula anterior, foto y pago de tasa.</p>
+              </details>
+              <details class="faq-item">
+                <summary>¿Cómo pido un certificado digital?</summary>
+                <p>Ve a la sección Certificados y haz clic en Pedir. El certificado se genera automáticamente con código QR de verificación.</p>
+              </details>
+              <details class="faq-item">
+                <summary>¿Cómo agendo una cita?</summary>
+                <p>En la sección Citas puedes agendar, reprogramar o cancelar tus citas en línea de forma rápida.</p>
+              </details>
+            </div>
+            <div class="dash-card help-chat-card">
+              <h3>Asistente virtual</h3>
+              <p>Nuestro asistente IA puede orientarte sobre cualquier trámite.</p>
+              <button class="primary-action" type="button" data-assistant-open>Abrir asistente</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== NOTIFICACIONES ===== -->
+        <section id="section-notificaciones" class="portal-section">
+          <header class="section-header">
+            <div>
+              <h2>Notificaciones</h2>
+              <p class="section-desc">Mantente al día con el estado de tus trámites.</p>
+            </div>
+          </header>
+          <div class="notif-list">
+            <article class="notif-item unread">
+              <span class="notif-icon green">✔</span>
+              <div>
+                <strong>Documento aprobado</strong>
+                <p>Tu reposición de cédula ha sido aprobada. Está lista para retiro.</p>
+                <small>Hace 2 horas</small>
+              </div>
+            </article>
+            <article class="notif-item">
+              <span class="notif-icon red">!</span>
+              <div>
+                <strong>Falta un requisito</strong>
+                <p>La solicitud de certificado requiere copia digital del acta.</p>
+                <small>Ayer</small>
+              </div>
+            </article>
+            <article class="notif-item unread">
+              <span class="notif-icon gold">📅</span>
+              <div>
+                <strong>Cita confirmada</strong>
+                <p>Tu cita para renovación de cédula ha sido confirmada para el 15/08/2026.</p>
+                <small>Hace 3 días</small>
+              </div>
+            </article>
+            <article class="notif-item">
+              <span class="notif-icon teal">💳</span>
+              <div>
+                <strong>Pago recibido</strong>
+                <p>El pago de tu certificado de nacimiento ha sido recibido.</p>
+                <small>Hace 1 semana</small>
+              </div>
+            </article>
+            <article class="notif-item unread">
+              <span class="notif-icon green">📄</span>
+              <div>
+                <strong>Documento listo para retirar</strong>
+                <p>Tu certificado digital esta disponible en Pagos.</p>
+                <small>Hace 1 semana</small>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- ===== MI PERFIL ===== -->
+        <section id="section-mi-perfil" class="portal-section">
+          <header class="section-header">
+            <div>
+              <h2>Mi Perfil</h2>
+              <p class="section-desc">Administra tus datos personales y preferencias de cuenta.</p>
+            </div>
+          </header>
+
+          <!-- Profile header card -->
+          <div class="profile-header-card">
+            <div class="profile-avatar" id="profileAvatar">
+              <span class="profile-avatar-text" id="profileAvatarText">CE</span>
+            </div>
+            <div class="profile-header-info">
+              <h3 id="profileFullName">Cargando...</h3>
+              <p id="profileEmail" class="profile-header-email">—</p>
+              <div class="profile-header-badges">
+                <span class="profile-badge badge-active">Cuenta activa</span>
+                <span class="profile-badge badge-role">Ciudadano</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Two-column layout -->
+          <div class="profile-columns">
+            <!-- Left column: info cards -->
+            <div class="profile-col-left">
+              <div class="profile-info-card">
+                <h4>Datos personales</h4>
+                <div class="profile-info-row">
+                  <span class="profile-info-label">Cedula</span>
+                  <span class="profile-info-value" id="profileCedula">—</span>
+                </div>
+                <div class="profile-info-row">
+                  <span class="profile-info-label">Nombre completo</span>
+                  <span class="profile-info-value" id="profileNameInfo">—</span>
+                </div>
+                <div class="profile-info-row">
+                  <span class="profile-info-label">Correo electronico</span>
+                  <span class="profile-info-value" id="profileEmailInfo">—</span>
+                </div>
+              </div>
+
+              <div class="profile-info-card">
+                <h4>Informacion de cuenta</h4>
+                <div class="profile-info-row">
+                  <span class="profile-info-label">Miembro desde</span>
+                  <span class="profile-info-value" id="profileMemberSince">—</span>
+                </div>
+                <div class="profile-info-row">
+                  <span class="profile-info-label">Estado</span>
+                  <span class="profile-info-value"><span class="status-badge success" id="profileStatus">Activo</span></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right column: edit form -->
+            <div class="profile-col-right">
+              <div class="profile-edit-card">
+                <h4>Editar informacion de contacto</h4>
+                <p class="profile-edit-desc">Actualiza tu correo electronico y numero de telefono. Los cambios se reflejaran inmediatamente.</p>
+                <form id="profileForm" class="profile-form-grid">
+                  <div class="profile-field">
+                    <label for="profileName">Nombre completo</label>
+                    <input type="text" id="profileName" disabled />
+                    <span class="profile-field-note">El nombre no puede ser modificado desde aqui. Contacta soporte.</span>
+                  </div>
+                  <div class="profile-field">
+                    <label for="profileCedulaInput">Cedula</label>
+                    <input type="text" id="profileCedulaInput" disabled />
+                  </div>
+                  <div class="profile-field">
+                    <label for="profileEmailInput">Correo electronico</label>
+                    <input type="email" id="profileEmailInput" required />
+                  </div>
+                  <div class="profile-field">
+                    <label for="profilePhone">Telefono de contacto</label>
+                    <input type="tel" id="profilePhone" placeholder="+507 6000-0000" />
+                  </div>
+                  <div class="profile-field">
+                    <label for="profileAddress">Direccion</label>
+                    <input type="text" id="profileAddress" placeholder="Ciudad de Panama" />
+                  </div>
+                  <div class="profile-form-actions">
+                    <button class="primary-action" type="submit" id="btnSaveProfile">Guardar cambios</button>
+                    <span class="profile-save-status" id="profileSaveStatus" hidden>Guardado</span>
+                  </div>
+                </form>
+              </div>
+
+              <div class="profile-edit-card">
+                <h4>Seguridad</h4>
+                <p class="profile-edit-desc">Protege tu cuenta con una contrasena segura.</p>
+                <div class="profile-security-actions">
+                  <button class="secondary-action" type="button" id="btnChangePassword">Cambiar contrasena</button>
+                  <button class="secondary-action" type="button" id="btnEnable2FA" disabled>Autenticacion en dos pasos</button>
+                </div>
+                <div class="profile-change-password-form" id="passwordForm" hidden>
+                  <div class="profile-field">
+                    <label for="currentPassword">Contrasena actual</label>
+                    <input type="password" id="currentPassword" autocomplete="current-password" />
+                  </div>
+                  <div class="profile-field">
+                    <label for="newPassword">Nueva contrasena</label>
+                    <input type="password" id="newPassword" autocomplete="new-password" />
+                  </div>
+                  <div class="profile-field">
+                    <label for="confirmPassword">Confirmar contrasena</label>
+                    <input type="password" id="confirmPassword" autocomplete="new-password" />
+                  </div>
+                  <div class="profile-form-actions">
+                    <button class="primary-action" type="button" id="btnSavePassword">Actualizar contrasena</button>
+                    <button class="secondary-action" type="button" id="btnCancelPassword">Cancelar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+
+    <div id="citaConfirmModal" class="modal-overlay">
+      <div class="modal-content" role="dialog" aria-labelledby="citaConfirmTitle">
+        <h3 id="citaConfirmTitle">Cita agendada</h3>
+        <div id="citaConfirmBody"></div>
+        <button type="button" class="primary-action" id="btnCerrarConfirmacion">Aceptar</button>
+      </div>
+    </div>
+  </body>
+  </html>

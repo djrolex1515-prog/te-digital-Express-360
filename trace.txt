@@ -1,0 +1,28 @@
+1155: count=2 |         showToast("Foto actualizada (demo)");
+1156: count=1 |       };
+1157: count=1 |       reader.readAsDataURL(file);
+1158: count=0 |     });
+1159: count=0 | 
+1160: count=1 |     document.getElementById("btnRemovePhoto")?.addEventListener("click", () => {
+1161: count=1 |       document.getElementById("profilePhoto").hidden = true;
+1162: count=1 |       document.getElementById("avatarPlaceholder").hidden = false;
+1163: count=1 |       document.getElementById("profilePhoto").src = "";
+1164: count=1 |       document.getElementById("cedulaPhoto").innerHTML = '<span class="photo-placeholder">📷</span>';
+1165: count=1 |       showToast("Foto eliminada");
+1166: count=0 |     });
+1167: count=0 | 
+1168: count=0 |     // Notification preference toggles
+1169: count=1 |     document.querySelectorAll(".pref-toggle input").forEach(toggle => {
+1170: count=2 |       toggle.addEventListener("change", () => {
+1171: count=2 |         const label = toggle.closest(".pref-toggle").querySelector(".pref-label strong").textContent
+1172: count=2 |         showToast(`${label}: ${toggle.checked ? "Activado" : "Desactivado"}`);
+1173: count=2 |         // In production: save to backend
+1174: count=1 |       });
+1175: count=0 |     });
+1176: count=0 | 
+1177: count=0 |     // Initialize profile
+1178: count=0 |     loadProfile();
+1179: count=0 |     updatePagosSection();
+1180: count=-1 |   })();
+1181: count=-2 | })();
+1182: count=-2 | 

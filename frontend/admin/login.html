@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login Admin | TE Digital Express 360</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <div class="login-body">
+      <div class="login-container">
+        <div class="login-card">
+          <div class="login-header">
+            <span class="login-logo">TE</span>
+            <h1>TE Digital Express 360</h1>
+            <p>Panel de Administracion</p>
+          </div>
+          <form id="loginForm">
+            <div class="form-group">
+              <label for="loginEmail">Correo</label>
+              <input type="email" id="loginEmail" placeholder="admin@te.gob.pa" required />
+            </div>
+            <div class="form-group">
+              <label for="loginPassword">Contrasena</label>
+              <input type="password" id="loginPassword" placeholder="Tu contrasena" required />
+            </div>
+            <button type="submit" class="btn-primary btn-full">Entrar</button>
+            <output id="loginStatus" class="login-status"></output>
+          </form>
+        </div>
+        <p style="text-align:center;margin-top:16px;"><a href="../principal.html" style="color:rgba(255,255,255,.6);font-size:13px;">← Volver al inicio</a></p>
+      </div>
+    </div>
+    <script>
+      (() => {
+        if (localStorage.getItem("td360_admin_token")) {
+          window.location.href = "admin.html";
+          return;
+        }
+        const form = document.getElementById("loginForm");
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const status = document.getElementById("loginStatus");
+          const btn = form.querySelector("button[type=submit]");
+          const email = document.getElementById("loginEmail").value.trim();
+          const password = document.getElementById("loginPassword").value;
+          if (!email || !password) { status.className = "login-status error"; status.textContent = "Completa todos los campos."; return; }
+          status.className = "login-status";
+          status.textContent = "Validando...";
+          btn.disabled = true;
+          btn.textContent = "Entrando...";
+          try {
+            const r = await fetch("/api/auth/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password }),
+            });
+            const d = await r.json();
+            if (!r.ok) { status.className = "login-status error"; status.textContent = d.error || "Credenciales invalidas."; btn.disabled = false; btn.textContent = "Entrar"; return; }
+            if (d.user.role !== "superadmin" && d.user.role !== "director" && d.user.role !== "funcionario") { status.className = "login-status error"; status.textContent = "No tienes permisos de acceso."; btn.disabled = false; btn.textContent = "Entrar"; return; }
+            localStorage.setItem("td360_admin_token", d.token);
+            localStorage.setItem("td360_admin_user", JSON.stringify(d.user));
+            window.location.href = "admin.html";
+          } catch {
+            status.className = "login-status error";
+            status.textContent = "Error de conexion.";
+            btn.disabled = false;
+            btn.textContent = "Entrar";
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

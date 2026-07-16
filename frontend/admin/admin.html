@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin | TE Digital Express 360</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+
+    <!-- ADMIN APP -->
+    <div id="adminApp" class="admin-layout" hidden>
+      <aside class="admin-sidebar">
+        <div class="sidebar-brand">
+          <span class="brand-mark">TE</span>
+          <div>
+            <strong>TE Digital Express 360</strong>
+            <small>Admin</small>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="../principal.html" class="sidebar-link sidebar-home">← Volver al Inicio</a>
+          <a href="#" class="sidebar-link active" data-page="bienvenida">Inicio</a>
+          <a href="#" class="sidebar-link" data-page="usuarios" data-restricted="director">Usuarios</a>
+          <a href="#" class="sidebar-link" data-page="ciudadanos" data-restricted="director">Ciudadanos</a>
+          <a href="#" class="sidebar-link" data-page="servicios" data-restricted="director">Servicios</a>
+          <a href="#" class="sidebar-link" data-page="solicitudes">Solicitudes</a>
+          <a href="#" class="sidebar-link" data-page="nueva-solicitud" data-restricted="director">Nueva Solicitud</a>
+          <a href="#" class="sidebar-link" data-page="citas">Citas</a>
+          <a href="#" class="sidebar-link" data-page="documentos">Documentos</a>
+          <a href="#" class="sidebar-link" data-page="portal-ciudadano" data-restricted="director">Portal Ciudadano</a>
+          <a href="#" class="sidebar-link" data-page="roles" data-restricted="director">Roles</a>
+          <a href="#" class="sidebar-link" data-page="configuracion" data-restricted="director">Configuracion</a>
+        </nav>
+        <button class="sidebar-logout" id="logoutBtn">Cerrar sesion</button>
+      </aside>
+
+      <main class="admin-main">
+
+        <!-- BIENVENIDA -->
+        <section id="page-bienvenida" class="admin-page">
+          <div class="welcome-container" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;">
+            <div style="font-size:64px;margin-bottom:16px;">🏛️</div>
+            <h1 id="welcomeTitle" style="font-size:28px;font-weight:700;color:var(--ink);margin-bottom:8px;"></h1>
+            <p style="font-size:16px;color:var(--muted);max-width:480px;">Panel de administracion de <strong>TE Digital Express 360</strong>. Utiliza el menu lateral para gestionar solicitudes, citas, documentos y mas.</p>
+          </div>
+        </section>
+
+        <!-- USUARIOS -->
+        <section id="page-usuarios" class="admin-page" hidden>
+          <header class="admin-topbar">
+            <h2>Administradores</h2>
+            <span id="adminName" class="admin-user-label"></span>
+            <button class="btn-primary" id="btnNewUser">+ Nuevo Usuario</button>
+          </header>
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Correo</th>
+                  <th>Rol</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="usersBody"></tbody>
+            </table>
+            <p id="usersEmpty" class="empty-msg" hidden>No hay usuarios registrados.</p>
+          </div>
+        </section>
+
+        <!-- ROLES -->
+        <section id="page-roles" class="admin-page" hidden>
+          <header class="admin-topbar">
+            <h2>Roles</h2>
+          </header>
+          <div class="roles-grid">
+            <div class="role-card">
+              <div class="role-icon superadmin">SA</div>
+              <h3>Superadmin</h3>
+              <p>Creador del sistema. Acceso total e ilimitado. No puede ser eliminado ni modificado por nadie.</p>
+            </div>
+            <div class="role-card">
+              <div class="role-icon director">DI</div>
+              <h3>Director</h3>
+              <p>Gestiona usuarios y contenido. Puede crear, editar y eliminar funcionarios. Controla el portal ciudadano.</p>
+            </div>
+            <div class="role-card">
+              <div class="role-icon funcionario">FU</div>
+              <h3>Funcionario</h3>
+              <p>Atiende solicitudes ciudadanas. Puede procesar documentos, cambiar estados y ver reportes.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- CONFIGURACION -->
+        <section id="page-configuracion" class="admin-page" hidden>
+          <header class="admin-topbar">
+            <h2>Mi Perfil</h2>
+          </header>
+          <div class="config-card">
+            <h3 style="margin-bottom:16px;">Cambiar correo y contrasena</h3>
+            <form id="profileForm">
+              <div class="form-group">
+                <label for="profileEmail">Nuevo correo</label>
+                <input type="email" id="profileEmail" placeholder="nuevo@te.gob.pa" />
+              </div>
+              <div class="form-group">
+                <label for="profilePassword">Nueva contraseña (min 6 caracteres)</label>
+                <input type="password" id="profilePassword" placeholder="Dejar vacio para no cambiar" />
+              </div>
+              <div class="form-group">
+                <label for="profileCurrentPassword">Contraseña actual (requerida)</label>
+                <input type="password" id="profileCurrentPassword" placeholder="Tu contraseña actual" required />
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn-primary">Guardar Cambios</button>
+              </div>
+              <output id="profileStatus" class="login-status"></output>
+            </form>
+          </div>
+        </section>
+
+        <!-- CIUDADANOS -->
+        <section id="page-ciudadanos" class="admin-page" hidden>
+          <header class="admin-topbar">
+            <h2>Ciudadanos</h2>
+          </header>
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Correo</th>
+                  <th>Cedula</th>
+                  <th>Estado</th>
+                  <th>Registro</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="citizensBody"></tbody>
+            </table>
+            <p id="citizensEmpty" class="empty-msg" hidden>No hay ciudadanos registrados.</p>
+          </div>
+        </section>
+
+        <!-- SERVICIOS -->
+        <section id="page-servicios" class="admin-page" hidden>
+          <header class="admin-topbar">
+            <h2>Servicios</h2>
+            <button class="btn-primary" id="btnNewService">+ Nuevo Servicio</button>
+          </header>
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Titulo</th>
+                  <th>Categoria</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="servicesBody"></tbody>
+            </table>
+            <p id="servicesEmpty" class="empty-msg" hidden>No hay servicios registrados.</p>
+          </div>
+        </section>
+
+        <!-- SOLICITUDES -->
+        <section id="page-solicitudes" class="admin-page" hidden>
+          <header class="admin-topbar">
+            <h2>Solicitudes</h2>
+          </header>
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Codigo</th>
+                  <th>Servicio</th>
+                  <th>Tipo de tramite</th>
+                  <th>Ciudadano</th>
+                  <th>Contacto</th>
+                  <th>Estado</th>
+                  <th>Fecha</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="requestsBody"></tbody>
+            </table>
+            <p id="requestsEmpty" class="empty-msg" hidden>No hay solicitudes.</p>
+          </div>
+        </section>
+
+        <!-- CITAS -->
+        <section id="page-citas" class="admin-page" hidden>
+          <header class="admin-topbar">
+            <h2>Citas</h2>
+            <button class="btn-primary" id="btnNewAppointment">+ Nueva Cita</button>
+          </header>
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Ciudadano</th>
+                  <th>Servicio</th>
+                  <th>Oficina</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="appointmentsBody"></tbody>
+            </table>
+            <p id="appointmentsEmpty" class="empty-msg" hidden>No hay citas programadas.</p>
+          </div>
+          <div class="config-card" id="newAppointmentForm" style="margin-top:24px;" hidden>
+            <h3 style="margin-bottom:16px;">Nueva Cita</h3>
+            <form id="appointmentForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="apptName">Nombre del ciudadano</label>
+                  <input type="text" id="apptName" placeholder="Juan Perez" required />
+                </div>
+                <div class="form-group">
+                  <label for="apptCedula">Cedula</label>
+                  <input type="text" id="apptCedula" placeholder="8-123-4567" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="apptService">Tipo de servicio</label>
+                  <select id="apptService" required>
+                    <option value="">Seleccionar...</option>
+                    <option value="Cedula">Cedula</option>
+                    <option value="Pasaporte">Pasaporte</option>
+                    <option value="Certificado">Certificado</option>
+                    <option value="Registro Civil">Registro Civil</option>
+                    <option value="Servicios Electorales">Servicios Electorales</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="apptOffice">Oficina</label>
+                  <input type="text" id="apptOffice" placeholder="Centro de Atencion" required />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="apptDate">Fecha</label>
+                  <input type="date" id="apptDate" required />
+                </div>
+                <div class="form-group">
+                  <label for="apptTime">Hora</label>
+                  <input type="time" id="apptTime" required />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="apptPhone">Telefono (opcional)</label>
+                <input type="tel" id="apptPhone" placeholder="6000-1234" />
+              </div>
+              <div class="form-group">
+                <label for="apptNotes">Notas (opcional)</label>
+                <textarea id="apptNotes" rows="2" placeholder="Detalles adicionales..."></textarea>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn-primary">Crear Cita</button>
+                <button type="button" class="btn-secondary" id="btnCancelAppt">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- NUEVA SOLICITUD -->
+        <section id="page-nueva-solicitud" class="admin-page" hidden>
+          <header class="admin-topbar">
+            <h2>Crear Nueva Solicitud</h2>
+          </header>
+          <div class="config-card">
+            <form id="newRequestForm">
+              <div class="form-group">
+                <label for="reqService">Servicio</label>
+                <select id="reqService" required>
+                  <option value="">Seleccionar servicio...</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="reqType">Tipo de tramite</label>
+                <select id="reqType">
+                  <option value="">Seleccionar tipo...</option>
+                  <option value="Renovar cedula">Renovar cedula</option>
+                  <option value="Duplicado de cedula">Duplicado de cedula</option>
+                  <option value="Reemplazo por deterioro">Reemplazo por deterioro</option>
+                  <option value="Primera vez">Primera vez</option>
+                  <option value="Reportar perdida o robo">Reportar perdida o robo</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="reqCitizenName">Nombre del Ciudadano</label>
+                <input type="text" id="reqCitizenName" required placeholder="Nombre completo" />
+              </div>
+              <div class="form-group">
+                <label for="reqCitizenContact">Correo o Telefono</label>
+                <input type="text" id="reqCitizenContact" required placeholder="correo@ejemplo.com o 6000-0000" />
+              </div>
+              <div class="form-group">
+                <label for="reqNotes">Notas</label>
+                <textarea id="reqNotes" rows="3" placeholder="Detalles adicionales..."></textarea>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn-primary">Crear Solicitud</button>
+                <button type="button" class="btn-secondary" id="btnCancelRequest">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- DOCUMENTOS -->
+        <section id="page-documentos" class="admin-page" hidden>
+          <header class="admin-topbar">
+            <h2>Documentos de Ciudadanos</h2>
+          </header>
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Ciudadano</th>
+                  <th>Tipo</th>
+                  <th>Archivo</th>
+                  <th>Solicitud</th>
+                  <th>Fecha</th>
+                </tr>
+              </thead>
+              <tbody id="documentsBody"></tbody>
+            </table>
+            <p id="documentsEmpty" class="empty-msg" hidden>No hay documentos subidos.</p>
+          </div>
+        </section>
+
+        <!-- PORTAL CIUDADANO -->
+        <section id="page-portal-ciudadano" class="admin-page" hidden>
+          <header class="admin-topbar">
+            <h2>Portal Ciudadano - Gestion de Pestañas</h2>
+          </header>
+          <p class="page-desc">Activa o desactiva las secciones que los ciudadanos pueden ver en el portal.</p>
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Seccion</th>
+                  <th>Clave</th>
+                  <th>Estado</th>
+                  <th>Orden</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="portalSectionsBody"></tbody>
+            </table>
+          </div>
+          <div class="form-actions" style="margin-top: 1.5rem;">
+            <button type="button" class="btn-primary" id="btnSavePortalConfig">Guardar Cambios</button>
+            <button type="button" class="btn-secondary" id="btnPreviewPortal">Vista Previa del Portal</button>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- MODAL USUARIO -->
+    <div class="modal-overlay" id="userModal" hidden>
+      <div class="modal-card">
+        <h3 id="modalTitle">Nuevo Usuario</h3>
+        <form id="userForm">
+          <input type="hidden" id="userId" />
+          <div class="form-row">
+            <div class="form-group">
+              <label for="userName">Nombre</label>
+              <input type="text" id="userName" required />
+            </div>
+            <div class="form-group">
+              <label for="userLastname">Apellido</label>
+              <input type="text" id="userLastname" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="userEmail">Correo</label>
+            <input type="email" id="userEmail" required />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="userUsername">Usuario</label>
+              <input type="text" id="userUsername" />
+            </div>
+            <div class="form-group">
+              <label for="userCedula">Cedula</label>
+              <input type="text" id="userCedula" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="userPassword">Contrasena</label>
+            <input type="password" id="userPassword" />
+          </div>
+          <div class="form-group">
+            <label for="userRole">Rol</label>
+            <select id="userRole">
+              <option value="director">Director</option>
+              <option value="funcionario">Funcionario</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Estado</label>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="userStatus" value="activo" checked /> Activo</label>
+              <label class="radio-label"><input type="radio" name="userStatus" value="inactivo" /> Inactivo</label>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button type="submit" class="btn-primary">Guardar</button>
+            <button type="button" class="btn-secondary" id="btnCancelModal">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="admin.js"></script>
+  </body>
+</html>

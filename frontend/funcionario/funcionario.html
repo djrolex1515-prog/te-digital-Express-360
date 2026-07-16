@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Funcionario | TE Digital Express 360</title>
+    <link rel="stylesheet" href="../admin/admin.css" />
+    <style>
+      .func-header { background: var(--primary); color: #fff; padding: 12px 24px; display: flex; align-items: center; gap: 12px; }
+      .func-header .brand-mark { background: #fff; color: var(--primary); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; }
+      .func-header strong { font-size: 16px; }
+      .func-header small { opacity: .7; font-size: 12px; }
+    </style>
+  </head>
+  <body style="display:none" id="bodyRoot">
+
+    <!-- LOGIN -->
+    <div id="loginView" class="login-body">
+      <div class="login-container">
+        <div class="login-card">
+          <div class="login-header">
+            <span class="login-logo">TE</span>
+            <h1>TE Digital Express 360</h1>
+            <p>Panel de Funcionario</p>
+          </div>
+          <form id="loginForm">
+            <div class="form-group">
+              <label for="loginEmail">Correo</label>
+              <input type="email" id="loginEmail" placeholder="funcionario@te.gob.pa" required />
+            </div>
+            <div class="form-group">
+              <label for="loginPassword">Contrasena</label>
+              <input type="password" id="loginPassword" placeholder="Tu contrasena" required />
+            </div>
+            <button type="submit" class="btn-primary btn-full">Entrar</button>
+            <output id="loginStatus" class="login-status"></output>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- FUNCIONARIO APP -->
+    <div id="funcApp" class="admin-layout" hidden>
+      <aside class="admin-sidebar">
+        <div class="sidebar-brand">
+          <span class="brand-mark">TE</span>
+          <div>
+            <strong>TE Digital Express 360</strong>
+            <small>Funcionario</small>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="../principal.html" class="sidebar-link sidebar-home">← Volver al Inicio</a>
+          <a href="#" class="sidebar-link active" data-page="dashboard">Dashboard</a>
+          <a href="#" class="sidebar-link" data-page="solicitudes">Solicitudes</a>
+          <a href="#" class="sidebar-link" data-page="citas">Citas</a>
+          <a href="#" class="sidebar-link" data-page="documentos">Documentos</a>
+        </nav>
+        <button class="sidebar-logout" id="logoutBtn">Cerrar sesion</button>
+      </aside>
+
+      <main class="admin-main">
+
+        <!-- DASHBOARD -->
+        <section id="page-dashboard" class="admin-page">
+          <header class="admin-topbar">
+            <h2>Mi Dashboard</h2>
+            <span id="funcName" class="admin-user-label"></span>
+          </header>
+          <div class="metric-grid">
+            <div class="metric-card">
+              <div class="metric-icon blue">📋</div>
+              <div class="metric-info">
+                <span class="metric-value" id="metricMyRequests">0</span>
+                <span class="metric-label">Solicitudes Asignadas</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon green">📅</div>
+              <div class="metric-info">
+                <span class="metric-value" id="metricMyAppointments">0</span>
+                <span class="metric-label">Citas Hoy</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon gold">📄</div>
+              <div class="metric-info">
+                <span class="metric-value" id="metricDocsProcessed">0</span>
+                <span class="metric-label">Documentos Procesados</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SOLICITUDES -->
+        <section id="page-solicitudes" class="admin-page" hidden>
+          <header class="admin-topbar">
+            <h2>Gestion de Solicitudes</h2>
+          </header>
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Codigo</th>
+                  <th>Servicio</th>
+                  <th>Ciudadano</th>
+                  <th>Contacto</th>
+                  <th>Estado</th>
+                  <th>Fecha</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="requestsBody"></tbody>
+            </table>
+            <p id="requestsEmpty" class="empty-msg" hidden>No hay solicitudes pendientes.</p>
+          </div>
+        </section>
+
+        <!-- CITAS -->
+        <section id="page-citas" class="admin-page" hidden>
+          <header class="admin-topbar">
+            <h2>Citas Programadas</h2>
+          </header>
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Ciudadano</th>
+                  <th>Servicio</th>
+                  <th>Oficina</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="appointmentsBody"></tbody>
+            </table>
+            <p id="appointmentsEmpty" class="empty-msg" hidden>No hay citas programadas.</p>
+          </div>
+        </section>
+
+        <!-- DOCUMENTOS -->
+        <section id="page-documentos" class="admin-page" hidden>
+          <header class="admin-topbar">
+            <h2>Documentos de Ciudadanos</h2>
+          </header>
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Ciudadano</th>
+                  <th>Tipo</th>
+                  <th>Archivo</th>
+                  <th>Solicitud</th>
+                  <th>Fecha</th>
+                </tr>
+              </thead>
+              <tbody id="documentsBody"></tbody>
+            </table>
+            <p id="documentsEmpty" class="empty-msg" hidden>No hay documentos subidos.</p>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <script src="funcionario.js"></script>
+  </body>
+</html>

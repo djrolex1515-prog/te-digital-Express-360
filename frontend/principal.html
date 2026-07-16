@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Inicio | TE Digital Express 360</title>
+
+    <meta
+      name="description"
+      content="Inicio de TE Digital Express 360: accesos para ciudadanos, solicitudes, servicios y funcionarios."
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <script src="app.js" defer></script>
+  </head>
+
+  <body>
+    <header class="topbar">
+      <a class="brand" href="principal.html" aria-label="TE Digital Express 360">
+        <span class="brand-mark">TE</span>
+        <span>
+          <strong>TE Digital Express</strong>
+          <em>360</em>
+        </span>
+      </a>
+      <nav class="main-nav" aria-label="Navegación principal">
+        <a href="principal.html">Inicio</a>
+        <a href="ciudadano.html">Portal ciudadano</a>
+        <a href="admin/admin.html">Panel administrador</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero home-hero" id="inicio">
+        <div class="hero-copy">
+          <p class="eyebrow">Inicio</p>
+          <h1>TE Digital Express 360</h1>
+          <p class="hero-lead">
+            Accede rápidamente a los principales servicios y herramientas
+            para ciudadanos y funcionarios, todo desde un mismo lugar.
+          </p>
+
+          <div class="hero-actions">
+            <a class="primary-action" href="ciudadano.html">Portal ciudadano</a>
+            <a class="secondary-action" href="admin/admin.html">Panel administrador</a>
+          </div>
+        </div>
+
+        <aside class="hero-console gif-console" aria-label="Vista previa de TE Digital Express 360">
+          <div class="console-head" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="console-preview">
+            <img
+              src="Imagenes/te-digital-360-demo.gif"
+              alt="Vista previa animada de TE Digital Express 360"
+            />
+          </div>
+        </aside>
+      </section>
+
+      <section class="section home-access-section" aria-label="Accesos de inicio">
+        <div class="section-heading wide">
+          <p class="eyebrow">Bienvenido al modo Express del Tribunal Electoral</p>
+          <h2>Todo lo que necesitas, en un solo lugar</h2>
+          <p>
+            Encuentra las herramientas y servicios que buscas, diseñados para que ciudadanos y funcionarios realicen sus trámites de manera ágil.
+          </p>
+        </div>
+
+        <div class="home-access-grid">
+          <article class="home-area-card citizen-hub" id="citizenHub">
+            <div class="area-card-head">
+              <span class="icon-pill teal">CI</span>
+              <div>
+                <p class="eyebrow">Portal ciudadano</p>
+                <h3 id="citizenTitle">Regístrate como ciudadano digital</h3>
+              </div>
+            </div>
+
+            <div id="citizenUnregistered">
+              <div id="citizenRegView">
+                <div class="reg-benefits">
+                  <h4>Beneficios de registrarte:</h4>
+                  <ul>
+                    <li>Renovar cédula en línea sin filas</li>
+                    <li>Solicitar certificados digitales con QR</li>
+                    <li>Seguimiento en tiempo real de tus trámites</li>
+                    <li>Historial completo de solicitudes</li>
+                    <li>Notificaciones personalizadas</li>
+                    <li>Pagos de trámites en línea</li>
+                  </ul>
+                </div>
+                <form id="citizenRegForm" class="reg-form">
+                  <input type="text" id="regName" placeholder="Nombre completo" required />
+                  <input type="email" id="regEmail" placeholder="Correo electrónico" required />
+                  <input type="text" id="regCedula" placeholder="Cédula (ej: 8-123-456)" required />
+                  <div class="password-field">
+                    <input type="password" id="regPass" placeholder="Contraseña" required autocomplete="new-password" />
+                    <button type="button" class="password-toggle" data-toggle="regPass" aria-label="Mostrar contraseña">
+                      <svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      <svg class="eye-off-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    </button>
+                  </div>
+                  <small class="pass-hint" id="regPassHint">Debe tener entre 8 y 12 caracteres, mayúsculas, minúsculas, números y al menos un carácter especial.</small>
+                  <div class="password-field">
+                    <input type="password" id="regConfirm" placeholder="Confirmar contraseña" required autocomplete="new-password" />
+                    <button type="button" class="password-toggle" data-toggle="regConfirm" aria-label="Mostrar contraseña">
+                      <svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      <svg class="eye-off-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    </button>
+                  </div>
+                  <button class="primary-action" type="submit">Crear cuenta gratuita</button>
+                </form>
+                <div id="regError" class="reg-error" hidden></div>
+                <p class="reg-note">Al registrarte podrás acceder a todos los servicios del Tribunal Electoral sin necesidad de ir a una oficina.</p>
+                <p class="reg-switch">¿Ya tienes cuenta? <a href="#" id="showLogin">Inicia sesión</a></p>
+              </div>
+
+              <div id="citizenLoginView" hidden>
+                <form id="citizenLoginForm" class="reg-form">
+                  <input type="email" id="loginEmail" placeholder="Correo electrónico" required />
+                  <div class="password-field">
+                    <input type="password" id="loginPass" placeholder="Contraseña" required />
+                    <button type="button" class="password-toggle" data-toggle="loginPass" aria-label="Mostrar contraseña">
+                      <svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      <svg class="eye-off-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    </button>
+                  </div>
+                  <button class="primary-action" type="submit">Iniciar sesión</button>
+                </form>
+                <div id="loginError" class="reg-error" hidden></div>
+                <p class="reg-note">¿No tienes cuenta? <a href="#" id="showRegister">Regístrate aquí</a></p>
+              </div>
+
+            </div>
+
+            <div id="citizenRegistered" hidden>
+              <div class="reg-welcome">
+                <p>Bienvenido, <strong id="citizenName"></strong>. Ya puedes acceder a todos los servicios digitales.</p>
+              </div>
+              <div class="home-feature-list">
+                <a href="ciudadano.html?service=cedula&subtype=renovacion">
+                  <strong>Renovar cédula</strong>
+                  <span>Solicita renovación o reposición de tu cédula de identidad.</span>
+                </a>
+                <a href="ciudadano.html?service=cedula&subtype=reportar_perdida">
+                  <strong>Reportar pérdida o robo</strong>
+                  <span>Reporta la pérdida o robo de tu cédula de identidad.</span>
+                </a>
+                <a href="ciudadano.html#certificados">
+                  <strong>Pedir certificado</strong>
+                  <span>Solicita certificados de nacimiento, matrimonio y defunción.</span>
+                </a>
+                <a href="ciudadano.html#mis-tramites">
+                  <strong>Mis trámites</strong>
+                  <span>Consulta el estado y seguimiento de tus solicitudes.</span>
+                </a>
+              </div>
+              <div class="service-actions">
+                <a class="primary-action" href="ciudadano.html">Ir al Portal Ciudadano</a>
+                <button type="button" class="secondary-action" id="citizenLogout">Cerrar sesión</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="home-area-card staff-hub">
+            <div class="area-card-head">
+              <span class="icon-pill blue">FN</span>
+              <div>
+                <p class="eyebrow">Area de Administracion</p>
+                <h3>Panel de administradores</h3>
+              </div>
+            </div>
+
+            <div class="home-feature-list">
+              <a href="admin/admin.html">
+                <strong>Panel administrador</strong>
+                <span>Gestionar usuarios, roles y configuracion del sistema.</span>
+              </a>
+            </div>
+
+            <div class="service-actions">
+              <a class="primary-action" href="admin/admin.html">Entrar al panel</a>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
