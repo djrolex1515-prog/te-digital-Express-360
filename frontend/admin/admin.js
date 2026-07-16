@@ -88,10 +88,12 @@
   if (mobileToggle && adminSidebar) {
     mobileToggle.addEventListener("click", () => {
       adminSidebar.classList.toggle("is-open");
+      mobileToggle.classList.toggle("is-active");
     });
     adminSidebar.addEventListener("click", (e) => {
       if (e.target.closest(".sidebar-link") || e.target.closest(".sidebar-logout")) {
         adminSidebar.classList.remove("is-open");
+        mobileToggle.classList.remove("is-active");
       }
     });
     document.addEventListener("click", (e) => {
@@ -99,6 +101,7 @@
           !adminSidebar.contains(e.target) &&
           !mobileToggle.contains(e.target)) {
         adminSidebar.classList.remove("is-open");
+        mobileToggle.classList.remove("is-active");
       }
     });
   }

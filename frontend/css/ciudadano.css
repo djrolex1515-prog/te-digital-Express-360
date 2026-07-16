@@ -38,11 +38,24 @@
 
 .sidebar-toggle span {
   display: block;
-  width: 100%;
+  width: 20px;
   height: 2px;
   border-radius: 2px;
   background: var(--ink);
-  margin: 4px 0;
+  transition: all 250ms ease;
+}
+.sidebar-toggle span:nth-child(1) { transform: translateY(0); }
+.sidebar-toggle span:nth-child(2) { opacity: 1; }
+.sidebar-toggle span:nth-child(3) { transform: translateY(0); }
+
+.sidebar-toggle.is-active span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+.sidebar-toggle.is-active span:nth-child(2) {
+  opacity: 0;
+}
+.sidebar-toggle.is-active span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
 }
 
 .sidebar-nav {

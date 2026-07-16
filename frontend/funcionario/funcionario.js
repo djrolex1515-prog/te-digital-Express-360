@@ -39,10 +39,12 @@
   if (mobileToggle && funcSidebar) {
     mobileToggle.addEventListener("click", () => {
       funcSidebar.classList.toggle("is-open");
+      mobileToggle.classList.toggle("is-active");
     });
     funcSidebar.addEventListener("click", (e) => {
       if (e.target.closest(".sidebar-link") || e.target.closest(".sidebar-logout")) {
         funcSidebar.classList.remove("is-open");
+        mobileToggle.classList.remove("is-active");
       }
     });
     document.addEventListener("click", (e) => {
@@ -50,6 +52,7 @@
           !funcSidebar.contains(e.target) &&
           !mobileToggle.contains(e.target)) {
         funcSidebar.classList.remove("is-open");
+        mobileToggle.classList.remove("is-active");
       }
     });
   }

@@ -18,12 +18,16 @@
   let citizenData = null;
 
   /* ── Sidebar ── */
-  toggle.addEventListener("click", () => sidebar.classList.toggle("is-open"));
+  toggle.addEventListener("click", () => {
+    sidebar.classList.toggle("is-open");
+    toggle.classList.toggle("is-active");
+  });
 
   /* Cerrar sidebar al hacer click en un link */
   sidebar.addEventListener("click", (e) => {
     if (e.target.closest(".sidebar-link")) {
       sidebar.classList.remove("is-open");
+      toggle.classList.remove("is-active");
     }
   });
 
@@ -33,6 +37,7 @@
         !sidebar.contains(e.target) &&
         !toggle.contains(e.target)) {
       sidebar.classList.remove("is-open");
+      toggle.classList.remove("is-active");
     }
   });
 
