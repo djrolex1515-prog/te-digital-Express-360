@@ -40,7 +40,7 @@ MYSQL_USER = os.environ.get("TE_DIGITAL_360_MYSQL_USER", "root")
 MYSQL_PASSWORD = os.environ.get("TE_DIGITAL_360_MYSQL_PASSWORD", "")
 
 HOST = os.environ.get("TE_DIGITAL_360_HOST", "0.0.0.0")
-PORT = int(os.environ.get("TE_DIGITAL_360_PORT", "3600"))
+PORT = int(os.environ.get("PORT") or os.environ.get("TE_DIGITAL_360_PORT", "3600"))
 
 TOKEN_TTL_HOURS = int(os.environ.get("TE_DIGITAL_360_TOKEN_HOURS", "8"))
 MAX_BODY_BYTES = 1024 * 1024
