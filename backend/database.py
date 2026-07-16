@@ -922,8 +922,12 @@ def ensure_schema_updates(db):
             )
 
     if table_exists(db, "appointments"):
-        cursor = db.execute("PRAGMA table_info(appointments)" if DB_ENGINE == "sqlite" else "SHOW COLUMNS FROM appointments")
-        cols = [row[1] for row in cursor.fetchall()]
+        if DB_ENGINE == "mysql":
+            cursor = db.execute("SHOW COLUMNS FROM appointments")
+            cols = [row["Field"] for row in cursor.fetchall()]
+        else:
+            cursor = db.execute("PRAGMA table_info(appointments)")
+            cols = [row[1] for row in cursor.fetchall()]
         if "citizen_name" not in cols:
             if DB_ENGINE == "mysql":
                 db.execute("ALTER TABLE appointments ADD COLUMN citizen_name VARCHAR(200) NULL")
@@ -936,8 +940,12 @@ def ensure_schema_updates(db):
                 db.execute("ALTER TABLE appointments ADD COLUMN cedula TEXT")
 
     if table_exists(db, "citizen_requests"):
-        cursor = db.execute("PRAGMA table_info(citizen_requests)" if DB_ENGINE == "sqlite" else "SHOW COLUMNS FROM citizen_requests")
-        cols = [row[1] for row in cursor.fetchall()]
+        if DB_ENGINE == "mysql":
+            cursor = db.execute("SHOW COLUMNS FROM citizen_requests")
+            cols = [row["Field"] for row in cursor.fetchall()]
+        else:
+            cursor = db.execute("PRAGMA table_info(citizen_requests)")
+            cols = [row[1] for row in cursor.fetchall()]
         if "request_type" not in cols:
             if DB_ENGINE == "mysql":
                 db.execute("ALTER TABLE citizen_requests ADD COLUMN request_type VARCHAR(100) NULL")
