@@ -33,6 +33,27 @@
   const pages = document.querySelectorAll(".admin-page");
   const links = document.querySelectorAll(".sidebar-link");
 
+  /* ── Mobile Menu Toggle ── */
+  const mobileToggle = document.getElementById("mobileMenuToggle");
+  const funcSidebar = document.getElementById("funcSidebar");
+  if (mobileToggle && funcSidebar) {
+    mobileToggle.addEventListener("click", () => {
+      funcSidebar.classList.toggle("is-open");
+    });
+    funcSidebar.addEventListener("click", (e) => {
+      if (e.target.closest(".sidebar-link") || e.target.closest(".sidebar-logout")) {
+        funcSidebar.classList.remove("is-open");
+      }
+    });
+    document.addEventListener("click", (e) => {
+      if (funcSidebar.classList.contains("is-open") &&
+          !funcSidebar.contains(e.target) &&
+          !mobileToggle.contains(e.target)) {
+        funcSidebar.classList.remove("is-open");
+      }
+    });
+  }
+
   function showApp() {
     document.getElementById("bodyRoot").style.display = "";
     loginView.hidden = true;

@@ -82,6 +82,27 @@
     refreshTimer = null;
   }
 
+  /* ── Mobile Menu Toggle ── */
+  const mobileToggle = document.getElementById("mobileMenuToggle");
+  const adminSidebar = document.getElementById("adminSidebar");
+  if (mobileToggle && adminSidebar) {
+    mobileToggle.addEventListener("click", () => {
+      adminSidebar.classList.toggle("is-open");
+    });
+    adminSidebar.addEventListener("click", (e) => {
+      if (e.target.closest(".sidebar-link") || e.target.closest(".sidebar-logout")) {
+        adminSidebar.classList.remove("is-open");
+      }
+    });
+    document.addEventListener("click", (e) => {
+      if (adminSidebar.classList.contains("is-open") &&
+          !adminSidebar.contains(e.target) &&
+          !mobileToggle.contains(e.target)) {
+        adminSidebar.classList.remove("is-open");
+      }
+    });
+  }
+
   /* ── Navegacion SPA ── */
   function navigateTo(page) {
     activePage = page;

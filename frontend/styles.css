@@ -901,7 +901,7 @@ h3 { font-size: 20px; }
 
   .main-nav { width: 100%; gap: 4px; }
 
-  .main-nav a { padding: 8px 9px; }
+  .main-nav a { padding: 8px 9px; font-size: 13px; }
 
   .header-action,
   .primary-action,
@@ -924,4 +924,104 @@ h3 { font-size: 20px; }
   .floating-chat-form { grid-template-columns: 1fr; }
 
   .floating-chat-form button { width: 100%; }
+}
+
+/* ── Extra small screens ── */
+@media (max-width: 480px) {
+  .topbar {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .brand {
+    justify-content: center;
+  }
+
+  .main-nav {
+    justify-content: center;
+  }
+
+  .main-nav a {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  .hero-lead {
+    font-size: 14px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+  }
+
+  .hero-actions .primary-action,
+  .hero-actions .secondary-action {
+    width: 100%;
+  }
+
+  .trust-row {
+    justify-content: center;
+  }
+
+  .trust-row span,
+  .trust-row button,
+  .trust-row a {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .service-card {
+    padding: 16px;
+  }
+
+  .service-card h3 {
+    font-size: 16px;
+  }
+
+  .service-card p {
+    font-size: 13px;
+  }
+
+  .service-actions {
+    flex-direction: column;
+  }
+
+  .service-actions .primary-action,
+  .service-actions .secondary-action {
+    width: 100%;
+    text-align: center;
+  }
+
+  .home-access-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-area-card {
+    padding: 16px;
+  }
+
+  .home-area-card h3 {
+    font-size: 16px;
+  }
+
+  .reg-form input {
+    font-size: 16px;
+  }
+
+  .reg-benefits ul {
+    font-size: 13px;
+  }
+
+  .footer-links {
+    grid-template-columns: 1fr 1fr;
+  }
 }

@@ -20,6 +20,22 @@
   /* ── Sidebar ── */
   toggle.addEventListener("click", () => sidebar.classList.toggle("is-open"));
 
+  /* Cerrar sidebar al hacer click en un link */
+  sidebar.addEventListener("click", (e) => {
+    if (e.target.closest(".sidebar-link")) {
+      sidebar.classList.remove("is-open");
+    }
+  });
+
+  /* Cerrar sidebar al hacer click fuera */
+  document.addEventListener("click", (e) => {
+    if (sidebar.classList.contains("is-open") &&
+        !sidebar.contains(e.target) &&
+        !toggle.contains(e.target)) {
+      sidebar.classList.remove("is-open");
+    }
+  });
+
   /* ── Portal Config: ocultar/mostrar secciones según admin ── */
   async function loadPortalVisibility() {
     try {

@@ -323,3 +323,61 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Extra small screens ── */
+@media (max-width: 480px) {
+  #inicio.hero {
+    padding: 24px 0 32px;
+  }
+
+  #inicio h1 {
+    font-size: 32px;
+  }
+
+  #inicio .hero-lead {
+    font-size: 15px;
+  }
+
+  .reg-form {
+    padding: 0;
+  }
+
+  .reg-form input {
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .home-area-card {
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .home-area-card h3 {
+    font-size: 16px;
+  }
+
+  .area-card-head {
+    gap: 10px;
+  }
+
+  .home-feature-list a {
+    padding: 12px;
+  }
+
+  .home-feature-list a strong {
+    font-size: 14px;
+  }
+
+  .home-feature-list a span {
+    font-size: 12px;
+  }
+
+  .service-actions {
+    flex-direction: column;
+  }
+
+  .service-actions .primary-action,
+  .service-actions .secondary-action {
+    width: 100%;
+  }
+}

@@ -18,3 +18,61 @@
 .login-card { margin: 0; }
 
 .login-card .secondary-action { width: 100%; }
+
+/* ── Responsive: Tablet ── */
+@media (max-width: 900px) {
+  .login-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 0 16px;
+  }
+
+  .login-copy {
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .login-copy h2 {
+    font-size: clamp(24px, 4vw, 36px);
+  }
+
+  .login-copy p {
+    font-size: 15px;
+  }
+}
+
+/* ── Responsive: Mobile ── */
+@media (max-width: 680px) {
+  .login-section {
+    min-height: auto;
+    padding: 32px 16px;
+  }
+
+  .login-layout {
+    gap: 24px;
+  }
+
+  .login-copy h2 {
+    font-size: 24px;
+  }
+
+  .login-card {
+    padding: 24px 20px;
+    border-radius: 12px;
+  }
+
+  .login-card .form-group label {
+    font-size: 12px;
+  }
+
+  .login-card .form-group input {
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .login-card .primary-action,
+  .login-card .secondary-action {
+    padding: 12px;
+    font-size: 15px;
+  }
+}

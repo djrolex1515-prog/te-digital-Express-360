@@ -157,12 +157,38 @@
   padding: 6px 10px;
 }
 
+/* ===== RESPONSIVE ===== */
 @media (max-width: 980px) {
   .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 680px) {
   .metric-grid { grid-template-columns: 1fr; }
+  .metric-grid strong { font-size: 28px; }
+}
+
+/* ── Extra mobile ── */
+@media (max-width: 480px) {
+  .cert-pendiente-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .cert-pendiente-item .primary-action {
+    width: 100%;
+    text-align: center;
+  }
+
+  .request-list article {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .request-list span {
+    align-self: flex-start;
+  }
 }
 
 /* ── Certificados pendientes ── */
