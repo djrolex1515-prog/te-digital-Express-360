@@ -1963,7 +1963,13 @@
   }
 
   .home-eagle {
-    display: none;
+    min-height: auto;
+    max-height: 300px;
+    order: 3;
+  }
+
+  .home-eagle-img {
+    max-height: 280px;
   }
 
   .identidad-layout {
@@ -2153,7 +2159,8 @@
   .dashboard-home-layout {
     grid-template-columns: 1fr;
   }
-  .home-eagle { display: none; }
+  .home-eagle { order: 3; min-height: auto; max-height: 300px; }
+  .home-eagle-img { max-height: 280px; }
   .identidad-layout { grid-template-columns: 1fr; }
   .identidad-eagle { display: none; }
   .help-grid { grid-template-columns: 1fr; }
