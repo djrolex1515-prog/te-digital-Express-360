@@ -833,6 +833,16 @@ class Handler(BaseHTTPRequestHandler):
                     self.send_json({"error": "service_type, office, appointment_date y appointment_time son requeridos."}, status=400)
                     return
 
+                duplicate = db.execute(
+                    """SELECT id FROM appointments
+                       WHERE citizen_id = ? AND service_type = ? AND appointment_date = ?
+                         AND status NOT IN ('cancelada')""",
+                    (citizen["id"], service_type, appointment_date),
+                ).fetchone()
+                if duplicate:
+                    self.send_json({"error": f"Ya tienes una cita de '{service_type}' para el {appointment_date}. No puedes agendar el mismo trámite dos veces el mismo día."}, status=409)
+                    return
+
                 CAPACITY = 3
                 slot_count = db.execute(
                     """SELECT COUNT(*) AS total FROM appointments
@@ -1224,6 +1234,22 @@ class Handler(BaseHTTPRequestHandler):
                 if not service_type or not office or not appointment_date or not appointment_time:
                     self.send_json({"error": "service_type, office, appointment_date y appointment_time son requeridos."}, status=400)
                     return
+
+                dup_query = """SELECT id FROM appointments
+                               WHERE service_type = ? AND appointment_date = ?
+                                 AND status NOT IN ('cancelada')"""
+                dup_params = [service_type, appointment_date]
+                if citizen_id:
+                    dup_query += " AND citizen_id = ?"
+                    dup_params.append(citizen_id)
+                elif cedula:
+                    dup_query += " AND cedula = ?"
+                    dup_params.append(cedula)
+                if len(dup_params) > 2:
+                    duplicate = db.execute(dup_query, dup_params).fetchone()
+                    if duplicate:
+                        self.send_json({"error": f"Ya existe una cita de '{service_type}' para el {appointment_date}. No se puede duplicar el mismo trámite el mismo día."}, status=409)
+                        return
 
                 CAPACITY = 3
                 slot_count = db.execute(
