@@ -45,6 +45,7 @@
       const role = user.role;
       if (role === "superadmin") welcomeEl.textContent = "Bienvenido Superadmin";
       else if (role === "director") welcomeEl.textContent = "Bienvenido Director/a";
+      else if (role === "soporte") welcomeEl.textContent = "Bienvenido Soporte";
       else welcomeEl.textContent = "Bienvenido";
     }
 
@@ -172,7 +173,7 @@
     userForm.reset();
     document.getElementById("userId").value = "";
     document.getElementById("userPassword").required = true;
-    document.getElementById("userRole").value = "funcionario";
+    document.getElementById("userRole").value = "soporte";
     document.querySelector('input[name="userStatus"][value="activo"]').checked = true;
     userModal.hidden = false;
   });

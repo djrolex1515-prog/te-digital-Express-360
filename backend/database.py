@@ -440,7 +440,7 @@ CREATE TABLE IF NOT EXISTS users (
     full_name TEXT NOT NULL,
     username TEXT NOT NULL DEFAULT '',
     cedula TEXT NOT NULL UNIQUE,
-    role TEXT NOT NULL CHECK(role IN ('superadmin', 'director', 'funcionario')),
+    role TEXT NOT NULL CHECK(role IN ('superadmin', 'director', 'funcionario', 'soporte')),
     password_salt TEXT NOT NULL,
     password_hash TEXT NOT NULL,
     is_active INTEGER NOT NULL DEFAULT 1,
@@ -553,7 +553,7 @@ CREATE TABLE IF NOT EXISTS users (
     full_name VARCHAR(255) NOT NULL,
     username VARCHAR(100) NOT NULL DEFAULT '',
     cedula VARCHAR(50) NOT NULL UNIQUE,
-    role ENUM('superadmin', 'director', 'funcionario') NOT NULL,
+    role ENUM('superadmin', 'director', 'funcionario', 'soporte') NOT NULL,
     password_salt TEXT NOT NULL,
     password_hash TEXT NOT NULL,
     is_active TINYINT(1) NOT NULL DEFAULT 1,
@@ -1130,6 +1130,36 @@ def seed_admin_user(db):
             "superadmin",
             salt,
             digest,
+            utc_now(),
+        ),
+    )
+
+    soporte_password = os.environ.get("TE_DIGITAL_360_SOPORTE_PASSWORD", "Soporte123!")
+    s_salt, s_digest = hash_password(soporte_password)
+
+    db.execute(
+        """
+        INSERT INTO users (
+            email,
+            full_name,
+            username,
+            cedula,
+            role,
+            password_salt,
+            password_hash,
+            is_active,
+            created_at
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?)
+        """,
+        (
+            "soporte@te.gob.pa",
+            "Soporte TE Digital Express 360",
+            "soporte",
+            "SOPORTE-0001",
+            "soporte",
+            s_salt,
+            s_digest,
             utc_now(),
         ),
     )

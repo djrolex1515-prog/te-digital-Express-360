@@ -297,7 +297,7 @@ class Handler(BaseHTTPRequestHandler):
             if path == "/api/requests":
                 user = self.require_user(
                     db,
-                    roles={"superadmin", "director", "funcionario"},
+                    roles={"superadmin", "director", "funcionario", "soporte"},
                 )
 
                 if not user:
@@ -326,7 +326,7 @@ class Handler(BaseHTTPRequestHandler):
             if path == "/api/dashboard":
                 user = self.require_user(
                     db,
-                    roles={"superadmin", "director", "funcionario"},
+                    roles={"superadmin", "director", "funcionario", "soporte"},
                 )
 
                 if not user:
@@ -368,7 +368,7 @@ class Handler(BaseHTTPRequestHandler):
             if path == "/api/certificados/pendientes":
                 user = self.require_user(
                     db,
-                    roles={"superadmin", "director", "funcionario"},
+                    roles={"superadmin", "director", "funcionario", "soporte"},
                 )
                 if not user:
                     return
@@ -394,7 +394,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
 
             if path == "/api/admin/stats":
-                user = self.require_user(db, roles={"superadmin", "director", "funcionario"})
+                user = self.require_user(db, roles={"superadmin", "director", "funcionario", "soporte"})
                 if not user:
                     return
 
@@ -465,7 +465,7 @@ class Handler(BaseHTTPRequestHandler):
             if path == "/api/admin/requests":
                 user = self.require_user(
                     db,
-                    roles={"superadmin", "director", "funcionario"},
+                    roles={"superadmin", "director", "funcionario", "soporte"},
                 )
                 if not user:
                     return
@@ -490,7 +490,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
 
             if path == "/api/admin/appointments":
-                user = self.require_user(db, roles={"superadmin", "director", "funcionario"})
+                user = self.require_user(db, roles={"superadmin", "director", "funcionario", "soporte"})
                 if not user:
                     return
 
@@ -508,7 +508,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
 
             if path == "/api/admin/documents":
-                user = self.require_user(db, roles={"superadmin", "director", "funcionario"})
+                user = self.require_user(db, roles={"superadmin", "director", "funcionario", "soporte"})
                 if not user:
                     return
 
@@ -969,7 +969,7 @@ class Handler(BaseHTTPRequestHandler):
             if path.startswith("/api/certificados/") and path.endswith("/aprobar"):
                 user = self.require_user(
                     db,
-                    roles={"superadmin", "director", "funcionario"},
+                    roles={"superadmin", "director", "funcionario", "soporte"},
                 )
                 if not user:
                     return
@@ -1029,7 +1029,7 @@ class Handler(BaseHTTPRequestHandler):
                     self.send_json({"error": "email y full_name son requeridos."}, status=400)
                     return
 
-                if role not in ("superadmin", "director", "funcionario"):
+                if role not in ("superadmin", "director", "funcionario", "soporte"):
                     self.send_json({"error": "Rol invalido."}, status=400)
                     return
 
@@ -1094,7 +1094,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
 
             if path == "/api/admin/requests/status":
-                admin_user = self.require_user(db, roles={"superadmin", "director", "funcionario"})
+                admin_user = self.require_user(db, roles={"superadmin", "director", "funcionario", "soporte"})
                 if not admin_user:
                     return
 
@@ -1131,7 +1131,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
 
             if path == "/api/admin/requests/create":
-                admin_user = self.require_user(db, roles={"superadmin", "director", "funcionario"})
+                admin_user = self.require_user(db, roles={"superadmin", "director", "funcionario", "soporte"})
                 if not admin_user:
                     return
 
@@ -1166,7 +1166,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
 
             if path == "/api/admin/appointments/create":
-                admin_user = self.require_user(db, roles={"superadmin", "director", "funcionario"})
+                admin_user = self.require_user(db, roles={"superadmin", "director", "funcionario", "soporte"})
                 if not admin_user:
                     return
 
@@ -1283,7 +1283,7 @@ class Handler(BaseHTTPRequestHandler):
         with db_connect() as db:
             user = self.require_user(
                 db,
-                roles={"superadmin", "director", "funcionario"},
+                roles={"superadmin", "director", "funcionario", "soporte"},
             )
 
             if not user:
@@ -1411,7 +1411,7 @@ class Handler(BaseHTTPRequestHandler):
             is_active = 1 if payload.get("is_active", bool(row["is_active"])) else 0
             password = str(payload.get("password", "")).strip()
 
-            if role not in ("superadmin", "director", "funcionario"):
+            if role not in ("superadmin", "director", "funcionario", "soporte"):
                 self.send_json({"error": "Rol invalido."}, status=400)
                 return
 
@@ -1560,7 +1560,7 @@ class Handler(BaseHTTPRequestHandler):
     def handle_patch_admin_appointment(self, path, payload):
         appt_id = path.split("/")[-1]
         with db_connect() as db:
-            admin_user = self.require_user(db, roles={"superadmin", "director", "funcionario"})
+            admin_user = self.require_user(db, roles={"superadmin", "director", "funcionario", "soporte"})
             if not admin_user:
                 return
 
@@ -1624,7 +1624,7 @@ class Handler(BaseHTTPRequestHandler):
     def handle_delete_admin_appointment(self, path):
         appt_id = path.split("/")[-1]
         with db_connect() as db:
-            admin_user = self.require_user(db, roles={"superadmin", "director", "funcionario"})
+            admin_user = self.require_user(db, roles={"superadmin", "director", "funcionario", "soporte"})
             if not admin_user:
                 return
 

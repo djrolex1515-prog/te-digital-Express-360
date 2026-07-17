@@ -453,8 +453,9 @@ body {
   color: var(--white);
 }
 .role-icon.superadmin { background: var(--red); }
-.role-icon.director { background: var(--blue); }
-.role-icon.funcionario { background: var(--teal); }
+  .role-icon.director { background: var(--blue); }
+  .role-icon.funcionario { background: var(--teal); }
+  .role-icon.soporte { background: #6b7280; }
 
 .role-card h3 { font-size: 16px; margin-bottom: 6px; }
 .role-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }

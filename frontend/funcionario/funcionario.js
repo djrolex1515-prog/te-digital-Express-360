@@ -112,7 +112,7 @@
         });
         const d = await r.json();
         if (!r.ok) { status.className = "login-status error"; status.textContent = d.error || "Credenciales inválidas."; btn.disabled = false; btn.textContent = "Entrar"; return; }
-        if (d.user && d.user.role !== "funcionario" && d.user.role !== "director" && d.user.role !== "superadmin") {
+        if (d.user && d.user.role !== "funcionario" && d.user.role !== "director" && d.user.role !== "superadmin" && d.user.role !== "soporte") {
           status.className = "login-status error";
           status.textContent = "No tienes permisos de funcionario.";
           btn.disabled = false;
