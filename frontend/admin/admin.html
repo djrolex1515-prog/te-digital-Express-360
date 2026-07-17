@@ -209,7 +209,11 @@
         <section id="page-citas" class="admin-page" hidden>
           <header class="admin-topbar">
             <h2>Citas</h2>
-            <button class="btn-primary" id="btnNewAppointment">+ Nueva Cita</button>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="date" id="apptFilterDate" style="padding:6px 10px;border:1px solid var(--line);border-radius:6px;font-size:13px;">
+              <button class="btn-primary" id="btnNewAppointment">+ Nueva Cita</button>
+              <button class="btn-primary" id="btnPrintDaily" style="background:var(--teal);">🖨 Imprimir Reporte</button>
+            </div>
           </header>
           <div class="table-container">
             <table class="admin-table">

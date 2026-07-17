@@ -466,14 +466,99 @@
   });
 
   /* ── Citas ── */
+  let allAppointments = [];
+
   async function loadAppointments() {
     try {
       const r = await apiFetch("/api/admin/appointments");
       if (!r || !r.ok) return;
       const d = await r.json();
-      renderAppointments(d.appointments || []);
+      allAppointments = d.appointments || [];
+      filterAppointments();
     } catch {}
   }
+
+  function filterAppointments() {
+    const filterDate = document.getElementById("apptFilterDate")?.value;
+    let filtered = allAppointments;
+    if (filterDate) filtered = filtered.filter((a) => a.appointment_date === filterDate);
+    renderAppointments(filtered);
+  }
+
+  document.getElementById("apptFilterDate")?.addEventListener("change", filterAppointments);
+
+  document.getElementById("btnPrintDaily")?.addEventListener("click", () => {
+    const filterDate = document.getElementById("apptFilterDate")?.value || new Date().toISOString().slice(0, 10);
+    const filtered = allAppointments.filter((a) => a.appointment_date === filterDate);
+    const statusLabels = { pendiente: "Pendiente", confirmada: "Confirmada", cancelada: "Cancelada", completada: "Completada" };
+    const offices = {};
+    filtered.forEach((a) => {
+      if (!offices[a.office]) offices[a.office] = [];
+      offices[a.office].push(a);
+    });
+    let tableRows = "";
+    let totalCitas = filtered.length;
+    let confirmadas = filtered.filter((a) => a.status === "confirmada").length;
+    let pendientes = filtered.filter((a) => a.status === "pendiente").length;
+    let completadas = filtered.filter((a) => a.status === "completada").length;
+    let canceladas = filtered.filter((a) => a.status === "cancelada").length;
+
+    for (const [office, appts] of Object.entries(offices)) {
+      tableRows += `<tr><td colspan="6" style="background:#f0f4f8;font-weight:700;padding:10px 12px;">${escapeHtml(office)} (${appts.length} citas)</td></tr>`;
+      appts.forEach((a) => {
+        const hh = parseInt(a.appointment_time.split(":")[0]);
+        const mm = a.appointment_time.split(":")[1];
+        const ampm = hh >= 12 ? "p.m." : "a.m.";
+        const h12 = hh > 12 ? hh - 12 : hh;
+        tableRows += `<tr>
+          <td style="padding:8px 12px;">${escapeHtml(a.appointment_time)}</td>
+          <td style="padding:8px 12px;">${escapeHtml(a.citizen_name || "-")}</td>
+          <td style="padding:8px 12px;">${escapeHtml(a.cedula || "-")}</td>
+          <td style="padding:8px 12px;">${escapeHtml(a.service_type)}</td>
+          <td style="padding:8px 12px;">${escapeHtml(a.contact_phone || "-")}</td>
+          <td style="padding:8px 12px;">${statusLabels[a.status] || a.status}</td>
+        </tr>`;
+      });
+    }
+
+    const dateObj = new Date(filterDate + "T12:00:00");
+    const dateStr = dateObj.toLocaleDateString("es-PA", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+
+    const printWin = window.open("", "_blank", "width=900,height=700");
+    printWin.document.write(`<!DOCTYPE html>
+<html><head><title>Reporte Diario de Citas</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 30px; color: #1a1a1a; }
+  h1 { font-size: 20px; margin-bottom: 4px; }
+  h2 { font-size: 14px; color: #666; font-weight: normal; margin-top: 0; }
+  .summary { display: flex; gap: 16px; margin: 16px 0; }
+  .summary-item { background: #f5f7fa; border-radius: 8px; padding: 12px 18px; text-align: center; }
+  .summary-item .num { font-size: 24px; font-weight: 700; }
+  .summary-item .label { font-size: 12px; color: #666; }
+  table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+  th { background: #16365f; color: #fff; padding: 10px 12px; text-align: left; font-size: 13px; }
+  td { border-bottom: 1px solid #e5e7eb; font-size: 13px; }
+  .footer { margin-top: 24px; font-size: 11px; color: #999; text-align: center; }
+  @media print { body { padding: 16px; } }
+</style></head><body>
+<h1>TE Digital Express 360 — Reporte Diario de Citas</h1>
+<h2>${dateStr}</h2>
+<div class="summary">
+  <div class="summary-item"><div class="num">${totalCitas}</div><div class="label">Total</div></div>
+  <div class="summary-item"><div class="num" style="color:#059669;">${confirmadas}</div><div class="label">Confirmadas</div></div>
+  <div class="summary-item"><div class="num" style="color:#d97706;">${pendientes}</div><div class="label">Pendientes</div></div>
+  <div class="summary-item"><div class="num" style="color:#2563eb;">${completadas}</div><div class="label">Completadas</div></div>
+  <div class="summary-item"><div class="num" style="color:#dc2626;">${canceladas}</div><div class="label">Canceladas</div></div>
+</div>
+<table>
+  <thead><tr><th>Hora</th><th>Ciudadano</th><th>Cédula</th><th>Servicio</th><th>Teléfono</th><th>Estado</th></tr></thead>
+  <tbody>${tableRows || '<tr><td colspan="6" style="text-align:center;padding:24px;">No hay citas para esta fecha.</td></tr>'}</tbody>
+</table>
+<div class="footer">Generado el ${new Date().toLocaleString("es-PA")} — TE Digital Express 360</div>
+</body></html>`);
+    printWin.document.close();
+    setTimeout(() => { printWin.print(); }, 400);
+  });
 
   function renderAppointments(appointments) {
     const tbody = document.getElementById("appointmentsBody");
