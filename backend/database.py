@@ -964,6 +964,14 @@ def ensure_schema_updates(db):
                AND notes LIKE 'Trámite: %'"""
         )
 
+    if DB_ENGINE == "mysql":
+        try:
+            db.execute(
+                "ALTER TABLE users MODIFY COLUMN role ENUM('superadmin','director','funcionario','soporte') NOT NULL"
+            )
+        except Exception:
+            pass
+
 
 def exact_equals(column):
     return f"BINARY {column} = ?" if DB_ENGINE == "mysql" else f"{column} = ?"
