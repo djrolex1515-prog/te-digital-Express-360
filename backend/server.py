@@ -1,7 +1,7 @@
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from urllib.parse import unquote, urlparse
+from urllib.parse import parse_qs, unquote, urlparse
 import json
 import mimetypes
 
@@ -227,6 +227,36 @@ class Handler(BaseHTTPRequestHandler):
                     (citizen["id"],),
                 ).fetchall()
                 self.send_json({"appointments": [row_to_dict(r) for r in rows]})
+                return
+
+            if path.startswith("/api/appointments/slots"):
+                qs = parse_qs(urlparse(self.path).query)
+                office = qs.get("office", [""])[0].strip()
+                date = qs.get("date", [""])[0].strip()
+                if not office or not date:
+                    self.send_json({"error": "office y date son requeridos."}, status=400)
+                    return
+                all_slots = [
+                    "08:00","08:30","09:00","09:30","10:00","10:30",
+                    "11:00","11:30","12:00","13:00","13:30","14:00",
+                    "14:30","15:00","15:30",
+                ]
+                CAPACITY = 3
+                rows = db.execute(
+                    """SELECT appointment_time, COUNT(*) AS booked
+                       FROM appointments
+                       WHERE office = ? AND appointment_date = ?
+                         AND status NOT IN ('cancelada')
+                       GROUP BY appointment_time""",
+                    (office, date),
+                ).fetchall()
+                booked = {row["appointment_time"]: row["booked"] for row in rows}
+                slots = []
+                for t in all_slots:
+                    used = booked.get(t, 0)
+                    remaining = max(0, CAPACITY - used)
+                    slots.append({"time": t, "capacity": CAPACITY, "booked": used, "remaining": remaining})
+                self.send_json({"slots": slots})
                 return
 
             if path == "/api/documents":
@@ -803,6 +833,17 @@ class Handler(BaseHTTPRequestHandler):
                     self.send_json({"error": "service_type, office, appointment_date y appointment_time son requeridos."}, status=400)
                     return
 
+                CAPACITY = 3
+                slot_count = db.execute(
+                    """SELECT COUNT(*) AS total FROM appointments
+                       WHERE office = ? AND appointment_date = ? AND appointment_time = ?
+                         AND status NOT IN ('cancelada')""",
+                    (office, appointment_date, appointment_time),
+                ).fetchone()["total"]
+                if slot_count >= CAPACITY:
+                    self.send_json({"error": "Este horario ya está completo. Elija otro horario disponible."}, status=409)
+                    return
+
                 now = utc_now()
                 cursor = db.execute(
                     """INSERT INTO appointments (citizen_id, service_type, office, appointment_date, appointment_time, contact_phone, notes, status, created_at, updated_at)
@@ -1184,6 +1225,17 @@ class Handler(BaseHTTPRequestHandler):
                     self.send_json({"error": "service_type, office, appointment_date y appointment_time son requeridos."}, status=400)
                     return
 
+                CAPACITY = 3
+                slot_count = db.execute(
+                    """SELECT COUNT(*) AS total FROM appointments
+                       WHERE office = ? AND appointment_date = ? AND appointment_time = ?
+                         AND status NOT IN ('cancelada')""",
+                    (office, appointment_date, appointment_time),
+                ).fetchone()["total"]
+                if slot_count >= CAPACITY:
+                    self.send_json({"error": "Este horario ya está completo (3/3 cupos). Elija otro horario disponible."}, status=409)
+                    return
+
                 now = utc_now()
                 cursor = db.execute(
                     """INSERT INTO appointments (citizen_id, citizen_name, cedula, service_type, office, appointment_date, appointment_time, contact_phone, notes, status, created_at, updated_at)
@@ -1365,6 +1417,17 @@ class Handler(BaseHTTPRequestHandler):
                 new_time = str(payload.get("appointment_time", "")).strip()
                 if not new_date or not new_time:
                     self.send_json({"error": "appointment_date y appointment_time son requeridos."}, status=400)
+                    return
+                office = row["office"]
+                CAPACITY = 3
+                slot_count = db.execute(
+                    """SELECT COUNT(*) AS total FROM appointments
+                       WHERE office = ? AND appointment_date = ? AND appointment_time = ?
+                         AND status NOT IN ('cancelada') AND id != ?""",
+                    (office, new_date, new_time, appt_id),
+                ).fetchone()["total"]
+                if slot_count >= CAPACITY:
+                    self.send_json({"error": "Este horario ya está completo. Elija otro horario disponible."}, status=409)
                     return
                 db.execute(
                     "UPDATE appointments SET appointment_date = ?, appointment_time = ?, updated_at = ? WHERE id = ?",

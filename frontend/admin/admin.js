@@ -602,12 +602,50 @@
   document.getElementById("btnNewAppointment")?.addEventListener("click", () => {
     const form = document.getElementById("newAppointmentForm");
     if (form) { form.hidden = false; form.scrollIntoView({ behavior: "smooth" }); }
+    document.getElementById("apptTime").innerHTML = '<option value="">Selecciona oficina y fecha</option>';
+    document.getElementById("apptSlotInfo").textContent = "";
   });
 
   document.getElementById("btnCancelAppt")?.addEventListener("click", () => {
     const form = document.getElementById("newAppointmentForm");
     if (form) { form.hidden = true; document.getElementById("appointmentForm")?.reset(); }
   });
+
+  async function loadAdminApptSlots() {
+    const office = document.getElementById("apptOffice").value;
+    const date = document.getElementById("apptDate").value;
+    const timeSelect = document.getElementById("apptTime");
+    const info = document.getElementById("apptSlotInfo");
+    if (!office || !date) { timeSelect.innerHTML = '<option value="">Selecciona oficina y fecha</option>'; info.textContent = ""; return; }
+    try {
+      const r = await apiFetch(`/api/appointments/slots?office=${encodeURIComponent(office)}&date=${encodeURIComponent(date)}`);
+      if (!r || !r.ok) return;
+      const d = await r.json();
+      const slots = d.slots || [];
+      timeSelect.innerHTML = '<option value="">Selecciona horario</option>';
+      let available = 0;
+      slots.forEach((s) => {
+        const o = document.createElement("option");
+        o.value = s.time;
+        const hh = parseInt(s.time.split(":")[0]);
+        const mm = s.time.split(":")[1];
+        const ampm = hh >= 12 ? "p.m." : "a.m.";
+        const h12 = hh > 12 ? hh - 12 : hh;
+        if (s.remaining > 0) {
+          o.textContent = `${h12}:${mm} ${ampm} — ${s.remaining} cupo${s.remaining > 1 ? "s" : ""}`;
+          available++;
+        } else {
+          o.textContent = `${h12}:${mm} ${ampm} — lleno`;
+          o.disabled = true;
+        }
+        timeSelect.appendChild(o);
+      });
+      info.textContent = `${available} horario${available !== 1 ? "s" : ""} disponible${available !== 1 ? "s" : ""}`;
+    } catch {}
+  }
+
+  document.getElementById("apptOffice")?.addEventListener("change", loadAdminApptSlots);
+  document.getElementById("apptDate")?.addEventListener("change", loadAdminApptSlots);
 
   document.getElementById("appointmentForm")?.addEventListener("submit", async (e) => {
     e.preventDefault();

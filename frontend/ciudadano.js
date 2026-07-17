@@ -670,8 +670,46 @@
     document.getElementById("btnGuardarCita").textContent = "Agendar cita";
     document.getElementById("citaEditId").value = "";
     document.getElementById("citaForm").reset();
+    document.getElementById("citaTime").innerHTML = '<option value="">Selecciona oficina y fecha</option>';
+    document.getElementById("citaSlotInfo").textContent = "";
     showCitaPanel("citaFormPanel");
   });
+
+  async function loadCitaSlots() {
+    const office = document.getElementById("citaOffice").value;
+    const date = document.getElementById("citaDate").value;
+    const timeSelect = document.getElementById("citaTime");
+    const info = document.getElementById("citaSlotInfo");
+    if (!office || !date) { timeSelect.innerHTML = '<option value="">Selecciona oficina y fecha</option>'; info.textContent = ""; return; }
+    try {
+      const r = await fetch(`/api/appointments/slots?office=${encodeURIComponent(office)}&date=${encodeURIComponent(date)}`);
+      if (!r.ok) return;
+      const d = await r.json();
+      const slots = d.slots || [];
+      timeSelect.innerHTML = '<option value="">Selecciona horario</option>';
+      let available = 0;
+      slots.forEach((s) => {
+        const o = document.createElement("option");
+        o.value = s.time;
+        const hh = parseInt(s.time.split(":")[0]);
+        const mm = s.time.split(":")[1];
+        const ampm = hh >= 12 ? "p.m." : "a.m.";
+        const h12 = hh > 12 ? hh - 12 : hh;
+        if (s.remaining > 0) {
+          o.textContent = `${h12}:${mm} ${ampm} — ${s.remaining} cupo${s.remaining > 1 ? "s" : ""}`;
+          available++;
+        } else {
+          o.textContent = `${h12}:${mm} ${ampm} — lleno`;
+          o.disabled = true;
+        }
+        timeSelect.appendChild(o);
+      });
+      info.textContent = `${available} horario${available !== 1 ? "s" : ""} disponible${available !== 1 ? "s" : ""}`;
+    } catch {}
+  }
+
+  document.getElementById("citaOffice")?.addEventListener("change", loadCitaSlots);
+  document.getElementById("citaDate")?.addEventListener("change", loadCitaSlots);
 
   document.getElementById("btnCerrarFormCita")?.addEventListener("click", () => showCitaPanel("citaListPanel"));
   document.getElementById("btnCancelarFormCita")?.addEventListener("click", () => showCitaPanel("citaListPanel"));
@@ -704,12 +742,12 @@
   });
 
   /* ── Citas: reprogramar ── */
+  let repSelectedOffice = "";
   document.getElementById("btnReprogramarCita")?.addEventListener("click", async () => {
     showCitaPanel("citaReprogramarPanel");
-    const times = ["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","13:00","13:30","14:00","14:30","15:00","15:30"];
-    const repTime = document.getElementById("repTime");
-    repTime.innerHTML = '<option value="">Selecciona horario</option>';
-    times.forEach((t) => { const o = document.createElement("option"); o.value = t; o.textContent = t; repTime.appendChild(o); });
+    document.getElementById("repTime").innerHTML = '<option value="">Selecciona fecha</option>';
+    document.getElementById("repSlotInfo").textContent = "";
+    repSelectedOffice = "";
     const sel = document.getElementById("repSelect");
     sel.innerHTML = '<option value="">Selecciona una cita</option>';
     try {
@@ -718,10 +756,52 @@
       (d.appointments || []).filter((a) => a.status !== "cancelada").forEach((a) => {
         const o = document.createElement("option"); o.value = a.id;
         o.textContent = `${a.service_type} — ${a.appointment_date} ${a.appointment_time} (${a.office})`;
+        o.dataset.office = a.office;
         sel.appendChild(o);
       });
     } catch {}
   });
+
+  document.getElementById("repSelect")?.addEventListener("change", (e) => {
+    const opt = e.target.selectedOptions[0];
+    repSelectedOffice = opt?.dataset?.office || "";
+    document.getElementById("repTime").innerHTML = '<option value="">Selecciona fecha</option>';
+    document.getElementById("repSlotInfo").textContent = "";
+  });
+
+  async function loadRepSlots() {
+    const date = document.getElementById("repDate").value;
+    const timeSelect = document.getElementById("repTime");
+    const info = document.getElementById("repSlotInfo");
+    if (!repSelectedOffice || !date) { timeSelect.innerHTML = '<option value="">Selecciona fecha</option>'; info.textContent = ""; return; }
+    try {
+      const r = await fetch(`/api/appointments/slots?office=${encodeURIComponent(repSelectedOffice)}&date=${encodeURIComponent(date)}`);
+      if (!r.ok) return;
+      const d = await r.json();
+      const slots = d.slots || [];
+      timeSelect.innerHTML = '<option value="">Selecciona horario</option>';
+      let available = 0;
+      slots.forEach((s) => {
+        const o = document.createElement("option");
+        o.value = s.time;
+        const hh = parseInt(s.time.split(":")[0]);
+        const mm = s.time.split(":")[1];
+        const ampm = hh >= 12 ? "p.m." : "a.m.";
+        const h12 = hh > 12 ? hh - 12 : hh;
+        if (s.remaining > 0) {
+          o.textContent = `${h12}:${mm} ${ampm} — ${s.remaining} cupo${s.remaining > 1 ? "s" : ""}`;
+          available++;
+        } else {
+          o.textContent = `${h12}:${mm} ${ampm} — lleno`;
+          o.disabled = true;
+        }
+        timeSelect.appendChild(o);
+      });
+      info.textContent = `${available} horario${available !== 1 ? "s" : ""} disponible${available !== 1 ? "s" : ""}`;
+    } catch {}
+  }
+
+  document.getElementById("repDate")?.addEventListener("change", loadRepSlots);
 
   document.getElementById("btnCerrarReprogramar")?.addEventListener("click", () => showCitaPanel("citaListPanel"));
   document.getElementById("btnCancelarReprogramar")?.addEventListener("click", () => showCitaPanel("citaListPanel"));

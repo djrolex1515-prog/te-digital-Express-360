@@ -256,7 +256,19 @@
                 </div>
                 <div class="form-group">
                   <label for="apptOffice">Oficina</label>
-                  <input type="text" id="apptOffice" placeholder="Centro de Atención" required />
+                  <select id="apptOffice" required>
+                    <option value="">Selecciona oficina</option>
+                    <option value="Oficina Central">Oficina Central — Ciudad de Panamá</option>
+                    <option value="Panamá Oeste">Dirección Regional de Panamá Oeste</option>
+                    <option value="Colón">Dirección Regional de Colón</option>
+                    <option value="Chiriquí">Dirección Regional de Chiriquí — David</option>
+                    <option value="Veraguas">Dirección Regional de Veraguas — Santiago</option>
+                    <option value="Los Santos">Dirección Regional de Los Santos — Las Tablas</option>
+                    <option value="Herrera">Dirección Regional de Herrera — Chitré</option>
+                    <option value="Coclé">Dirección Regional de Coclé — Penonomé</option>
+                    <option value="Bocas del Toro">Dirección Regional de Bocas del Toro</option>
+                    <option value="Darién">Dirección Regional de Darién</option>
+                  </select>
                 </div>
               </div>
               <div class="form-row">
@@ -265,8 +277,11 @@
                   <input type="date" id="apptDate" required />
                 </div>
                 <div class="form-group">
-                  <label for="apptTime">Hora</label>
-                  <input type="time" id="apptTime" required />
+                  <label for="apptTime">Horario</label>
+                  <select id="apptTime" required>
+                    <option value="">Selecciona oficina y fecha</option>
+                  </select>
+                  <small id="apptSlotInfo" style="color:var(--muted);font-size:12px;margin-top:4px;display:block;"></small>
                 </div>
               </div>
               <div class="form-group">
