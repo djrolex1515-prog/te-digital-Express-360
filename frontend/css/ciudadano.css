@@ -2201,15 +2201,15 @@
 
   .home-eagle {
     min-height: auto;
-    max-height: 300px;
+    max-height: 420px;
     order: 3;
     padding: 8px 0;
   }
 
   .home-eagle-img {
-    max-height: 280px;
+    max-height: 400px;
     width: auto;
-    max-width: 95%;
+    max-width: 98%;
     margin: 0 auto;
   }
 
