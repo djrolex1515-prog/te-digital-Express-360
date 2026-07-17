@@ -818,6 +818,7 @@ def init_database():
         seed_services(db)
         migrate_quioscos_service(db)
         seed_admin_user(db)
+        seed_soporte_user(db)
         seed_demo_request(db)
         seed_portal_config(db)
 
@@ -1134,8 +1135,18 @@ def seed_admin_user(db):
         ),
     )
 
-    soporte_password = os.environ.get("TE_DIGITAL_360_SOPORTE_PASSWORD", "Soporte123!")
-    s_salt, s_digest = hash_password(soporte_password)
+
+def seed_soporte_user(db):
+    existing = db.execute(
+        "SELECT id FROM users WHERE email = ?",
+        ("soporte@te.gob.pa",),
+    ).fetchone()
+
+    if existing:
+        return
+
+    password = os.environ.get("TE_DIGITAL_360_SOPORTE_PASSWORD", "Soporte123!")
+    salt, digest = hash_password(password)
 
     db.execute(
         """
@@ -1158,8 +1169,8 @@ def seed_admin_user(db):
             "soporte",
             "SOPORTE-0001",
             "soporte",
-            s_salt,
-            s_digest,
+            salt,
+            digest,
             utc_now(),
         ),
     )
