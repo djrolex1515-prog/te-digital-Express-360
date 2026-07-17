@@ -1964,15 +1964,15 @@
 
   .home-eagle {
     min-height: auto;
-    max-height: 260px;
+    max-height: 350px;
     order: 3;
     padding: 8px 16px;
   }
 
   .home-eagle-img {
-    max-height: 240px;
+    max-height: 330px;
     width: auto;
-    max-width: 85%;
+    max-width: 90%;
     margin: 0 auto;
   }
 
@@ -1983,14 +1983,14 @@
   .identidad-eagle {
     order: 3;
     min-height: auto;
-    max-height: 260px;
+    max-height: 350px;
     padding: 8px 16px;
   }
 
   .identidad-eagle-img {
-    max-height: 240px;
+    max-height: 330px;
     width: auto;
-    max-width: 85%;
+    max-width: 90%;
     margin: 0 auto;
   }
 
@@ -2173,11 +2173,11 @@
   .dashboard-home-layout {
     grid-template-columns: 1fr;
   }
-  .home-eagle { order: 3; min-height: auto; max-height: 300px; padding: 10px 0; }
-  .home-eagle-img { max-height: 280px; width: auto; max-width: 80%; margin: 0 auto; }
+  .home-eagle { order: 3; min-height: auto; max-height: 400px; padding: 10px 0; }
+  .home-eagle-img { max-height: 380px; width: auto; max-width: 90%; margin: 0 auto; }
   .identidad-layout { grid-template-columns: 1fr; }
-  .identidad-eagle { order: 3; min-height: auto; max-height: 300px; padding: 10px 0; }
-  .identidad-eagle-img { max-height: 280px; width: auto; max-width: 80%; margin: 0 auto; }
+  .identidad-eagle { order: 3; min-height: auto; max-height: 400px; padding: 10px 0; }
+  .identidad-eagle-img { max-height: 380px; width: auto; max-width: 90%; margin: 0 auto; }
   .help-grid { grid-template-columns: 1fr; }
 }
 
@@ -2201,29 +2201,29 @@
 
   .home-eagle {
     min-height: auto;
-    max-height: 220px;
+    max-height: 300px;
     order: 3;
     padding: 8px 0;
   }
 
   .home-eagle-img {
-    max-height: 200px;
+    max-height: 280px;
     width: auto;
-    max-width: 90%;
+    max-width: 95%;
     margin: 0 auto;
   }
 
   .identidad-eagle {
     min-height: auto;
-    max-height: 220px;
+    max-height: 300px;
     order: 3;
     padding: 8px 0;
   }
 
   .identidad-eagle-img {
-    max-height: 200px;
+    max-height: 280px;
     width: auto;
-    max-width: 90%;
+    max-width: 95%;
     margin: 0 auto;
   }
 
