@@ -71,7 +71,7 @@ OFFICE_LOCATIONS = [
         "province": "Panama",
         "district": "San Miguelito",
         "place": "Oficina distrital de San Miguelito",
-        "address": "Atencion para corregimientos urbanos de alta demanda.",
+        "address": "Atención para corregimientos urbanos de alta demanda.",
         "schedule": "Lunes a viernes, horario de oficina.",
         "capacity": "Alta",
         "turns": "Turnos por servicio, prioridad a cedula y certificados.",
@@ -89,7 +89,7 @@ OFFICE_LOCATIONS = [
         "province": "Panama Oeste",
         "district": "La Chorrera",
         "place": "Oficina regional de Panama Oeste",
-        "address": "Atencion regional para tramites ciudadanos.",
+        "address": "Atención regional para trámites ciudadanos.",
         "schedule": "Lunes a viernes, horario de oficina.",
         "capacity": "Alta",
         "turns": "Turnos por demanda diaria.",
@@ -98,7 +98,7 @@ OFFICE_LOCATIONS = [
         "province": "Panama Oeste",
         "district": "Arraijan",
         "place": "Oficina distrital de Arraijan",
-        "address": "Atencion a Arraijan y corregimientos cercanos.",
+        "address": "Atención a Arraiján y corregimientos cercanos.",
         "schedule": "Lunes a viernes, horario de oficina.",
         "capacity": "Alta",
         "turns": "Reservas sugeridas por alta demanda.",
@@ -134,7 +134,7 @@ OFFICE_LOCATIONS = [
         "province": "Herrera",
         "district": "Chitre",
         "place": "Oficina regional de Herrera",
-        "address": "Atencion regional de Registro Civil y cedulacion.",
+        "address": "Atención regional de Registro Civil y cedulación.",
         "schedule": "Lunes a viernes, horario de oficina.",
         "capacity": "Media",
         "turns": "Turnos por servicio solicitado.",
@@ -161,7 +161,7 @@ OFFICE_LOCATIONS = [
         "province": "Bocas del Toro",
         "district": "Changuinola",
         "place": "Oficina regional de Bocas del Toro",
-        "address": "Atencion regional y apoyo a comunidades cercanas.",
+        "address": "Atención regional y apoyo a comunidades cercanas.",
         "schedule": "Lunes a viernes, horario de oficina.",
         "capacity": "Media",
         "turns": "Turnos presenciales.",
@@ -170,7 +170,7 @@ OFFICE_LOCATIONS = [
         "province": "Darien",
         "district": "La Palma",
         "place": "Oficina regional de Darien",
-        "address": "Atencion regional para comunidades de dificil acceso.",
+        "address": "Atención regional para comunidades de difícil acceso.",
         "schedule": "Lunes a viernes, horario de oficina.",
         "capacity": "Media",
         "turns": "Turnos coordinados por disponibilidad.",
@@ -179,7 +179,7 @@ OFFICE_LOCATIONS = [
         "province": "Comarca Guna Yala",
         "district": "Nargana / Ailigandi",
         "place": "Punto de atencion comarcal",
-        "address": "Atencion coordinada para comunidades comarcales.",
+        "address": "Atención coordinada para comunidades comarcales.",
         "schedule": "Segun disponibilidad regional.",
         "capacity": "Baja a media",
         "turns": "Turnos coordinados y jornadas especiales.",
@@ -198,7 +198,7 @@ OFFICE_LOCATIONS = [
 SERVICE_DETAILS = {
     "cedula": [
         {
-            "title": "Tramites cubiertos",
+            "title": "Trámites cubiertos",
             "items": [
                 "Primera vez, renovacion, duplicado, reemplazo por deterioro y retiro de documento.",
                 "BioCed como ruta de identidad con foto, firma y biometria en punto autorizado.",
@@ -238,7 +238,7 @@ SERVICE_DETAILS = {
             "title": "Consultas electorales",
             "items": [
                 "Centro de votacion, residencia electoral y orientacion para actualizar datos.",
-                "Informacion sobre partidos politicos y consultas ciudadanas.",
+                "Información sobre partidos políticos y consultas ciudadanas.",
                 "Seguimiento de solicitudes electorales registradas.",
             ],
         },
@@ -284,7 +284,7 @@ SERVICE_DETAILS = {
             ],
         },
         {
-            "title": "Informacion operativa",
+            "title": "Información operativa",
             "items": [
                 "Provincia, distrito, corregimiento o comunidad atendida.",
                 "Servicios disponibles por punto de atencion.",
@@ -352,7 +352,7 @@ SEED_SERVICES = [
     {
         "id": "quioscos",
         "title": "Oficinas y Quioscos",
-        "category": "Atencion",
+        "category": "Atención",
         "summary": "Ubicaciones, horarios, capacidad y turnos.",
         "requirements": [
             "Provincia o ubicacion de referencia.",

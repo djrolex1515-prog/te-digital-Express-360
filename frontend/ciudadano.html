@@ -168,7 +168,7 @@
               </div>
               <div class="identity-actions">
                 <button class="secondary-action" type="button" data-section="solicitar" data-service="cedula" data-subtype="reportar_perdida">Reportar pérdida o robo</button>
-                <a class="primary-action" href="#" data-section="solicitar" data-service="cedula" data-subtype="renovacion">Solicitar renovación</a>
+                <a class="primary-action" href="#" data-section="solicitar" data-service="cédula" data-subtype="renovacion">Solicitar renovación</a>
               </div>
             </div>
 <!-- ===== Mi identidad ===== -->
@@ -895,7 +895,7 @@
               <div class="profile-info-card">
                 <h4>Datos personales</h4>
                 <div class="profile-info-row">
-                  <span class="profile-info-label">Cedula</span>
+                  <span class="profile-info-label">Cédula</span>
                   <span class="profile-info-value" id="profileCedula">—</span>
                 </div>
                 <div class="profile-info-row">
@@ -903,13 +903,13 @@
                   <span class="profile-info-value" id="profileNameInfo">—</span>
                 </div>
                 <div class="profile-info-row">
-                  <span class="profile-info-label">Correo electronico</span>
+                  <span class="profile-info-label">Correo electrónico</span>
                   <span class="profile-info-value" id="profileEmailInfo">—</span>
                 </div>
               </div>
 
               <div class="profile-info-card">
-                <h4>Informacion de cuenta</h4>
+                <h4>Información de cuenta</h4>
                 <div class="profile-info-row">
                   <span class="profile-info-label">Miembro desde</span>
                   <span class="profile-info-value" id="profileMemberSince">—</span>
@@ -924,29 +924,29 @@
             <!-- Right column: edit form -->
             <div class="profile-col-right">
               <div class="profile-edit-card">
-                <h4>Editar informacion de contacto</h4>
-                <p class="profile-edit-desc">Actualiza tu correo electronico y numero de telefono. Los cambios se reflejaran inmediatamente.</p>
+                <h4>Editar información de contacto</h4>
+                <p class="profile-edit-desc">Actualiza tu correo electrónico y número de teléfono. Los cambios se reflejarán inmediatamente.</p>
                 <form id="profileForm" class="profile-form-grid">
                   <div class="profile-field">
                     <label for="profileName">Nombre completo</label>
                     <input type="text" id="profileName" disabled />
-                    <span class="profile-field-note">El nombre no puede ser modificado desde aqui. Contacta soporte.</span>
+                    <span class="profile-field-note">El nombre no puede ser modificado desde aquí. Contacta soporte.</span>
                   </div>
                   <div class="profile-field">
-                    <label for="profileCedulaInput">Cedula</label>
+                    <label for="profileCedulaInput">Cédula</label>
                     <input type="text" id="profileCedulaInput" disabled />
                   </div>
                   <div class="profile-field">
-                    <label for="profileEmailInput">Correo electronico</label>
+                    <label for="profileEmailInput">Correo electrónico</label>
                     <input type="email" id="profileEmailInput" required />
                   </div>
                   <div class="profile-field">
-                    <label for="profilePhone">Telefono de contacto</label>
+                    <label for="profilePhone">Teléfono de contacto</label>
                     <input type="tel" id="profilePhone" placeholder="+507 6000-0000" />
                   </div>
                   <div class="profile-field">
-                    <label for="profileAddress">Direccion</label>
-                    <input type="text" id="profileAddress" placeholder="Ciudad de Panama" />
+                    <label for="profileAddress">Dirección</label>
+                    <input type="text" id="profileAddress" placeholder="Ciudad de Panamá" />
                   </div>
                   <div class="profile-form-actions">
                     <button class="primary-action" type="submit" id="btnSaveProfile">Guardar cambios</button>
@@ -957,26 +957,26 @@
 
               <div class="profile-edit-card">
                 <h4>Seguridad</h4>
-                <p class="profile-edit-desc">Protege tu cuenta con una contrasena segura.</p>
+                <p class="profile-edit-desc">Protege tu cuenta con una contraseña segura.</p>
                 <div class="profile-security-actions">
-                  <button class="secondary-action" type="button" id="btnChangePassword">Cambiar contrasena</button>
-                  <button class="secondary-action" type="button" id="btnEnable2FA" disabled>Autenticacion en dos pasos</button>
+                  <button class="secondary-action" type="button" id="btnChangePassword">Cambiar contraseña</button>
+                  <button class="secondary-action" type="button" id="btnEnable2FA" disabled>Autenticación en dos pasos</button>
                 </div>
                 <div class="profile-change-password-form" id="passwordForm" hidden>
                   <div class="profile-field">
-                    <label for="currentPassword">Contrasena actual</label>
+                    <label for="currentPassword">Contraseña actual</label>
                     <input type="password" id="currentPassword" autocomplete="current-password" />
                   </div>
                   <div class="profile-field">
-                    <label for="newPassword">Nueva contrasena</label>
+                    <label for="newPassword">Nueva contraseña</label>
                     <input type="password" id="newPassword" autocomplete="new-password" />
                   </div>
                   <div class="profile-field">
-                    <label for="confirmPassword">Confirmar contrasena</label>
+                    <label for="confirmPassword">Confirmar contraseña</label>
                     <input type="password" id="confirmPassword" autocomplete="new-password" />
                   </div>
                   <div class="profile-form-actions">
-                    <button class="primary-action" type="button" id="btnSavePassword">Actualizar contrasena</button>
+                    <button class="primary-action" type="button" id="btnSavePassword">Actualizar contraseña</button>
                     <button class="secondary-action" type="button" id="btnCancelPassword">Cancelar</button>
                   </div>
                 </div>

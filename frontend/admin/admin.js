@@ -225,7 +225,7 @@
       const d = await r.json();
       if (!r.ok) { alert(d.error || "Error al eliminar."); return; }
       loadUsers();
-    } catch { alert("Error de conexion."); }
+    } catch { alert("Error de conexión."); }
   }
 
   userForm?.addEventListener("submit", async (e) => {
@@ -262,7 +262,7 @@
       if (!r.ok) { alert(d.error || "Error al guardar."); return; }
       userModal.hidden = true;
       loadUsers();
-    } catch { alert("Error de conexion."); }
+    } catch { alert("Error de conexión."); }
   });
 
   /* ── Ciudadanos ── */
@@ -309,7 +309,7 @@
       if (newName === null) return;
       const newEmail = prompt("Correo:", c.email);
       if (newEmail === null) return;
-      const newCedula = prompt("Cedula:", c.cedula || "");
+      const newCedula = prompt("Cédula:", c.cedula || "");
       if (newCedula === null) return;
       const patchR = await apiFetch(`/api/admin/citizens/${id}`, {
         method: "PATCH",
@@ -358,9 +358,9 @@
   document.getElementById("btnNewService")?.addEventListener("click", async () => {
     const id = prompt("ID del servicio (ej: cedula_nueva):");
     if (!id) return;
-    const title = prompt("Titulo:");
+    const title = prompt("Título:");
     if (!title) return;
-    const category = prompt("Categoria:");
+    const category = prompt("Categoría:");
     if (!category) return;
     const summary = prompt("Resumen:") || "";
     const r = await apiFetch("/api/admin/services", {
@@ -379,9 +379,9 @@
       const d = await r.json();
       const s = (d.services || []).find((x) => x.id === sid);
       if (!s) return;
-      const newTitle = prompt("Titulo:", s.title);
+      const newTitle = prompt("Título:", s.title);
       if (newTitle === null) return;
-      const newCategory = prompt("Categoria:", s.category);
+      const newCategory = prompt("Categoría:", s.category);
       if (newCategory === null) return;
       const newSummary = prompt("Resumen:", s.summary);
       if (newSummary === null) return;
@@ -520,7 +520,7 @@
   document.getElementById("appointmentsBody")?.addEventListener("click", async (e) => {
     const deleteBtn = e.target.closest("[data-delete-appt]");
     if (deleteBtn) {
-      if (!confirm("Estas seguro de eliminar esta cita? Esta accion no se puede deshacer.")) return;
+      if (!confirm("¿Estás seguro de eliminar esta cita? Esta acción no se puede deshacer.")) return;
       const r = await apiFetch(`/api/admin/appointments/${deleteBtn.dataset.deleteAppt}`, { method: "DELETE" });
       if (r && r.ok) loadAppointments();
     }
@@ -559,7 +559,7 @@
     if (!r) return;
     const d = await r.json();
     if (!r.ok) { alert(d.error || "Error al crear solicitud."); return; }
-    alert("Solicitud creada. Codigo: " + d.tracking_code);
+    alert("Solicitud creada. Código: " + d.tracking_code);
     document.getElementById("newRequestForm").reset();
     navigateTo("solicitudes");
   });
@@ -749,7 +749,7 @@
     if (!r.ok) { alert(d.error || "Error al guardar."); return; }
     portalSections = d.sections || [];
     renderPortalSections();
-    alert("Configuracion del portal guardada.");
+    alert("Configuración del portal guardada.");
   });
 
   document.getElementById("btnPreviewPortal")?.addEventListener("click", () => {
@@ -766,8 +766,8 @@
       const password = document.getElementById("profilePassword").value.trim();
       const currentPassword = document.getElementById("profileCurrentPassword").value;
 
-      if (!currentPassword) { status.className = "login-status error"; status.textContent = "Ingresa tu contrasena actual."; return; }
-      if (!email && !password) { status.className = "login-status error"; status.textContent = "Ingresa un correo o contrasena nueva."; return; }
+      if (!currentPassword) { status.className = "login-status error"; status.textContent = "Ingresa tu contraseña actual."; return; }
+      if (!email && !password) { status.className = "login-status error"; status.textContent = "Ingresa un correo o contraseña nueva."; return; }
 
       status.className = "login-status";
       status.textContent = "Guardando...";

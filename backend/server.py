@@ -111,7 +111,7 @@ class Handler(BaseHTTPRequestHandler):
         user = self.current_user(db)
 
         if not user:
-            self.send_json({"error": "Autenticacion requerida."}, status=401)
+            self.send_json({"error": "Autenticación requerida."}, status=401)
             return None
 
         if roles and user["role"] not in roles:
@@ -572,7 +572,7 @@ class Handler(BaseHTTPRequestHandler):
                 )
 
                 if not result:
-                    self.send_json({"error": "Credenciales invalidas."}, status=401)
+                    self.send_json({"error": "Credenciales inválidas."}, status=401)
                     return
 
                 self.send_json(result)
@@ -614,7 +614,7 @@ class Handler(BaseHTTPRequestHandler):
                 current_password = str(payload.get("current_password", "")).strip()
 
                 if not current_password:
-                    self.send_json({"error": "Contrasena actual requerida."}, status=400)
+                    self.send_json({"error": "Contraseña actual requerida."}, status=400)
                     return
 
                 if not verify_password(current_password, user["password_salt"], user["password_hash"]):
@@ -632,7 +632,7 @@ class Handler(BaseHTTPRequestHandler):
 
                 if new_password:
                     if len(new_password) < 6:
-                        self.send_json({"error": "La contrasena debe tener al menos 6 caracteres."}, status=400)
+                        self.send_json({"error": "La contraseña debe tener al menos 6 caracteres."}, status=400)
                         return
                     salt, digest = hash_password(new_password)
                     db.execute("UPDATE users SET password_salt = ?, password_hash = ? WHERE id = ?", (salt, digest, user["id"]))
@@ -681,7 +681,7 @@ class Handler(BaseHTTPRequestHandler):
                 )
 
                 if not result:
-                    self.send_json({"error": "Credenciales invalidas."}, status=401)
+                    self.send_json({"error": "Credenciales inválidas."}, status=401)
                     return
 
                 self.send_json(result)
@@ -1378,7 +1378,7 @@ class Handler(BaseHTTPRequestHandler):
                 )
                 create_audit(db, None, "appointment.cancelled", "appointment", str(appt_id), {}, self.client_address[0])
             else:
-                self.send_json({"error": "Accion invalida. Use 'reschedule' o 'cancel'."}, status=400)
+                self.send_json({"error": "Acción inválida. Use 'reschedule' o 'cancel'."}, status=400)
                 return
             updated = db.execute("SELECT * FROM appointments WHERE id = ?", (appt_id,)).fetchone()
             self.send_json(row_to_dict(updated))

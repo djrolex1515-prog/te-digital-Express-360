@@ -111,7 +111,7 @@
           body: JSON.stringify({ email, password }),
         });
         const d = await r.json();
-        if (!r.ok) { status.className = "login-status error"; status.textContent = d.error || "Credenciales invalidas."; btn.disabled = false; btn.textContent = "Entrar"; return; }
+        if (!r.ok) { status.className = "login-status error"; status.textContent = d.error || "Credenciales inválidas."; btn.disabled = false; btn.textContent = "Entrar"; return; }
         if (d.user && d.user.role !== "funcionario" && d.user.role !== "director" && d.user.role !== "superadmin") {
           status.className = "login-status error";
           status.textContent = "No tienes permisos de funcionario.";
@@ -123,7 +123,7 @@
         showApp();
       } catch {
         status.className = "login-status error";
-        status.textContent = "Error de conexion.";
+        status.textContent = "Error de conexión.";
         btn.disabled = false;
         btn.textContent = "Entrar";
       }

@@ -235,8 +235,8 @@ def register_citizen(db, full_name, email, cedula, password, ip_address=None):
 
     if not CITIZEN_PASSWORD_PATTERN.match(password):
         return None, (
-            "La contrasena debe tener entre 8 y 12 caracteres, "
-            "incluyendo mayusculas, minusculas, numeros y al menos un caracter especial."
+            "La contraseña debe tener entre 8 y 12 caracteres, "
+            "incluyendo mayúsculas, minúsculas, números y al menos un carácter especial."
         )
 
     existing = db.execute(

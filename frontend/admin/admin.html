@@ -37,9 +37,9 @@
           <a href="#" class="sidebar-link" data-page="documentos">Documentos</a>
           <a href="#" class="sidebar-link" data-page="portal-ciudadano" data-restricted="director">Portal Ciudadano</a>
           <a href="#" class="sidebar-link" data-page="roles" data-restricted="director">Roles</a>
-          <a href="#" class="sidebar-link" data-page="configuracion" data-restricted="director">Configuracion</a>
+          <a href="#" class="sidebar-link" data-page="configuracion" data-restricted="director">Configuración</a>
         </nav>
-        <button class="sidebar-logout" id="logoutBtn">Cerrar sesion</button>
+        <button class="sidebar-logout" id="logoutBtn">Cerrar sesión</button>
       </aside>
 
       <main class="admin-main">
@@ -49,7 +49,7 @@
           <div class="welcome-container" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;">
             <div style="font-size:64px;margin-bottom:16px;">🏛️</div>
             <h1 id="welcomeTitle" style="font-size:28px;font-weight:700;color:var(--ink);margin-bottom:8px;"></h1>
-            <p style="font-size:16px;color:var(--muted);max-width:480px;">Panel de administracion de <strong>TE Digital Express 360</strong>. Utiliza el menu lateral para gestionar solicitudes, citas, documentos y mas.</p>
+            <p style="font-size:16px;color:var(--muted);max-width:480px;">Panel de administración de <strong>TE Digital Express 360</strong>. Utiliza el menú lateral para gestionar solicitudes, citas, documentos y más.</p>
           </div>
         </section>
 
@@ -107,7 +107,7 @@
             <h2>Mi Perfil</h2>
           </header>
           <div class="config-card">
-            <h3 style="margin-bottom:16px;">Cambiar correo y contrasena</h3>
+            <h3 style="margin-bottom:16px;">Cambiar correo y contraseña</h3>
             <form id="profileForm">
               <div class="form-group">
                 <label for="profileEmail">Nuevo correo</label>
@@ -115,7 +115,7 @@
               </div>
               <div class="form-group">
                 <label for="profilePassword">Nueva contraseña (min 6 caracteres)</label>
-                <input type="password" id="profilePassword" placeholder="Dejar vacio para no cambiar" />
+                <input type="password" id="profilePassword" placeholder="Dejar vacío para no cambiar" />
               </div>
               <div class="form-group">
                 <label for="profileCurrentPassword">Contraseña actual (requerida)</label>
@@ -140,7 +140,7 @@
                 <tr>
                   <th>Nombre</th>
                   <th>Correo</th>
-                  <th>Cedula</th>
+                  <th>Cédula</th>
                   <th>Estado</th>
                   <th>Registro</th>
                   <th>Acciones</th>
@@ -163,8 +163,8 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Titulo</th>
-                  <th>Categoria</th>
+                  <th>Título</th>
+                  <th>Categoría</th>
                   <th>Estado</th>
                   <th>Acciones</th>
                 </tr>
@@ -184,9 +184,9 @@
             <table class="admin-table">
               <thead>
                 <tr>
-                  <th>Codigo</th>
+                  <th>Código</th>
                   <th>Servicio</th>
-                  <th>Tipo de tramite</th>
+                  <th>Tipo de trámite</th>
                   <th>Ciudadano</th>
                   <th>Contacto</th>
                   <th>Estado</th>
@@ -232,7 +232,7 @@
                   <input type="text" id="apptName" placeholder="Juan Perez" required />
                 </div>
                 <div class="form-group">
-                  <label for="apptCedula">Cedula</label>
+                  <label for="apptCedula">Cédula</label>
                   <input type="text" id="apptCedula" placeholder="8-123-4567" />
                 </div>
               </div>
@@ -241,7 +241,7 @@
                   <label for="apptService">Tipo de servicio</label>
                   <select id="apptService" required>
                     <option value="">Seleccionar...</option>
-                    <option value="Cedula">Cedula</option>
+                    <option value="Cedula">Cédula</option>
                     <option value="Pasaporte">Pasaporte</option>
                     <option value="Certificado">Certificado</option>
                     <option value="Registro Civil">Registro Civil</option>
@@ -251,7 +251,7 @@
                 </div>
                 <div class="form-group">
                   <label for="apptOffice">Oficina</label>
-                  <input type="text" id="apptOffice" placeholder="Centro de Atencion" required />
+                  <input type="text" id="apptOffice" placeholder="Centro de Atención" required />
                 </div>
               </div>
               <div class="form-row">
@@ -265,7 +265,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="apptPhone">Telefono (opcional)</label>
+                <label for="apptPhone">Teléfono (opcional)</label>
                 <input type="tel" id="apptPhone" placeholder="6000-1234" />
               </div>
               <div class="form-group">
@@ -294,14 +294,14 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="reqType">Tipo de tramite</label>
+                <label for="reqType">Tipo de trámite</label>
                 <select id="reqType">
                   <option value="">Seleccionar tipo...</option>
-                  <option value="Renovar cedula">Renovar cedula</option>
-                  <option value="Duplicado de cedula">Duplicado de cedula</option>
+                  <option value="Renovar cedula">Renovar cédula</option>
+                  <option value="Duplicado de cedula">Duplicado de cédula</option>
                   <option value="Reemplazo por deterioro">Reemplazo por deterioro</option>
                   <option value="Primera vez">Primera vez</option>
-                  <option value="Reportar perdida o robo">Reportar perdida o robo</option>
+                  <option value="Reportar perdida o robo">Reportar pérdida o robo</option>
                 </select>
               </div>
               <div class="form-group">
@@ -309,7 +309,7 @@
                 <input type="text" id="reqCitizenName" required placeholder="Nombre completo" />
               </div>
               <div class="form-group">
-                <label for="reqCitizenContact">Correo o Telefono</label>
+                <label for="reqCitizenContact">Correo o Teléfono</label>
                 <input type="text" id="reqCitizenContact" required placeholder="correo@ejemplo.com o 6000-0000" />
               </div>
               <div class="form-group">
@@ -349,14 +349,14 @@
         <!-- PORTAL CIUDADANO -->
         <section id="page-portal-ciudadano" class="admin-page" hidden>
           <header class="admin-topbar">
-            <h2>Portal Ciudadano - Gestion de Pestañas</h2>
+            <h2>Portal Ciudadano - Gestión de Pestañas</h2>
           </header>
           <p class="page-desc">Activa o desactiva las secciones que los ciudadanos pueden ver en el portal.</p>
           <div class="table-container">
             <table class="admin-table">
               <thead>
                 <tr>
-                  <th>Seccion</th>
+                  <th>Sección</th>
                   <th>Clave</th>
                   <th>Estado</th>
                   <th>Orden</th>
@@ -401,12 +401,12 @@
               <input type="text" id="userUsername" />
             </div>
             <div class="form-group">
-              <label for="userCedula">Cedula</label>
+              <label for="userCedula">Cédula</label>
               <input type="text" id="userCedula" />
             </div>
           </div>
           <div class="form-group">
-            <label for="userPassword">Contrasena</label>
+            <label for="userPassword">Contraseña</label>
             <input type="password" id="userPassword" />
           </div>
           <div class="form-group">

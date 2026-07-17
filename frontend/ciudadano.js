@@ -100,7 +100,7 @@
   links.forEach((link) => link.addEventListener("click", () => switchSection(link.dataset.section)));
 
   function preselectService(subtype) {
-    serviceData = allServices.find((s) => s.id === "cedula") || { id: "cedula", title: "Cedula", summary: "", requirements: [], steps: [], details: [] };
+    serviceData = allServices.find((s) => s.id === "cedula") || { id: "cedula", title: "Cédula", summary: "", requirements: [], steps: [], details: [] };
     if (subtype === "reportar_perdida") {
       serviceData = { ...REPORTAR_PERDIDA_DATA, _subtype: "reportar_perdida" };
     } else {
@@ -112,7 +112,7 @@
     const lbl = document.createElement("p");
     lbl.id = "subtypeLabel";
     lbl.style.cssText = "color:var(--teal);font-weight:700;font-size:15px;margin:0 0 12px;";
-    lbl.textContent = "Tramite: " + (SERVICES_MAP.find((s) => s.subtype === subtype)?.title || subtype);
+    lbl.textContent = "Trámite: " + (SERVICES_MAP.find((s) => s.subtype === subtype)?.title || subtype);
     document.getElementById("serviceInfo")?.prepend(lbl);
     goToStep(2);
   }
@@ -802,7 +802,7 @@
       setTimeout(() => { status.hidden = true; }, 3000);
       showToast("Perfil actualizado.");
       loadProfile();
-    } catch { showToast("Error de conexion."); }
+    } catch { showToast("Error de conexión."); }
     btn.disabled = false;
     btn.textContent = "Guardar cambios";
   });
@@ -824,21 +824,21 @@
     const newPass = document.getElementById("newPassword").value;
     const confirm = document.getElementById("confirmPassword").value;
     if (!current || !newPass) { showToast("Completa todos los campos."); return; }
-    if (newPass !== confirm) { showToast("Las contrasenas no coinciden."); return; }
-    if (newPass.length < 8) { showToast("La contrasena debe tener al menos 8 caracteres."); return; }
+    if (newPass !== confirm) { showToast("Las contraseñas no coinciden."); return; }
+    if (newPass.length < 8) { showToast("La contraseña debe tener al menos 8 caracteres."); return; }
     try {
       const r = await fetch("/api/citizens/me/password", {
         method: "PATCH",
         headers: { "Content-Type": "application/json", Authorization: "Bearer " + getToken() },
         body: JSON.stringify({ current_password: current, new_password: newPass }),
       });
-      if (!r.ok) { const d = await r.json(); showToast(d.error || "Error al cambiar contrasena."); return; }
-      showToast("Contrasena actualizada.");
+      if (!r.ok) { const d = await r.json(); showToast(d.error || "Error al cambiar contraseña."); return; }
+      showToast("Contraseña actualizada.");
       document.getElementById("passwordForm").hidden = true;
       document.getElementById("currentPassword").value = "";
       document.getElementById("newPassword").value = "";
       document.getElementById("confirmPassword").value = "";
-    } catch { showToast("Error de conexion."); }
+    } catch { showToast("Error de conexión."); }
   });
 
   /* ── Certificados: Pedir ── */

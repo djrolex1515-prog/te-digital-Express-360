@@ -98,7 +98,7 @@
     },
     {
       keywords: ["mis documentos", "documento", "documentos", "comprobante", "recibo", "descargar", "pdf", "digital"],
-      answer: "La seccion \"Pagos\" del Portal Ciudadano almacena todos tus documentos electronicos:\n\n\u2022 Comprobantes de pago de tramites.\n\u2022 Recibos de solicitud con codigo de seguimiento.\n\u2022 Certificados digitales aprobados.\n\nPuedes subir comprobantes y generar recibos directamente desde la seccion Pagos."
+      answer: "La sección \"Pagos\" del Portal Ciudadano almacena todos tus documentos electrónicos:\n\n\u2022 Comprobantes de pago de trámites.\n\u2022 Recibos de solicitud con código de seguimiento.\n\u2022 Certificados digitales aprobados.\n\nPuedes subir comprobantes y generar recibos directamente desde la sección Pagos."
     },
     {
       keywords: ["pago", "pagos", "pagar", "factura", "comprobante", "método de pago", "métodos", "tarjeta", "historial de pagos", "monto", "tasa"],
