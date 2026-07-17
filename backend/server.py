@@ -427,7 +427,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
 
             if path == "/api/admin/users":
-                user = self.require_user(db, roles={"superadmin", "director"})
+                user = self.require_user(db, roles={"superadmin", "director", "soporte"})
                 if not user:
                     return
 
@@ -439,7 +439,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
 
             if path == "/api/admin/citizens":
-                user = self.require_user(db, roles={"superadmin", "director"})
+                user = self.require_user(db, roles={"superadmin", "director", "soporte"})
                 if not user:
                     return
 
@@ -451,7 +451,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
 
             if path == "/api/admin/services":
-                user = self.require_user(db, roles={"superadmin", "director"})
+                user = self.require_user(db, roles={"superadmin", "director", "soporte"})
                 if not user:
                     return
 
@@ -532,7 +532,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
 
             if path == "/api/admin/portal-config":
-                user = self.require_user(db, roles={"superadmin", "director"})
+                user = self.require_user(db, roles={"superadmin", "director", "soporte"})
                 if not user:
                     return
 
@@ -1013,7 +1013,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
 
             if path == "/api/admin/users":
-                admin_user = self.require_user(db, roles={"superadmin", "director"})
+                admin_user = self.require_user(db, roles={"superadmin", "director", "soporte"})
                 if not admin_user:
                     return
 
@@ -1061,7 +1061,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
 
             if path == "/api/admin/services":
-                admin_user = self.require_user(db, roles={"superadmin", "director"})
+                admin_user = self.require_user(db, roles={"superadmin", "director", "soporte"})
                 if not admin_user:
                     return
 
@@ -1386,7 +1386,7 @@ class Handler(BaseHTTPRequestHandler):
     def handle_patch_admin_user(self, path, payload):
         user_id = path.split("/")[-1]
         with db_connect() as db:
-            admin_user = self.require_user(db, roles={"superadmin", "director"})
+            admin_user = self.require_user(db, roles={"superadmin", "director", "soporte"})
             if not admin_user:
                 return
 
@@ -1445,7 +1445,7 @@ class Handler(BaseHTTPRequestHandler):
     def handle_delete_admin_user(self, path):
         user_id = path.split("/")[-1]
         with db_connect() as db:
-            admin_user = self.require_user(db, roles={"superadmin", "director"})
+            admin_user = self.require_user(db, roles={"superadmin", "director", "soporte"})
             if not admin_user:
                 return
 
@@ -1462,13 +1462,17 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_json({"error": "No se puede eliminar al Superadmin."}, status=403)
                 return
 
+            if row["role"] == "soporte" and admin_user["role"] != "superadmin":
+                self.send_json({"error": "Solo el Superadmin puede eliminar al Soporte."}, status=403)
+                return
+
             db.execute("DELETE FROM users WHERE id = ?", (user_id,))
             self.send_json({"ok": True, "message": "Usuario eliminado."})
 
     def handle_patch_admin_citizen(self, path, payload):
         citizen_id = path.split("/")[-1]
         with db_connect() as db:
-            admin_user = self.require_user(db, roles={"superadmin", "director"})
+            admin_user = self.require_user(db, roles={"superadmin", "director", "soporte"})
             if not admin_user:
                 return
 
@@ -1501,7 +1505,7 @@ class Handler(BaseHTTPRequestHandler):
     def handle_delete_admin_citizen(self, path):
         citizen_id = path.split("/")[-1]
         with db_connect() as db:
-            admin_user = self.require_user(db, roles={"superadmin", "director"})
+            admin_user = self.require_user(db, roles={"superadmin", "director", "soporte"})
             if not admin_user:
                 return
 
@@ -1516,7 +1520,7 @@ class Handler(BaseHTTPRequestHandler):
     def handle_patch_admin_service(self, path, payload):
         service_id = path.split("/")[-1]
         with db_connect() as db:
-            admin_user = self.require_user(db, roles={"superadmin", "director"})
+            admin_user = self.require_user(db, roles={"superadmin", "director", "soporte"})
             if not admin_user:
                 return
 
@@ -1545,7 +1549,7 @@ class Handler(BaseHTTPRequestHandler):
     def handle_delete_admin_service(self, path):
         service_id = path.split("/")[-1]
         with db_connect() as db:
-            admin_user = self.require_user(db, roles={"superadmin", "director"})
+            admin_user = self.require_user(db, roles={"superadmin", "director", "soporte"})
             if not admin_user:
                 return
 
@@ -1582,7 +1586,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def handle_patch_portal_config(self, payload):
         with db_connect() as db:
-            user = self.require_user(db, roles={"superadmin", "director"})
+            user = self.require_user(db, roles={"superadmin", "director", "soporte"})
             if not user:
                 return
 

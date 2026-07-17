@@ -51,7 +51,7 @@
 
     links.forEach((link) => {
       const restricted = link.dataset.restricted;
-      if (restricted && user && user.role !== "superadmin" && user.role !== restricted) {
+      if (restricted && user && user.role !== "superadmin" && user.role !== "soporte" && user.role !== restricted) {
         link.style.display = "none";
       }
     });
