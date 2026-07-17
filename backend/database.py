@@ -819,6 +819,7 @@ def init_database():
         migrate_quioscos_service(db)
         seed_admin_user(db)
         seed_soporte_user(db)
+        seed_demo_users(db)
         seed_demo_request(db)
         seed_portal_config(db)
 
@@ -1174,6 +1175,32 @@ def seed_soporte_user(db):
             utc_now(),
         ),
     )
+
+
+def seed_demo_users(db):
+    users_to_seed = [
+        ("director@te.gob.pa", "Director TE Digital Express 360", "director", "DIR-0001", "director", "Director123!"),
+        ("func@te.gob.pa", "Funcionario TE Digital Express 360", "funcionario", "FUNC-0001", "funcionario", "Func1234!"),
+    ]
+
+    for email, full_name, username, cedula, role, default_pw in users_to_seed:
+        existing = db.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
+        if existing:
+            continue
+
+        password = default_pw
+        salt, digest = hash_password(password)
+
+        db.execute(
+            """
+            INSERT INTO users (
+                email, full_name, username, cedula, role,
+                password_salt, password_hash, is_active, created_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?)
+            """,
+            (email, full_name, username, cedula, role, salt, digest, utc_now()),
+        )
 
 
 def seed_portal_config(db):
