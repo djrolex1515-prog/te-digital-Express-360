@@ -1016,11 +1016,6 @@
   justify-content: center;
   gap: 8px;
   overflow: hidden;
-  transition: border-color 0.2s;
-}
-
-.id-photo:hover {
-  border-color: rgba(255, 255, 255, 0.7);
 }
 
 .id-photo img {
