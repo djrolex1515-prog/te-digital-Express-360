@@ -298,6 +298,9 @@
     `).join("");
   }
 
+  const citizenModal = document.getElementById("citizenModal");
+  let citizenPhotoData = "";
+
   document.getElementById("citizensBody")?.addEventListener("click", async (e) => {
     const editBtn = e.target.closest("[data-edit-citizen]");
     if (editBtn) {
@@ -307,17 +310,18 @@
       const d = await r.json();
       const c = (d.citizens || []).find((x) => String(x.id) === id);
       if (!c) return;
-      const newName = prompt("Nombre completo:", c.full_name);
-      if (newName === null) return;
-      const newEmail = prompt("Correo:", c.email);
-      if (newEmail === null) return;
-      const newCedula = prompt("Cédula:", c.cedula || "");
-      if (newCedula === null) return;
-      const patchR = await apiFetch(`/api/admin/citizens/${id}`, {
-        method: "PATCH",
-        body: JSON.stringify({ full_name: newName, email: newEmail, cedula: newCedula }),
-      });
-      if (patchR && patchR.ok) loadCitizens();
+      document.getElementById("citizenEditId").value = c.id;
+      document.getElementById("citizenEditName").value = c.full_name || "";
+      document.getElementById("citizenEditEmail").value = c.email || "";
+      document.getElementById("citizenEditCedula").value = c.cedula || "";
+      citizenPhotoData = c.photo || "";
+      const preview = document.getElementById("citizenPhotoPreview");
+      if (citizenPhotoData) {
+        preview.innerHTML = `<img src="${citizenPhotoData}" style="width:100%;height:100%;object-fit:cover;">`;
+      } else {
+        preview.innerHTML = '<span style="font-size:36px;color:var(--muted);">📷</span>';
+      }
+      citizenModal.hidden = false;
     }
     const deleteBtn = e.target.closest("[data-delete-citizen]");
     if (deleteBtn) {
@@ -325,6 +329,56 @@
       const r = await apiFetch(`/api/admin/citizens/${deleteBtn.dataset.deleteCitizen}`, { method: "DELETE" });
       if (r && r.ok) loadCitizens();
     }
+  });
+
+  document.getElementById("btnUploadCitizenPhoto")?.addEventListener("click", () => {
+    document.getElementById("citizenPhotoInput").click();
+  });
+
+  document.getElementById("citizenPhotoPreview")?.addEventListener("click", () => {
+    document.getElementById("citizenPhotoInput").click();
+  });
+
+  document.getElementById("citizenPhotoInput")?.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) { alert("La imagen no puede superar 2MB."); return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      citizenPhotoData = reader.result;
+      document.getElementById("citizenPhotoPreview").innerHTML = `<img src="${citizenPhotoData}" style="width:100%;height:100%;object-fit:cover;">`;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById("btnCancelCitizenModal")?.addEventListener("click", () => {
+    citizenModal.hidden = true;
+    citizenModal.style.display = "";
+  });
+
+  document.getElementById("citizenForm")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const id = document.getElementById("citizenEditId").value;
+    const full_name = document.getElementById("citizenEditName").value.trim();
+    const email = document.getElementById("citizenEditEmail").value.trim();
+    const cedula = document.getElementById("citizenEditCedula").value.trim();
+    if (!full_name || !email) { alert("Nombre y correo son requeridos."); return; }
+    const r = await apiFetch(`/api/admin/citizens/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ full_name, email, cedula }),
+    });
+    if (!r) return;
+    const d = await r.json();
+    if (!r.ok) { alert(d.error || "Error al guardar."); return; }
+    if (citizenPhotoData) {
+      await apiFetch(`/api/admin/citizens/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ photo: citizenPhotoData }),
+      });
+    }
+    citizenModal.hidden = true;
+    citizenModal.style.display = "";
+    loadCitizens();
   });
 
   /* ── Servicios ── */

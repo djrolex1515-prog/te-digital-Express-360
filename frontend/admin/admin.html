@@ -456,6 +456,43 @@
       </div>
     </div>
 
+    <!-- Modal Ciudadano -->
+    <div class="modal-overlay" id="citizenModal" hidden>
+      <div class="modal-card">
+        <h3 id="citizenModalTitle">Editar Ciudadano</h3>
+        <form id="citizenForm">
+          <input type="hidden" id="citizenEditId">
+          <div style="display:flex;gap:20px;align-items:flex-start;">
+            <div style="text-align:center;">
+              <div id="citizenPhotoPreview" style="width:120px;height:150px;border:2px dashed var(--line);border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#f9fafb;cursor:pointer;" title="Click para cambiar foto">
+                <span style="font-size:36px;color:var(--muted);">📷</span>
+              </div>
+              <input type="file" id="citizenPhotoInput" accept="image/*" hidden>
+              <button type="button" class="btn-sm" id="btnUploadCitizenPhoto" style="margin-top:8px;font-size:12px;">Subir foto</button>
+            </div>
+            <div style="flex:1;display:grid;gap:12px;">
+              <div class="form-group">
+                <label for="citizenEditName">Nombre completo</label>
+                <input type="text" id="citizenEditName" required />
+              </div>
+              <div class="form-group">
+                <label for="citizenEditEmail">Correo</label>
+                <input type="email" id="citizenEditEmail" required />
+              </div>
+              <div class="form-group">
+                <label for="citizenEditCedula">Cédula</label>
+                <input type="text" id="citizenEditCedula" />
+              </div>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button type="submit" class="btn-primary">Guardar</button>
+            <button type="button" class="btn-secondary" id="btnCancelCitizenModal">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <script src="admin.js"></script>
   </body>
 </html>

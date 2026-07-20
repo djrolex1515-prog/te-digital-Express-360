@@ -214,6 +214,23 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_json(citizen)
                 return
 
+            if path == "/api/citizens/me/photo":
+                citizen = current_citizen(
+                    db,
+                    self.headers.get("Authorization", ""),
+                )
+                if not citizen:
+                    self.send_json({"error": "No autenticado."}, status=401)
+                    return
+                import base64
+                photo_b64 = payload.get("photo", "")
+                if not photo_b64:
+                    self.send_json({"error": "photo es requerida."}, status=400)
+                    return
+                db.execute("UPDATE citizens SET photo = ? WHERE id = ?", (photo_b64, citizen["id"]))
+                self.send_json({"ok": True, "message": "Foto actualizada."})
+                return
+
             if path == "/api/appointments":
                 citizen = current_citizen(
                     db,
@@ -474,7 +491,7 @@ class Handler(BaseHTTPRequestHandler):
                     return
 
                 rows = db.execute(
-                    "SELECT id, email, full_name, cedula, is_active, created_at FROM citizens ORDER BY id"
+                    "SELECT id, email, full_name, cedula, is_active, created_at, photo FROM citizens ORDER BY id"
                 ).fetchall()
 
                 self.send_json({"citizens": [row_to_dict(r) for r in rows]})
@@ -1568,6 +1585,13 @@ class Handler(BaseHTTPRequestHandler):
             row = db.execute("SELECT id, email, full_name, cedula, is_active FROM citizens WHERE id = ?", (citizen_id,)).fetchone()
             if not row:
                 self.send_json({"error": "Ciudadano no encontrado."}, status=404)
+                return
+
+            if "photo" in payload:
+                import base64
+                photo_b64 = payload.get("photo", "")
+                db.execute("UPDATE citizens SET photo = ? WHERE id = ?", (photo_b64, citizen_id))
+                self.send_json({"ok": True, "message": "Foto actualizada."})
                 return
 
             full_name = str(payload.get("full_name", row["full_name"])).strip()

@@ -675,6 +675,39 @@
         setText("idName", data.full_name);
         setText("idEmail", data.email);
 
+        if (data.photo) {
+          const photoEl = document.getElementById("idPhoto");
+          if (photoEl) photoEl.innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;">`;
+        }
+
+        const photoClick = document.getElementById("idPhoto");
+        const photoFile = document.getElementById("citizenPhotoFile");
+        if (photoClick && photoFile) {
+          photoClick.addEventListener("click", () => photoFile.click());
+          photoFile.addEventListener("change", async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (file.size > 2 * 1024 * 1024) { showToast("La imagen no puede superar 2MB."); return; }
+            const reader = new FileReader();
+            reader.onload = async () => {
+              try {
+                const res = await fetch("/api/citizens/me/photo", {
+                  method: "PATCH",
+                  headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+                  body: JSON.stringify({ photo: reader.result }),
+                });
+                if (res.ok) {
+                  photoClick.innerHTML = `<img src="${reader.result}" style="width:100%;height:100%;object-fit:cover;">`;
+                  showToast("Foto actualizada.");
+                } else {
+                  showToast("Error al subir foto.");
+                }
+              } catch { showToast("Error de conexión."); }
+            };
+            reader.readAsDataURL(file);
+          });
+        }
+
         if (data.created_at) {
           const d = new Date(data.created_at);
           setText("idIssued", d.toLocaleDateString("es-PA"));

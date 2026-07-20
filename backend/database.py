@@ -972,6 +972,17 @@ def ensure_schema_updates(db):
         except Exception:
             pass
 
+    if DB_ENGINE == "mysql":
+        try:
+            db.execute("ALTER TABLE citizens ADD COLUMN photo LONGBLOB NULL")
+        except Exception:
+            pass
+    else:
+        try:
+            db.execute("ALTER TABLE citizens ADD COLUMN photo TEXT")
+        except Exception:
+            pass
+
 
 def exact_equals(column):
     return f"BINARY {column} = ?" if DB_ENGINE == "mysql" else f"{column} = ?"
