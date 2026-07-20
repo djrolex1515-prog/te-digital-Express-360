@@ -858,6 +858,15 @@ class Handler(BaseHTTPRequestHandler):
                     self.send_json({"error": f"Ya tienes una cita de '{service_type}' para el {appointment_date}. No puedes agendar el mismo trámite dos veces el mismo día."}, status=409)
                     return
 
+                existing_pending = db.execute(
+                    """SELECT id, service_type, appointment_date FROM appointments
+                       WHERE citizen_id = ? AND status = 'pendiente'""",
+                    (citizen["id"],),
+                ).fetchone()
+                if existing_pending:
+                    self.send_json({"error": f"Ya tienes una cita pendiente ({existing_pending['service_type']} el {existing_pending['appointment_date']}). Debes cancelar o esperar a que sea atendida antes de agendar otra."}, status=409)
+                    return
+
                 CAPACITY = 3
                 slot_count = db.execute(
                     """SELECT COUNT(*) AS total FROM appointments
@@ -1264,6 +1273,25 @@ class Handler(BaseHTTPRequestHandler):
                     duplicate = db.execute(dup_query, dup_params).fetchone()
                     if duplicate:
                         self.send_json({"error": f"Ya existe una cita de '{service_type}' para el {appointment_date}. No se puede duplicar el mismo trámite el mismo día."}, status=409)
+                        return
+
+                if citizen_id:
+                    existing_pending = db.execute(
+                        """SELECT id, service_type, appointment_date FROM appointments
+                           WHERE citizen_id = ? AND status = 'pendiente'""",
+                        (citizen_id,),
+                    ).fetchone()
+                    if existing_pending:
+                        self.send_json({"error": f"Este ciudadano ya tiene una cita pendiente ({existing_pending['service_type']} el {existing_pending['appointment_date']}). Debe cancelar o esperar a que sea atendida antes de agendar otra."}, status=409)
+                        return
+                elif cedula:
+                    existing_pending = db.execute(
+                        """SELECT id, service_type, appointment_date FROM appointments
+                           WHERE cedula = ? AND status = 'pendiente'""",
+                        (cedula,),
+                    ).fetchone()
+                    if existing_pending:
+                        self.send_json({"error": f"Este ciudadano ya tiene una cita pendiente ({existing_pending['service_type']} el {existing_pending['appointment_date']}). Debe cancelar o esperar a que sea atendida antes de agendar otra."}, status=409)
                         return
 
                 CAPACITY = 3
