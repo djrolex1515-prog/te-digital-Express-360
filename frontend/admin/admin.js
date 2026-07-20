@@ -305,11 +305,10 @@
     const editBtn = e.target.closest("[data-edit-citizen]");
     if (editBtn) {
       const id = editBtn.dataset.editCitizen;
-      const r = await apiFetch("/api/admin/citizens");
+      const r = await apiFetch(`/api/admin/citizens/${id}`);
       if (!r || !r.ok) return;
-      const d = await r.json();
-      const c = (d.citizens || []).find((x) => String(x.id) === id);
-      if (!c) return;
+      const c = await r.json();
+      if (!c || c.error) return;
       document.getElementById("citizenEditId").value = c.id;
       document.getElementById("citizenEditName").value = c.full_name || "";
       document.getElementById("citizenEditEmail").value = c.email || "";

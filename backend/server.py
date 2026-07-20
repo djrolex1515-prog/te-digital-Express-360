@@ -214,23 +214,6 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_json(citizen)
                 return
 
-            if path == "/api/citizens/me/photo":
-                citizen = current_citizen(
-                    db,
-                    self.headers.get("Authorization", ""),
-                )
-                if not citizen:
-                    self.send_json({"error": "No autenticado."}, status=401)
-                    return
-                import base64
-                photo_b64 = payload.get("photo", "")
-                if not photo_b64:
-                    self.send_json({"error": "photo es requerida."}, status=400)
-                    return
-                db.execute("UPDATE citizens SET photo = ? WHERE id = ?", (photo_b64, citizen["id"]))
-                self.send_json({"ok": True, "message": "Foto actualizada."})
-                return
-
             if path == "/api/appointments":
                 citizen = current_citizen(
                     db,
@@ -491,10 +474,25 @@ class Handler(BaseHTTPRequestHandler):
                     return
 
                 rows = db.execute(
-                    "SELECT id, email, full_name, cedula, is_active, created_at, photo FROM citizens ORDER BY id"
+                    "SELECT id, email, full_name, cedula, is_active, created_at FROM citizens ORDER BY id"
                 ).fetchall()
 
                 self.send_json({"citizens": [row_to_dict(r) for r in rows]})
+                return
+
+            if path.startswith("/api/admin/citizens/"):
+                user = self.require_user(db, roles={"superadmin", "director", "soporte"})
+                if not user:
+                    return
+                citizen_id = path.split("/")[-1]
+                row = db.execute(
+                    "SELECT id, email, full_name, cedula, is_active, created_at, photo FROM citizens WHERE id = ?",
+                    (citizen_id,),
+                ).fetchone()
+                if not row:
+                    self.send_json({"error": "Ciudadano no encontrado."}, status=404)
+                    return
+                self.send_json(row_to_dict(row))
                 return
 
             if path == "/api/admin/services":
@@ -1332,6 +1330,10 @@ class Handler(BaseHTTPRequestHandler):
                 self.handle_patch_portal_config(payload)
                 return
 
+            if parsed.path == "/api/citizens/me/photo":
+                self.handle_patch_citizen_photo(payload)
+                return
+
             self.send_json({"error": "Ruta no encontrada."}, status=404)
 
         except ValueError as exc:
@@ -1339,6 +1341,23 @@ class Handler(BaseHTTPRequestHandler):
 
         except Exception as exc:
             self.send_json({"error": "Error interno.", "detail": str(exc)}, status=500)
+
+    def handle_patch_citizen_photo(self, payload):
+        with db_connect() as db:
+            citizen = current_citizen(
+                db,
+                self.headers.get("Authorization", ""),
+            )
+            if not citizen:
+                self.send_json({"error": "No autenticado."}, status=401)
+                return
+            photo_b64 = payload.get("photo", "")
+            if not photo_b64:
+                self.send_json({"error": "photo es requerida."}, status=400)
+                return
+            db.execute("UPDATE citizens SET photo = ? WHERE id = ?", (photo_b64, citizen["id"]))
+            self.send_json({"ok": True, "message": "Foto actualizada."})
+            return
 
     def do_DELETE(self):
         parsed = urlparse(self.path)

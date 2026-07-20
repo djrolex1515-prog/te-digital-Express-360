@@ -43,7 +43,7 @@ HOST = os.environ.get("TE_DIGITAL_360_HOST", "0.0.0.0")
 PORT = int(os.environ.get("PORT") or os.environ.get("TE_DIGITAL_360_PORT", "3600"))
 
 TOKEN_TTL_HOURS = int(os.environ.get("TE_DIGITAL_360_TOKEN_HOURS", "8"))
-MAX_BODY_BYTES = 1024 * 1024
+MAX_BODY_BYTES = 5 * 1024 * 1024
 
 SMTP_HOST = os.environ.get("TE_DIGITAL_360_SMTP_HOST", "")
 SMTP_PORT = int(os.environ.get("TE_DIGITAL_360_SMTP_PORT", "587"))
