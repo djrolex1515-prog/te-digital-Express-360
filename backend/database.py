@@ -757,7 +757,13 @@ def db_connect():
 
 
 def row_to_dict(row):
-    return dict(row) if row is not None else None
+    if row is None:
+        return None
+    d = dict(row)
+    for k, v in d.items():
+        if isinstance(v, bytes):
+            d[k] = v.decode("utf-8", errors="replace")
+    return d
 
 
 def encode_json(value):
