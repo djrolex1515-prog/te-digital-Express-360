@@ -1735,7 +1735,7 @@ def main():
 
     server = ThreadingHTTPServer((HOST, PORT), Handler)
 
-    print(f"{APP_NAME} {APP_VERSION} disponible en http://{HOST}:{PORT}")
+    print(f"{APP_NAME} {APP_VERSION} disponible en http://localhost:{PORT}")
     print("Usuario inicial: admin@te.gob.pa")
     print("Clave inicial: configure TE_DIGITAL_360_ADMIN_PASSWORD o use Cambiar123! y cambiela.")
 

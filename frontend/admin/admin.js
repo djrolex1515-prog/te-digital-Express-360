@@ -178,7 +178,7 @@
     userModal.hidden = false;
   });
 
-  document.getElementById("btnCancelModal")?.addEventListener("click", () => { userModal.hidden = true; userModal.style.display = "none"; });
+  document.getElementById("btnCancelModal")?.addEventListener("click", () => { userModal.hidden = true; userModal.style.display = ""; });
 
   document.getElementById("usersBody")?.addEventListener("click", (e) => {
     const editBtn = e.target.closest("[data-edit]");
@@ -262,6 +262,7 @@
       const d = await r.json();
       if (!r.ok) { alert(d.error || "Error al guardar."); return; }
       userModal.hidden = true;
+      userModal.style.display = "";
       loadUsers();
     } catch { alert("Error de conexión."); }
   });
