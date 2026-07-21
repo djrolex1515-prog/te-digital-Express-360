@@ -129,11 +129,15 @@
     const extLink = e.target.closest("[data-action='external-link']");
     if (extLink) {
       e.preventDefault();
-      document.getElementById("externalLinkModal").hidden = false;
+      document.getElementById("externalLinkModal").classList.add("is-visible");
     }
 
-    if (e.target.id === "externalLinkCancel") {
-      document.getElementById("externalLinkModal").hidden = true;
+    if (e.target.id === "externalLinkCancel" || e.target.closest("#externalLinkCancel")) {
+      document.getElementById("externalLinkModal").classList.remove("is-visible");
+    }
+
+    if (e.target.id === "externalLinkAccept" || e.target.closest("#externalLinkAccept")) {
+      document.getElementById("externalLinkModal").classList.remove("is-visible");
     }
   });
 
