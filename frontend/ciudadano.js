@@ -125,6 +125,16 @@
       switchSection(trigger.dataset.section);
       if (trigger.dataset.section === "solicitar" && subtype) preselectService(subtype);
     }
+
+    const extLink = e.target.closest("[data-action='external-link']");
+    if (extLink) {
+      e.preventDefault();
+      document.getElementById("externalLinkModal").hidden = false;
+    }
+
+    if (e.target.id === "externalLinkCancel") {
+      document.getElementById("externalLinkModal").hidden = true;
+    }
   });
 
   function navigateToHash() {
