@@ -939,7 +939,6 @@
 /* ===== ID CARD ===== */
 .id-card {
   width: 100%;
-  max-width: 520px;
 }
 
 .id-card-front {
@@ -2190,7 +2189,14 @@
   .quick-access-grid { grid-template-columns: repeat(2, 1fr); }
   .payment-grid { grid-template-columns: 1fr; }
   .profile-columns { grid-template-columns: 1fr; }
-  .id-card { max-width: 100%; }
+  .id-card-front { padding: 24px 20px; }
+  .id-body { grid-template-columns: 120px 1fr; gap: 20px; }
+  .id-photo { width: 120px; height: 145px; }
+  .id-fields div { grid-template-columns: 110px 1fr; gap: 8px; }
+  .id-fields dt { font-size: 10px; }
+  .id-fields dd { font-size: 13px; }
+  .id-header div strong { font-size: 15px; }
+  .id-header div small { font-size: 11px; }
   .pi-row { grid-template-columns: 140px 1fr; }
 }
 
