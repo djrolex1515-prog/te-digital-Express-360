@@ -3,10 +3,6 @@
   const navPageMap = {
     "": "principal.html",
     "principal.html": "principal.html",
-    "ciudadano.html": "ciudadano.html",
-    "servicios.html": "servicios.html",
-    "solicitud.html": "solicitud.html",
-   
   };
   let toastTimer = null;
 
@@ -66,7 +62,7 @@
   const knowledgeBase = [
     {
       keywords: ["hola", "buenos días", "buenas tardes", "ayuda", "qué haces", "quién eres", "saludos"],
-      answer: "¡Hola! Soy el asistente virtual del Tribunal Electoral de Panamá. Puedo ayudarte con información sobre: cédula y BioCed, Registro Civil, certificados, centro de votación, citas, oficinas, trámites, pagos y más. ¿En qué puedo orientarte hoy?"
+      answer: "¡Hola! Soy el asistente virtual del Tribunal Electoral de Panamá. Puedo ayudarte con información sobre: cédula y BioCed, Registro Civil, certificados, centro de votación, citas, oficinas, trámites y más. ¿En qué puedo orientarte hoy?"
     },
     {
       keywords: ["cédula", "cedula", "bioced", "bio ced", "renovar", "renovación", "vencimiento", "duplicado", "reposición", "reponer", "pérdida", "robo", "hurto", "extravi"],
@@ -98,19 +94,15 @@
     },
     {
       keywords: ["mis documentos", "documento", "documentos", "comprobante", "recibo", "descargar", "pdf", "digital"],
-      answer: "La sección \"Pagos\" del Portal Ciudadano almacena todos tus documentos electrónicos:\n\n\u2022 Comprobantes de pago de trámites.\n\u2022 Recibos de solicitud con código de seguimiento.\n\u2022 Certificados digitales aprobados.\n\nPuedes subir comprobantes y generar recibos directamente desde la sección Pagos."
-    },
-    {
-      keywords: ["pago", "pagos", "pagar", "factura", "comprobante", "método de pago", "métodos", "tarjeta", "historial de pagos", "monto", "tasa"],
-      answer: "La sección \"Pagos\" del Portal Ciudadano te permite:\n\n\u2022 Pagar trámites en línea (renovación, certificados, reposiciones).\n\u2022 Consultar el historial de pagos realizados.\n\u2022 Descargar facturas y comprobantes de pago.\n\u2022 Ver los métodos de pago disponibles.\n\nCada trámite tiene una tasa establecida que puedes consultar antes de iniciar el proceso."
+      answer: "En \"Mis Documentos\" del Portal Ciudadano puedes ver y descargar:\n\n\u2022 Certificados digitales aprobados.\n\nLos documentos se generan automáticamente cuando solicitas un certificado."
     },
     {
       keywords: ["perfil", "mi perfil", "datos personales", "correo", "teléfono", "telefono", "dirección", "contraseña", "password", "contrase", "seguridad", "autenticación", "dos pasos", "2fa"],
       answer: "En \"Mi Perfil\" puedes administrar tu cuenta:\n\n\u2022 Nombre completo y datos personales.\n\u2022 Correo electrónico y teléfono de contacto.\n\u2022 Dirección registrada.\n\u2022 Preferencias de notificación.\n\u2022 Cambio de contraseña.\n\u2022 Autenticación en dos pasos (recomendado para mayor seguridad).\n\nMantén tus datos actualizados para recibir notificaciones importantes del Tribunal Electoral."
     },
     {
-      keywords: ["notificación", "notificaciones", "notificacion", "alerta", "aviso", "documento aprobado", "cita confirmada", "pago recibido", "listo para retirar"],
-      answer: "Las notificaciones te mantienen al día sobre el estado de tus trámites:\n\n\u2022 Documento aprobado: Tu trámite ha sido aprobado.\n\u2022 Falta un requisito: Debes completar información pendiente.\n\u2022 Cita confirmada: Tu cita ha sido agendada exitosamente.\n\u2022 Documento listo para retirar: Puedes pasar por tu oficina.\n\u2022 Pago recibido: Confirmación de pago de un trámite.\n\nRevisa la sección \"Notificaciones\" del Portal Ciudadano para ver todas tus alertas."
+      keywords: ["notificación", "notificaciones", "notificacion", "alerta", "aviso", "documento aprobado", "cita confirmada", "listo para retirar"],
+      answer: "Las notificaciones te mantienen al día sobre el estado de tus trámites:\n\n\u2022 Documento aprobado: Tu trámite ha sido aprobado.\n\u2022 Falta un requisito: Debes completar información pendiente.\n\u2022 Cita confirmada: Tu cita ha sido agendada exitosamente.\n\u2022 Documento listo para retirar: Puedes pasar por tu oficina.\n\nRevisa la sección \"Notificaciones\" del Portal Ciudadano para ver todas tus alertas."
     },
     {
       keywords: ["solicitud", "solicitar", "registrar", "iniciar", "pedir", "requisito", "requisitos", "documentos necesarios", "formulario"],
@@ -260,7 +252,7 @@
     if (answer) {
       typingMsg.textContent = answer;
     } else {
-      typingMsg.textContent = 'No tengo una respuesta específica para esa consulta. ¿Podrías ser más específico? Puedo ayudarte con: cédula, certificados, Registro Civil, centro de votación, citas, oficinas, trámites, pagos, perfil y notificaciones del Tribunal Electoral. También puedes intentar con palabras clave como "renovar cédula" o "pedir certificado".';
+      typingMsg.textContent = 'No tengo una respuesta específica para esa consulta. ¿Podrías ser más específico? Puedo ayudarte con: cédula, certificados, Registro Civil, centro de votación, citas, oficinas, trámites, perfil y notificaciones del Tribunal Electoral. También puedes intentar con palabras clave como "renovar cédula" o "pedir certificado".';
     }
 
     assistantHistory[assistantHistory.length - 1].text = typingMsg.textContent;
@@ -349,7 +341,7 @@
     } else {
       const welcome = document.createElement("p");
       welcome.className = "bot";
-      welcome.textContent = "Hola. Soy el asistente del Tribunal Electoral. Puedo orientarte sobre cédula, BioCed, certificados, Registro Civil, centro de votación, citas, oficinas, quioscos, trámites, pagos, perfil y notificaciones. ¿En qué puedo ayudarte?";
+      welcome.textContent = "Hola. Soy el asistente del Tribunal Electoral. Puedo orientarte sobre cédula, BioCed, certificados, Registro Civil, centro de votación, citas, oficinas, quioscos, trámites, perfil y notificaciones. ¿En qué puedo ayudarte?";
       assistantMessages.appendChild(welcome);
       assistantHistory.push({ type: "bot", text: welcome.textContent, isHTML: false });
       saveChatHistory();
@@ -369,7 +361,7 @@
         saveChatHistory();
         const welcome = document.createElement("p");
         welcome.className = "bot";
-        welcome.textContent = "Hola. Soy el asistente del Tribunal Electoral. Puedo orientarte sobre cédula, BioCed, certificados, Registro Civil, centro de votación, citas, oficinas, quioscos, trámites, pagos, perfil y notificaciones. ¿En qué puedo ayudarte?";
+        welcome.textContent = "Hola. Soy el asistente del Tribunal Electoral. Puedo orientarte sobre cédula, BioCed, certificados, Registro Civil, centro de votación, citas, oficinas, quioscos, trámites, perfil y notificaciones. ¿En qué puedo ayudarte?";
         assistantMessages.appendChild(welcome);
         assistantHistory.push({ type: "bot", text: welcome.textContent, isHTML: false });
         saveChatHistory();
@@ -406,20 +398,6 @@
 
   const PASS_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+={}\[\]|:;\"'<>,.?\/~`]).{8,12}$/;
 
-  function initPasswordToggles() {
-    document.querySelectorAll(".password-toggle").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const input = document.getElementById(btn.getAttribute("data-toggle"));
-        if (!input) return;
-        const isPass = input.type === "password";
-        input.type = isPass ? "text" : "password";
-        btn.setAttribute("aria-label", isPass ? "Ocultar contraseña" : "Mostrar contraseña");
-        btn.querySelector(".eye-icon")?.toggleAttribute("hidden", !isPass);
-        btn.querySelector(".eye-off-icon")?.toggleAttribute("hidden", isPass);
-      });
-    });
-  }
-
   function validatePassword(pass) {
     return PASS_PATTERN.test(pass);
   }
@@ -451,8 +429,6 @@
     const loginError = document.getElementById("loginError");
     const regPass = document.getElementById("regPass");
     const passHint = document.getElementById("regPassHint");
-
-    initPasswordToggles();
 
     if (regPass && passHint) {
       regPass.addEventListener("input", () => {
@@ -649,50 +625,7 @@
     }
   }
 
-  function initPortalIdentity() {
-    const page = window.location.pathname.split("/").pop() || "principal.html";
-    if (page !== "ciudadano.html") return;
-
-    const token = localStorage.getItem("td360_citizen_token");
-    if (!token) {
-      window.location.href = "principal.html";
-      return;
-    }
-
-    (async () => {
-      try {
-        const res = await fetch("/api/citizens/me", {
-          headers: { Authorization: "Bearer " + token },
-        });
-        if (!res.ok) throw new Error("No autenticado");
-        const data = await res.json();
-
-        const setText = (id, val) => {
-          const el = document.getElementById(id);
-          if (el) el.textContent = val || "—";
-        };
-        setText("idCedula", data.cedula);
-        setText("idName", data.full_name);
-        setText("idEmail", data.email);
-
-        if (data.photo) {
-          const photoEl = document.getElementById("idPhoto");
-          if (photoEl) photoEl.innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;">`;
-        }
-
-        if (data.created_at) {
-          const d = new Date(data.created_at);
-          setText("idIssued", d.toLocaleDateString("es-PA"));
-          const expiry = new Date(d.getFullYear() + 10, d.getMonth(), d.getDate());
-          setText("idExpiry", expiry.toLocaleDateString("es-PA"));
-        }
-      } catch {
-        localStorage.removeItem("td360_citizen_token");
-        localStorage.removeItem("td360_citizen_user");
-      window.location.href = "principal.html";
-      }
-    })();
-  }
+  function initPortalIdentity() {}
 
   initCitizenRegistration();
   initPortalIdentity();
@@ -715,7 +648,7 @@
     const serviceLink = event.target.closest("[data-service]");
 
     if (serviceLink) {
-      if (currentPage === "solicitud.html" || currentPage === "ciudadano.html") return;
+      if (currentPage === "solicitud.html") return;
       const hub = document.getElementById("citizenHub");
       if (!hub || !hub.classList.contains("is-registered")) {
         event.preventDefault();

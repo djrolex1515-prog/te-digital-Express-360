@@ -28,6 +28,7 @@ STATUS_LABELS = {
     "en_espera": "En espera de aprobacion",
     "aprobada": "Aprobada",
     "cerrada": "Cerrada",
+    "cancelada": "Cancelada",
 }
 
 STATUS_PROGRESS = {
@@ -39,6 +40,7 @@ STATUS_PROGRESS = {
     "en_espera": 10,
     "aprobada": 100,
     "cerrada": 100,
+    "cancelada": 100,
 }
 
 DEFAULT_PORTAL_SECTIONS = [
@@ -51,10 +53,9 @@ DEFAULT_PORTAL_SECTIONS = [
     ("solicitar", "Solicitudes", 1, 7),
     ("mis-tramites", "Mis Trámites", 1, 8),
     ("mis-documentos", "Mis Documentos", 1, 9),
-    ("pagos", "Pagos", 1, 10),
-    ("centro-ayuda", "Centro de Ayuda", 1, 11),
-    ("notificaciones", "Notificaciones", 1, 12),
-    ("mi-perfil", "Mi Perfil", 1, 13),
+    ("centro-ayuda", "Centro de Ayuda", 1, 10),
+    ("notificaciones", "Notificaciones", 1, 11),
+    ("mi-perfil", "Mi Perfil", 1, 12),
 ]
 
 OFFICE_LOCATIONS = [
@@ -988,6 +989,32 @@ def ensure_schema_updates(db):
             db.execute("ALTER TABLE citizens ADD COLUMN photo TEXT")
         except Exception:
             pass
+
+    if not table_exists(db, "notifications"):
+        if DB_ENGINE == "mysql":
+            db.execute(
+                """CREATE TABLE IF NOT EXISTS notifications (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    title VARCHAR(255) NOT NULL,
+                    notif_type VARCHAR(50) NOT NULL DEFAULT 'Aviso',
+                    message TEXT NOT NULL,
+                    is_active TINYINT(1) NOT NULL DEFAULT 1,
+                    created_at VARCHAR(32) NOT NULL,
+                    updated_at VARCHAR(32) NOT NULL
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"""
+            )
+        else:
+            db.execute(
+                """CREATE TABLE IF NOT EXISTS notifications (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    title TEXT NOT NULL,
+                    notif_type TEXT NOT NULL DEFAULT 'Aviso',
+                    message TEXT NOT NULL,
+                    is_active INTEGER NOT NULL DEFAULT 1,
+                    created_at TEXT NOT NULL,
+                    updated_at TEXT NOT NULL
+                )"""
+            )
 
 
 def exact_equals(column):

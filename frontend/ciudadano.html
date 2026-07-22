@@ -7,7 +7,6 @@
     <meta name="description" content="Portal ciudadano del Tribunal Electoral: trámites, consultas, certificados y seguimiento en un solo lugar." />
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="css/ciudadano.css" />
-    <script src="app.js" defer></script>
     <script src="ciudadano.js" defer></script>
   </head>
   <body style="display:none" id="bodyRoot">
@@ -40,7 +39,6 @@
           <button class="sidebar-link" data-section="citas">Citas</button>
           <button class="sidebar-link" data-section="solicitar">Solicitudes</button>
           <button class="sidebar-link" data-section="mis-tramites">Mis Trámites</button>
-          <button class="sidebar-link" data-section="pagos">Pagos</button>
           <button class="sidebar-link" data-section="centro-ayuda">Centro de Ayuda</button>
           <button class="sidebar-link" data-section="notificaciones">Notificaciones</button>
           <button class="sidebar-link" data-section="mi-perfil">Mi Perfil</button>
@@ -88,9 +86,6 @@
                   </button>
                   <button class="qa-item" type="button" data-section="mis-tramites">
                     <span>📂</span> Mis trámites
-                  </button>
-                  <button class="qa-item" type="button" data-action="external-link">
-                    <span>💳</span> Pagar trámite
                   </button>
                 </div>
               </div>
@@ -535,13 +530,13 @@
               <p style="color:var(--muted);font-size:15px;">Guarda este código para dar seguimiento a tu trámite:</p>
               <div class="tracking-code" id="trackingCode">—</div>
               <div class="success-monto" id="successMontoStep5" hidden>
-                <span class="monto-label">Total a pagar:</span>
+                <span class="monto-label">Monto del trámite:</span>
                 <span class="monto-value" id="montoValueStep5">B/. 25.00</span>
               </div>
-              <p class="success-note">Dirígete a Pagos para realizar el depósito.</p>
-              <div class="wizard-actions" style="justify-content:center;margin-top:24px;">
-                <a class="primary-action" href="ciudadano.html#pagos" id="trackingLinkPagos">Ir a Pagos</a>
-                <a class="secondary-action" href="ciudadano.html#section-solicitar">Nueva solicitud</a>
+              <p class="success-note">Da seguimiento a tu solicitud desde Mis Trámites.</p>
+              <div class="wizard-actions" style="justify-content:center;margin-top:24px;gap:10px;">
+                <button class="secondary-action" type="button" data-section="mis-tramites">Ver Mis Trámites</button>
+                <button class="secondary-action" type="button" data-section="solicitar">Nueva solicitud</button>
               </div>
             </div>
           </div>
@@ -557,215 +552,9 @@
             </div>
           </header>
           <div id="tramiteListContainer" style="margin-bottom:20px;"></div>
-          <div class="empty-state" id="tramiteEmpty">
-            <span class="empty-icon">📂</span>
-            <h3>No has realizado ningún trámite</h3>
-            <p>Aún no tienes solicitudes registradas. Inicia uno ahora.</p>
-          </div>
-
-          <div class="new-tramite-form" id="newTramiteForm">
-            <h3>Nuevo trámite</h3>
-            <div class="tramite-form-grid">
-              <div class="tramite-field">
-                <label>Nombre completo</label>
-                <input type="text" id="tramiteName" readonly />
-              </div>
-              <div class="tramite-field">
-                <label>Cédula</label>
-                <input type="text" id="tramiteCedula" readonly />
-              </div>
-              <div class="tramite-field">
-                <label>Tipo de trámite</label>
-                <select id="tramiteTipo">
-                  <option value="">— Selecciona —</option>
-                  <option value="cedula_renovacion">Renovación de cédula</option>
-                  <option value="cedula_duplicado">Duplicado de cédula</option>
-                  <option value="cedula_reemplazo">Reemplazo de cédula</option>
-                  <option value="cedula_primera_vez">Primera vez</option>
-                  <option value="cedula_reportar_perdida">Reportar pérdida o robo</option>
-                </select>
-              </div>
-              <div class="tramite-field">
-                <label>Notas (opcional)</label>
-                <textarea id="tramiteNotes" rows="2" placeholder="Comentarios adicionales..."></textarea>
-              </div>
-            </div>
-            <button class="primary-action" id="btnSolicitarTramite" type="button">Solicitudes</button>
-            <div id="tramiteError" class="form-error" hidden></div>
-          </div>
-
-          <div class="tramite-success" id="tramiteSuccess" hidden>
-            <div class="success-icon">✅</div>
-            <h3>Trámite solicitado con éxito</h3>
-            <div class="success-details">
-              <div class="success-row">
-                <span class="success-label">Código de seguimiento</span>
-                <span class="success-value mono" id="successCode">—</span>
-              </div>
-              <div class="success-row">
-                <span class="success-label">Trámite</span>
-                <span class="success-value" id="successTipo">—</span>
-              </div>
-              <div class="success-row">
-                <span class="success-label">Monto a pagar</span>
-                <span class="success-value" id="successMonto">—</span>
-              </div>
-            </div>
-            <div class="success-actions">
-              <button class="primary-action" id="btnIrAPagos" type="button">Ir a Pagos</button>
-              <button class="secondary-action" id="btnNuevoTramite" type="button">Solicitar otro trámite</button>
-            </div>
-          </div>
         </section>
 
         <!-- ===== MIS DOCUMENTOS ===== -->
-
-        <!-- ===== PAGOS ===== -->
-        <section id="section-pagos" class="portal-section">
-          <header class="section-header">
-            <div>
-              <h2>Pagos</h2>
-              <p class="section-desc">Gestiona tus pagos, comprobantes y recibos de solicitud.</p>
-            </div>
-          </header>
-
-          <div id="pendingPaymentBanner" class="pending-payment-bar" hidden>
-            <span>💳</span>
-            <div>
-              <strong>Pago pendiente</strong>
-              <span id="pendingPaymentInfo">Tienes un trámite pendiente de pago.</span>
-            </div>
-            <button class="secondary-action compact" id="btnVerPagoPendiente" type="button">Ver detalles</button>
-          </div>
-
-          <div class="pagos-layout">
-            <!-- Columna izquierda: Datos bancarios + Monto -->
-            <div class="pagos-col-main">
-              <div class="dash-card banco-card">
-                <div class="banco-head">
-                  <span class="banco-logo">🏦</span>
-                  <div>
-                    <strong>Banco Nacional de Panamá</strong>
-                    <small>Depósito en cuenta corriente</small>
-                  </div>
-                </div>
-                <div class="banco-body" id="bancoBodyStatic">
-                  <div class="banco-row">
-                    <span class="banco-label">Beneficiario</span>
-                    <span class="banco-value">Tribunal Electoral — Tesorería General</span>
-                  </div>
-                  <div class="banco-row">
-                    <span class="banco-label">Cuenta corriente</span>
-                    <span class="banco-value mono">01-234-56789-0</span>
-                  </div>
-                  <div class="banco-row">
-                    <span class="banco-label">RUC</span>
-                    <span class="banco-value mono">12345-6789-12345</span>
-                  </div>
-                </div>
-                <div class="banco-body" id="bancoBodyDynamic" hidden>
-                  <div class="banco-row">
-                    <span class="banco-label">Beneficiario</span>
-                    <span class="banco-value">Tribunal Electoral — Tesorería General</span>
-                  </div>
-                  <div class="banco-row">
-                    <span class="banco-label">Cuenta corriente</span>
-                    <span class="banco-value mono">01-234-56789-0</span>
-                  </div>
-                  <div class="banco-row">
-                    <span class="banco-label">RUC</span>
-                    <span class="banco-value mono">12345-6789-12345</span>
-                  </div>
-                  <div class="banco-row">
-                    <span class="banco-label">Referencia</span>
-                    <span class="banco-value mono" id="bancoRefDynamic">—</span>
-                  </div>
-                  <div class="banco-row">
-                    <span class="banco-label">Monto</span>
-                    <span class="banco-value" id="bancoMontoDynamic">—</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="dash-card qr-card">
-                <div class="qr-head">
-                  <strong>Monto a pagar</strong>
-                  <small>Selecciona tu trámite</small>
-                </div>
-                <div class="qr-tramite-selector">
-                  <select id="qrTramiteSelect" class="tramite-select">
-                    <option value="">— Selecciona un trámite —</option>
-                    <option value="cedula_renovacion">Renovación de cédula — B/. 25.00</option>
-                    <option value="cedula_duplicado">Duplicado de cédula — B/. 30.00</option>
-                    <option value="cedula_reemplazo">Reemplazo de cédula — B/. 15.00</option>
-                    <option value="cedula_primera_vez">Primera vez — B/. 20.00</option>
-                    <option value="cedula_reportar_perdida">Reportar pérdida o robo — B/. 10.00</option>
-                  </select>
-                  <div class="selected-monto" id="selectedMonto" hidden>
-                    <span class="monto-label">Total a pagar:</span>
-                    <span class="monto-value" id="montoValue">B/. 0.00</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Columna derecha: Comprobante + Recibo -->
-            <div class="pagos-col-side">
-              <div class="dash-card pagos-action-card">
-                <div class="pagos-action-icon">🧾</div>
-                <h3>Comprobante de pago</h3>
-                <p>Sube el comprobante de tu depósito bancario para que sea revisado.</p>
-                <button class="primary-action" type="button" id="btnSubirComprobante">Subir comprobante</button>
-                <input type="file" id="fileUploadInput" accept=".pdf,.png,.jpg,.jpeg" style="display:none">
-              </div>
-
-              <div class="dash-card pagos-action-card">
-                <div class="pagos-action-icon">📋</div>
-                <h3>Recibo de solicitud</h3>
-                <p>Genera el comprobante de una solicitud existente.</p>
-                <div style="display:flex;gap:8px;margin-top:8px;">
-                  <select id="reciboTrackingSelect" style="flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;">
-                    <option value="">Selecciona una solicitud</option>
-                  </select>
-                </div>
-                <button class="primary-action" type="button" id="btnGenerarRecibo" style="margin-top:8px;">Generar recibo</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Documentos guardados -->
-          <div class="dash-card" style="margin-top:20px;">
-            <h3>Documentos guardados</h3>
-            <div id="documentosList" style="display:grid;gap:10px;margin-top:12px;">
-              <p id="docsEmpty" style="color:var(--muted);text-align:center;padding:16px 0;">No tienes documentos guardados.</p>
-            </div>
-          </div>
-
-          <!-- Historial de pagos -->
-          <div class="dash-card" style="margin-top:20px;">
-            <h3>Historial de pagos</h3>
-            <div class="payment-table">
-              <div class="payment-row header">
-                <span>Fecha</span>
-                <span>Trámite</span>
-                <span>Monto</span>
-                <span>Estado</span>
-              </div>
-              <div class="payment-row">
-                <span>12/06/2026</span>
-                <span>Certificado de nacimiento</span>
-                <span>B/. 10.00</span>
-                <span><span class="status-badge success">Pagado</span></span>
-              </div>
-              <div class="payment-row">
-                <span>03/08/2026</span>
-                <span>Reposición de cédula</span>
-                <span>B/. 25.00</span>
-                <span><span class="status-badge pending">Pendiente</span></span>
-              </div>
-            </div>
-          </div>
-        </section>
 
         <!-- ===== CENTRO DE AYUDA ===== -->
         <section id="section-centro-ayuda" class="portal-section">
@@ -780,7 +569,7 @@
               <h3>Preguntas frecuentes</h3>
               <details class="faq-item">
                 <summary>¿Cómo renuevo mi cédula?</summary>
-                <p>Puedes solicitarlo desde Mi Identidad o ir directamente a Solicitud. El trámite requiere cédula anterior, foto y pago de tasa.</p>
+                <p>Puedes solicitarlo desde Mi Identidad o ir directamente a Solicitud. El trámite requiere cédula anterior y foto.</p>
               </details>
               <details class="faq-item">
                 <summary>¿Cómo pido un certificado digital?</summary>
@@ -832,19 +621,11 @@
                 <small>Hace 3 días</small>
               </div>
             </article>
-            <article class="notif-item">
-              <span class="notif-icon teal">💳</span>
-              <div>
-                <strong>Pago recibido</strong>
-                <p>El pago de tu certificado de nacimiento ha sido recibido.</p>
-                <small>Hace 1 semana</small>
-              </div>
-            </article>
             <article class="notif-item unread">
               <span class="notif-icon green">📄</span>
               <div>
                 <strong>Documento listo para retirar</strong>
-                <p>Tu certificado digital esta disponible en Pagos.</p>
+                <p>Tu certificado digital está disponible para retiro en oficina.</p>
                 <small>Hace 1 semana</small>
               </div>
             </article>
@@ -952,15 +733,30 @@
                 <div class="profile-change-password-form" id="passwordForm" hidden>
                   <div class="profile-field">
                     <label for="currentPassword">Contraseña actual</label>
-                    <input type="password" id="currentPassword" autocomplete="current-password" />
+                    <div class="password-field">
+                      <input type="password" id="currentPassword" autocomplete="current-password" />
+                      <button type="button" class="password-toggle" data-toggle="currentPassword" aria-label="Mostrar contraseña">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      </button>
+                    </div>
                   </div>
                   <div class="profile-field">
                     <label for="newPassword">Nueva contraseña</label>
-                    <input type="password" id="newPassword" autocomplete="new-password" />
+                    <div class="password-field">
+                      <input type="password" id="newPassword" autocomplete="new-password" />
+                      <button type="button" class="password-toggle" data-toggle="newPassword" aria-label="Mostrar contraseña">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      </button>
+                    </div>
                   </div>
                   <div class="profile-field">
                     <label for="confirmPassword">Confirmar contraseña</label>
-                    <input type="password" id="confirmPassword" autocomplete="new-password" />
+                    <div class="password-field">
+                      <input type="password" id="confirmPassword" autocomplete="new-password" />
+                      <button type="button" class="password-toggle" data-toggle="confirmPassword" aria-label="Mostrar contraseña">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      </button>
+                    </div>
                   </div>
                   <div class="profile-form-actions">
                     <button class="primary-action" type="button" id="btnSavePassword">Actualizar contraseña</button>
@@ -983,18 +779,6 @@
         <button type="button" class="primary-action" id="btnCerrarConfirmacion">Aceptar</button>
       </div>
     </div>
-
-    <div id="externalLinkModal" class="modal-overlay">
-      <div class="modal-content" role="dialog" aria-labelledby="externalLinkTitle" style="max-width:440px;text-align:center;">
-        <div style="font-size:42px;margin-bottom:12px;">🔗</div>
-        <h3 id="externalLinkTitle" style="margin-bottom:8px;">Enlace externo</h3>
-        <p style="opacity:0.85;margin-bottom:6px;">Estás a punto de ser redirigido al sitio oficial del Tribunal Electoral para realizar pagos en los quioscos multiservicio.</p>
-        <p style="opacity:0.65;font-size:13px;margin-bottom:20px;">Este sitio es externo a TE Digital Express 360. Asegúrate de ingresar únicamente tus datos en la página oficial.</p>
-        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-          <a id="externalLinkAccept" href="https://www.tribunal-electoral.gob.pa/quioscos-multiservicio-del-te-para-tramites-rapidos-y-seguros/" target="_blank" rel="noopener noreferrer" class="primary-action" style="text-decoration:none;">Ir al sitio</a>
-          <button type="button" class="secondary-action" id="externalLinkCancel">Cancelar</button>
-        </div>
-      </div>
-    </div>
+    <script src="js/password-toggle.js"></script>
   </body>
   </html>

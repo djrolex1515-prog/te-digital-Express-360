@@ -1,6 +1,12 @@
 (() => {
   const TOKEN_KEY = "td360_admin_token";
   const USER_KEY = "td360_admin_user";
+  const REQUEST_STATUS = {
+    recibida: "Recibida", validada: "Validada", en_impresion: "En Impresion",
+    lista_retiro: "Lista para Retiro", requiere_revision: "Requiere Revision",
+    en_espera: "En Espera", aprobada: "Aprobada", cerrada: "Cerrada", cancelada: "Cancelada",
+  };
+  const APPT_STATUS = { pendiente: "Pendiente", confirmada: "Confirmada", cancelada: "Cancelada", completada: "Completada" };
 
   function getToken() { return localStorage.getItem(TOKEN_KEY) || ""; }
   function getUser() { try { return JSON.parse(localStorage.getItem(USER_KEY)); } catch { return null; } }
@@ -120,6 +126,7 @@
     if (page === "citas") loadAppointments();
     if (page === "documentos") loadDocuments();
     if (page === "portal-ciudadano") loadPortalConfig();
+    if (page === "notificaciones") loadNotifications();
   }
   links.forEach((link) => {
     link.addEventListener("click", (e) => {
@@ -470,11 +477,6 @@
     if (!tbody) return;
     if (requests.length === 0) { empty.hidden = false; tbody.innerHTML = ""; return; }
     empty.hidden = true;
-    const statusLabels = {
-      recibida: "Recibida", validada: "Validada", en_impresion: "En Impresion",
-      lista_retiro: "Lista para Retiro", requiere_revision: "Requiere Revision",
-      en_espera: "En Espera", aprobada: "Aprobada", cerrada: "Cerrada",
-    };
     tbody.innerHTML = requests.map((r) => `
       <tr>
         <td><code>${escapeHtml(r.tracking_code)}</code></td>
@@ -482,7 +484,7 @@
         <td>${escapeHtml(r.request_type || "-")}</td>
         <td>${escapeHtml(r.citizen_name)}</td>
         <td>${escapeHtml(r.citizen_contact)}</td>
-        <td><span class="status-badge status-${r.status}">${statusLabels[r.status] || r.status}</span></td>
+        <td><span class="status-badge status-${r.status}">${REQUEST_STATUS[r.status] || r.status}</span></td>
         <td>${new Date(r.created_at).toLocaleDateString()}</td>
         <td class="actions-cell">
           <select class="request-status-select" data-status-id="${r.id}">
@@ -495,7 +497,9 @@
             <option value="en_espera">En Espera</option>
             <option value="aprobada">Aprobada</option>
             <option value="cerrada">Cerrada</option>
+            <option value="cancelada">Cancelada</option>
           </select>
+          <button class="btn-sm btn-delete" data-delete-request="${r.id}">Eliminar</button>
         </td>
       </tr>
     `).join("");
@@ -506,16 +510,19 @@
     if (!select) return;
     const newStatus = select.value;
     if (!newStatus) return;
-    const statusLabels = {
-      recibida: "Recibida", validada: "Validada", en_impresion: "En Impresion",
-      lista_retiro: "Lista para Retiro", requiere_revision: "Requiere Revision",
-      en_espera: "En Espera", aprobada: "Aprobada", cerrada: "Cerrada"
-    };
-    if (!confirm(`Cambiar estado de la solicitud a "${statusLabels[newStatus]}"?`)) { select.value = ""; return; }
+    if (!confirm(`Cambiar estado de la solicitud a "${REQUEST_STATUS[newStatus]}"?`)) { select.value = ""; return; }
     const r = await apiFetch("/api/admin/requests/status", {
       method: "POST",
       body: JSON.stringify({ request_id: select.dataset.statusId, status: newStatus }),
     });
+    if (r && r.ok) loadRequests();
+  });
+
+  document.getElementById("requestsBody")?.addEventListener("click", async (e) => {
+    const deleteBtn = e.target.closest("[data-delete-request]");
+    if (!deleteBtn) return;
+    if (!confirm("¿Eliminar esta solicitud permanentemente?")) return;
+    const r = await apiFetch(`/api/admin/requests/${deleteBtn.dataset.deleteRequest}`, { method: "DELETE" });
     if (r && r.ok) loadRequests();
   });
 
@@ -544,7 +551,6 @@
   document.getElementById("btnPrintDaily")?.addEventListener("click", () => {
     const filterDate = document.getElementById("apptFilterDate")?.value || new Date().toISOString().slice(0, 10);
     const filtered = allAppointments.filter((a) => a.appointment_date === filterDate);
-    const statusLabels = { pendiente: "Pendiente", confirmada: "Confirmada", cancelada: "Cancelada", completada: "Completada" };
     const offices = {};
     filtered.forEach((a) => {
       if (!offices[a.office]) offices[a.office] = [];
@@ -570,7 +576,7 @@
           <td style="padding:8px 12px;">${escapeHtml(a.cedula || "-")}</td>
           <td style="padding:8px 12px;">${escapeHtml(a.service_type)}</td>
           <td style="padding:8px 12px;">${escapeHtml(a.contact_phone || "-")}</td>
-          <td style="padding:8px 12px;">${statusLabels[a.status] || a.status}</td>
+          <td style="padding:8px 12px;">${APPT_STATUS[a.status] || a.status}</td>
         </tr>`;
       });
     }
@@ -620,7 +626,6 @@
     if (!tbody) return;
     if (appointments.length === 0) { empty.hidden = false; tbody.innerHTML = ""; return; }
     empty.hidden = true;
-    const statusLabels = { pendiente: "Pendiente", confirmada: "Confirmada", cancelada: "Cancelada", completada: "Completada" };
     tbody.innerHTML = appointments.map((a) => `
       <tr>
         <td>${escapeHtml(a.citizen_name || "-")}</td>
@@ -628,7 +633,7 @@
         <td>${escapeHtml(a.office)}</td>
         <td>${escapeHtml(a.appointment_date)}</td>
         <td>${escapeHtml(a.appointment_time)}</td>
-        <td><span class="status-badge status-${a.status}">${statusLabels[a.status] || a.status}</span></td>
+        <td><span class="status-badge status-${a.status}">${APPT_STATUS[a.status] || a.status}</span></td>
         <td class="actions-cell">
           <select class="appt-status-select" data-appt-id="${a.id}">
             <option value="">Cambiar estado...</option>
@@ -647,7 +652,7 @@
     if (select) {
       const newStatus = select.value;
       if (!newStatus) { select.value = ""; return; }
-      const labels = { confirmada: "Confirmada", completada: "Completada", cancelada: "Cancelada" };
+      const labels = APPT_STATUS;
       if (!confirm(`Cambiar estado de la cita a "${labels[newStatus]}"?`)) { select.value = ""; return; }
       const r = await apiFetch(`/api/admin/appointments/${select.dataset.apptId}`, {
         method: "PATCH",
@@ -972,6 +977,102 @@
       document.getElementById("profileCurrentPassword").value = "";
     });
   }
+
+  /* ── Notificaciones ── */
+  async function loadNotifications() {
+    try {
+      const r = await apiFetch("/api/admin/notifications");
+      if (!r || !r.ok) return;
+      const d = await r.json();
+      renderNotifications(d.notifications || []);
+    } catch {}
+  }
+
+  function renderNotifications(notifications) {
+    const tbody = document.getElementById("notificationsBody");
+    const empty = document.getElementById("notificationsEmpty");
+    if (!tbody) return;
+    if (notifications.length === 0) { empty.hidden = false; tbody.innerHTML = ""; return; }
+    empty.hidden = true;
+    const typeColors = { "Aviso": "status-recibida", "Información": "status-validada", "Actualización": "status-completada" };
+    tbody.innerHTML = notifications.map((n) => `
+      <tr>
+        <td><strong>${escapeHtml(n.title)}</strong></td>
+        <td><span class="status-badge ${typeColors[n.notif_type] || "status-recibida"}">${escapeHtml(n.notif_type)}</span></td>
+        <td style="max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(n.message)}</td>
+        <td><span class="status-badge ${n.is_active ? "active" : "inactive"}">${n.is_active ? "Activa" : "Inactiva"}</span></td>
+        <td>${new Date(n.created_at).toLocaleDateString()}</td>
+        <td class="actions-cell">
+          <button class="btn-sm btn-edit" data-edit-notif="${n.id}">Editar</button>
+          <button class="btn-sm btn-delete" data-delete-notif="${n.id}">Eliminar</button>
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  const notifModal = document.getElementById("notifModal");
+  const notifForm = document.getElementById("notifForm");
+
+  document.getElementById("btnNewNotification")?.addEventListener("click", () => {
+    document.getElementById("notifModalTitle").textContent = "Nueva Notificación";
+    notifForm.reset();
+    document.getElementById("notifEditId").value = "";
+    notifModal.hidden = false;
+  });
+
+  document.getElementById("btnCancelNotifModal")?.addEventListener("click", () => { notifModal.hidden = true; notifModal.style.display = ""; });
+
+  document.getElementById("notificationsBody")?.addEventListener("click", async (e) => {
+    const editBtn = e.target.closest("[data-edit-notif]");
+    if (editBtn) {
+      const id = editBtn.dataset.editNotif;
+      const r = await apiFetch("/api/admin/notifications");
+      if (!r || !r.ok) return;
+      const d = await r.json();
+      const n = (d.notifications || []).find((x) => String(x.id) === String(id));
+      if (!n) return;
+      document.getElementById("notifModalTitle").textContent = "Editar Notificación";
+      document.getElementById("notifEditId").value = n.id;
+      document.getElementById("notifTitle").value = n.title || "";
+      document.getElementById("notifType").value = n.notif_type || "Aviso";
+      document.getElementById("notifMessage").value = n.message || "";
+      notifModal.hidden = false;
+    }
+    const deleteBtn = e.target.closest("[data-delete-notif]");
+    if (deleteBtn) {
+      if (!confirm("Eliminar esta notificación?")) return;
+      const r = await apiFetch(`/api/admin/notifications/${deleteBtn.dataset.deleteNotif}`, { method: "DELETE" });
+      if (r && r.ok) loadNotifications();
+    }
+  });
+
+  notifForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const id = document.getElementById("notifEditId").value;
+    const title = document.getElementById("notifTitle").value.trim();
+    const notif_type = document.getElementById("notifType").value;
+    const message = document.getElementById("notifMessage").value.trim();
+    if (!title || !message) { alert("Título y mensaje son requeridos."); return; }
+
+    let r;
+    if (id) {
+      r = await apiFetch(`/api/admin/notifications/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ title, notif_type, message }),
+      });
+    } else {
+      r = await apiFetch("/api/admin/notifications", {
+        method: "POST",
+        body: JSON.stringify({ title, notif_type, message }),
+      });
+    }
+    if (!r) return;
+    const d = await r.json();
+    if (!r.ok) { alert(d.error || "Error al guardar."); return; }
+    notifModal.hidden = true;
+    notifModal.style.display = "";
+    loadNotifications();
+  });
 
   /* ── Init ── */
   async function init() {

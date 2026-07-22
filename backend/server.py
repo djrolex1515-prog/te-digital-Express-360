@@ -587,6 +587,23 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_json({"sections": [row_to_dict(r) for r in rows]})
                 return
 
+            if path == "/api/notifications":
+                rows = db.execute(
+                    "SELECT id, title, notif_type, message, created_at FROM notifications WHERE is_active = 1 ORDER BY created_at DESC LIMIT 20"
+                ).fetchall()
+                self.send_json({"notifications": [row_to_dict(r) for r in rows]})
+                return
+
+            if path == "/api/admin/notifications":
+                user = self.require_user(db, roles={"superadmin", "director", "soporte"})
+                if not user:
+                    return
+                rows = db.execute(
+                    "SELECT id, title, notif_type, message, is_active, created_at, updated_at FROM notifications ORDER BY created_at DESC"
+                ).fetchall()
+                self.send_json({"notifications": [row_to_dict(r) for r in rows]})
+                return
+
         self.send_json({"error": "Ruta no encontrada."}, status=404)
 
     def do_POST(self):
@@ -1318,6 +1335,32 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_json(row_to_dict(row), status=201)
                 return
 
+            if path == "/api/admin/notifications":
+                admin_user = self.require_user(db, roles={"superadmin", "director", "soporte"})
+                if not admin_user:
+                    return
+
+                title = str(payload.get("title", "")).strip()
+                notif_type = str(payload.get("notif_type", "Aviso")).strip()
+                message = str(payload.get("message", "")).strip()
+
+                if not title or not message:
+                    self.send_json({"error": "title y message son requeridos."}, status=400)
+                    return
+
+                if notif_type not in ("Aviso", "Información", "Actualización"):
+                    notif_type = "Aviso"
+
+                now = utc_now()
+                cursor = db.execute(
+                    "INSERT INTO notifications (title, notif_type, message, is_active, created_at, updated_at) VALUES (?, ?, ?, 1, ?, ?)",
+                    (title, notif_type, message, now, now),
+                )
+
+                row = db.execute("SELECT id, title, notif_type, message, is_active, created_at, updated_at FROM notifications WHERE id = ?", (cursor.lastrowid,)).fetchone()
+                self.send_json(row_to_dict(row), status=201)
+                return
+
         self.send_json({"error": "Ruta no encontrada."}, status=404)
 
     def do_PATCH(self):
@@ -1325,6 +1368,10 @@ class Handler(BaseHTTPRequestHandler):
 
         try:
             payload = self.read_json_body()
+
+            if parsed.path.startswith("/api/requests/") and parsed.path.endswith("/cancel"):
+                self.handle_cancel_request(parsed.path)
+                return
 
             if parsed.path.startswith("/api/requests/") and parsed.path.endswith("/status"):
                 self.handle_patch_request_status(parsed.path, payload)
@@ -1360,6 +1407,10 @@ class Handler(BaseHTTPRequestHandler):
 
             if parsed.path == "/api/citizens/me/photo":
                 self.handle_patch_citizen_photo(payload)
+                return
+
+            if parsed.path.startswith("/api/admin/notifications/"):
+                self.handle_patch_admin_notification(parsed.path, payload)
                 return
 
             self.send_json({"error": "Ruta no encontrada."}, status=404)
@@ -1407,10 +1458,65 @@ class Handler(BaseHTTPRequestHandler):
                 self.handle_delete_admin_appointment(parsed.path)
                 return
 
+            if parsed.path.startswith("/api/admin/notifications/"):
+                self.handle_delete_admin_notification(parsed.path)
+                return
+
+            if parsed.path.startswith("/api/admin/requests/"):
+                self.handle_delete_admin_request(parsed.path)
+                return
+
             self.send_json({"error": "Ruta no encontrada."}, status=404)
 
         except Exception as exc:
             self.send_json({"error": "Error interno.", "detail": str(exc)}, status=500)
+
+    def handle_cancel_request(self, path):
+        request_id = path.split("/")[-2]
+        with db_connect() as db:
+            citizen = current_citizen(
+                db,
+                self.headers.get("Authorization", ""),
+            )
+            if not citizen:
+                self.send_json({"error": "No autenticado."}, status=401)
+                return
+
+            row = db.execute(
+                "SELECT * FROM citizen_requests WHERE id = ? AND citizen_id = ?",
+                (request_id, citizen["id"]),
+            ).fetchone()
+
+            if not row:
+                self.send_json({"error": "Solicitud no encontrada."}, status=404)
+                return
+
+            if row["status"] not in ("recibida", "requiere_revision"):
+                self.send_json({"error": "Solo puedes cancelar solicitudes en estado recibida o que requieren revisión."}, status=400)
+                return
+
+            now = utc_now()
+            db.execute(
+                "UPDATE citizen_requests SET status = 'cancelada', updated_at = ? WHERE id = ?",
+                (now, request_id),
+            )
+
+            create_audit(
+                db,
+                None,
+                "request.cancelled",
+                "citizen_request",
+                str(request_id),
+                {"tracking_code": row["tracking_code"]},
+                self.client_address[0],
+            )
+
+            updated = db.execute(
+                "SELECT * FROM citizen_requests WHERE id = ?",
+                (request_id,),
+            ).fetchone()
+
+            self.send_json(request_payload(updated, include_private=False))
 
     def handle_patch_request_status(self, path, payload):
         request_id = path.split("/")[-2]
@@ -1799,6 +1905,68 @@ class Handler(BaseHTTPRequestHandler):
 
             db.execute("DELETE FROM appointments WHERE id = ?", (appt_id,))
             self.send_json({"ok": True, "message": "Cita eliminada."})
+
+    def handle_patch_admin_notification(self, path, payload):
+        notif_id = path.split("/")[-1]
+        with db_connect() as db:
+            admin_user = self.require_user(db, roles={"superadmin", "director", "soporte"})
+            if not admin_user:
+                return
+
+            row = db.execute("SELECT id, title, notif_type, message, is_active FROM notifications WHERE id = ?", (notif_id,)).fetchone()
+            if not row:
+                self.send_json({"error": "Notificación no encontrada."}, status=404)
+                return
+
+            title = str(payload.get("title", row["title"])).strip()
+            notif_type = str(payload.get("notif_type", row["notif_type"])).strip()
+            message = str(payload.get("message", row["message"])).strip()
+            is_active = 1 if payload.get("is_active", bool(row["is_active"])) else 0
+
+            if notif_type not in ("Aviso", "Información", "Actualización"):
+                notif_type = row["notif_type"]
+
+            now = utc_now()
+            db.execute(
+                "UPDATE notifications SET title=?, notif_type=?, message=?, is_active=?, updated_at=? WHERE id=?",
+                (title, notif_type, message, is_active, now, notif_id),
+            )
+
+            updated = db.execute(
+                "SELECT id, title, notif_type, message, is_active, created_at, updated_at FROM notifications WHERE id = ?",
+                (notif_id,),
+            ).fetchone()
+            self.send_json(row_to_dict(updated))
+
+    def handle_delete_admin_notification(self, path):
+        notif_id = path.split("/")[-1]
+        with db_connect() as db:
+            admin_user = self.require_user(db, roles={"superadmin", "director", "soporte"})
+            if not admin_user:
+                return
+
+            row = db.execute("SELECT id FROM notifications WHERE id = ?", (notif_id,)).fetchone()
+            if not row:
+                self.send_json({"error": "Notificación no encontrada."}, status=404)
+                return
+
+            db.execute("DELETE FROM notifications WHERE id = ?", (notif_id,))
+            self.send_json({"ok": True, "message": "Notificación eliminada."})
+
+    def handle_delete_admin_request(self, path):
+        request_id = path.split("/")[-1]
+        with db_connect() as db:
+            admin_user = self.require_user(db, roles={"superadmin", "director", "funcionario", "soporte"})
+            if not admin_user:
+                return
+
+            row = db.execute("SELECT id FROM citizen_requests WHERE id = ?", (request_id,)).fetchone()
+            if not row:
+                self.send_json({"error": "Solicitud no encontrada."}, status=404)
+                return
+
+            db.execute("DELETE FROM citizen_requests WHERE id = ?", (request_id,))
+            self.send_json({"ok": True, "message": "Solicitud eliminada."})
 
 
 def main():

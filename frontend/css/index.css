@@ -253,18 +253,22 @@
   top: 50%;
   transform: translateY(-50%);
   background: none;
-  border: none;
+  border: 1px solid var(--line, #ddd);
+  border-radius: 6px;
   cursor: pointer;
   padding: 4px;
-  color: var(--muted);
+  color: var(--muted, #888);
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 0;
+  width: 30px;
+  height: 30px;
 }
 
 .password-toggle:hover {
-  color: var(--ink);
+  color: var(--ink, #333);
+  border-color: var(--ink, #333);
 }
 
 .pass-hint {

@@ -622,133 +622,6 @@
   #section-solicitar .service-wizard-grid { grid-template-columns: 1fr; }
 }
 
-/* ===== NEW TRAMITE FORM ===== */
-.new-tramite-form {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--white);
-  padding: 24px;
-  margin-bottom: 20px;
-}
-
-.new-tramite-form h3 {
-  margin: 0 0 16px;
-  font-size: 17px;
-}
-
-.tramite-form-grid {
-  display: grid;
-  gap: 14px;
-  margin-bottom: 18px;
-}
-
-.tramite-field {
-  display: grid;
-  gap: 5px;
-}
-
-.tramite-field label {
-  font-weight: 700;
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.tramite-field input,
-.tramite-field select,
-.tramite-field textarea {
-  width: 100%;
-  min-height: 44px;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  background: var(--white);
-  color: var(--ink);
-  padding: 10px 12px;
-  font-size: 14px;
-  font-family: inherit;
-}
-
-.tramite-field input:read-only {
-  background: var(--soft);
-  color: var(--muted);
-}
-
-.tramite-field textarea {
-  min-height: 60px;
-  resize: vertical;
-}
-
-.form-error {
-  color: var(--red);
-  font-size: 14px;
-  font-weight: 700;
-  margin-top: 10px;
-}
-
-/* ===== TRAMITE SUCCESS ===== */
-.tramite-success {
-  text-align: center;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--white);
-  padding: 32px 24px;
-  margin-bottom: 20px;
-}
-
-.success-icon {
-  font-size: 48px;
-  margin-bottom: 12px;
-}
-
-.tramite-success h3 {
-  margin: 0 0 20px;
-  font-size: 20px;
-  color: var(--green);
-}
-
-.success-details {
-  display: grid;
-  gap: 12px;
-  max-width: 400px;
-  margin: 0 auto 24px;
-  text-align: left;
-}
-
-.success-row {
-  display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 10px;
-  align-items: center;
-}
-
-.success-label {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--muted);
-}
-
-.success-value {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--ink);
-}
-
-.success-value.mono {
-  font-family: "Courier New", Courier, monospace;
-  letter-spacing: 0.5px;
-  background: #f1f5f9;
-  padding: 3px 8px;
-  border-radius: 4px;
-  display: inline-block;
-  width: fit-content;
-}
-
-.success-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
 /* ===== PENDING PAYMENT BAR ===== */
 .pending-payment-bar {
   display: flex;
@@ -786,29 +659,6 @@
   width: auto;
   padding: 8px 16px;
   font-size: 13px;
-}
-
-[data-theme="dark"] .new-tramite-form {
-  background: #1e293b;
-  border-color: #2d3a4e;
-}
-
-[data-theme="dark"] .tramite-field input,
-[data-theme="dark"] .tramite-field select,
-[data-theme="dark"] .tramite-field textarea {
-  background: #0f172a;
-  border-color: #2d3a4e;
-  color: #e2e8f0;
-}
-
-[data-theme="dark"] .tramite-field input:read-only {
-  background: #1e293b;
-  color: #94a3b8;
-}
-
-[data-theme="dark"] .tramite-success {
-  background: #1e293b;
-  border-color: #2d3a4e;
 }
 
 [data-theme="dark"] .success-value.mono {
@@ -2107,59 +1957,6 @@
   border: 1px solid #334155;
 }
 
-/* ── Pagos layout profesional ── */
-.pagos-layout {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 20px;
-  align-items: start;
-}
-
-.pagos-col-main {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.pagos-col-side {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.pagos-action-card {
-  text-align: center;
-  padding: 24px 20px;
-}
-
-.pagos-action-icon {
-  font-size: 32px;
-  margin-bottom: 8px;
-}
-
-.pagos-action-card h3 {
-  margin: 0 0 6px;
-  font-size: 16px;
-  color: var(--ink);
-}
-
-.pagos-action-card p {
-  margin: 0 0 14px;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.pagos-action-card .primary-action {
-  width: 100%;
-}
-
-@media (max-width: 860px) {
-  .pagos-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* ── Certificados pendiente ── */
 .cert-pendiente {
   background: #fef3c7 !important;
@@ -2486,11 +2283,6 @@
     padding: 24px 16px;
   }
 
-  /* Pagos layout responsive */
-  .pagos-layout {
-    grid-template-columns: 1fr;
-  }
-
   /* Empty state responsive */
   .empty-state {
     padding: 40px 16px;
@@ -2586,4 +2378,35 @@
   .floating-chat-form button {
     width: 100%;
   }
+}
+
+/* ===== PASSWORD TOGGLE ===== */
+.password-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-field input {
+  padding-right: 40px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.password-toggle:hover {
+  color: var(--ink);
 }

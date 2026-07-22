@@ -16,6 +16,21 @@
   let allServices = [];
   let serviceData = null;
   let citizenData = null;
+  let toastTimer = null;
+
+  function showToast(message) {
+    let toast = document.querySelector(".td360-toast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.className = "td360-toast";
+      toast.setAttribute("role", "status");
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { toast.hidden = true; }, 3600);
+  }
 
   /* ── Sidebar ── */
   toggle.addEventListener("click", () => {
@@ -93,7 +108,6 @@
     if (sectionId === "solicitar") goToStep(1);
     if (sectionId === "mis-tramites") loadMyRequests();
     if (sectionId === "citas") loadAppointments();
-    if (sectionId === "pagos") { updatePagosSection(); loadDocuments(); loadReciboTrackingOptions(); }
     if (sectionId === "mi-perfil") loadProfile();
   };
 
@@ -125,20 +139,6 @@
       switchSection(trigger.dataset.section);
       if (trigger.dataset.section === "solicitar" && subtype) preselectService(subtype);
     }
-
-    const extLink = e.target.closest("[data-action='external-link']");
-    if (extLink) {
-      e.preventDefault();
-      document.getElementById("externalLinkModal").classList.add("is-visible");
-    }
-
-    if (e.target.id === "externalLinkCancel" || e.target.closest("#externalLinkCancel")) {
-      document.getElementById("externalLinkModal").classList.remove("is-visible");
-    }
-
-    if (e.target.id === "externalLinkAccept" || e.target.closest("#externalLinkAccept")) {
-      document.getElementById("externalLinkModal").classList.remove("is-visible");
-    }
   });
 
   function navigateToHash() {
@@ -169,7 +169,6 @@
     { icon: "📍", title: "Agendar cita", desc: "Ubica oficinas, horarios y reserva un turno de atención.", href: "#citas" },
     { icon: "🗳️", title: "Centro de votación", desc: "Consulta tu centro de votación y residencia electoral.", href: "#servicios-electorales" },
     { icon: "📂", title: "Mis trámites", desc: "Consulta el estado y seguimiento de tus solicitudes.", href: "#mis-tramites" },
-    { icon: "💳", title: "Pagar trámite", desc: "Realiza el pago de tus trámites en línea.", href: "#pagos" },
   ];
 
   const REPORTAR_PERDIDA_DATA = {
@@ -179,7 +178,6 @@
       "Denuncia policial o declaración jurada ante el Tribunal Electoral.",
       "Cédula anterior (si aún la conservas) o datos personales completos.",
       "Captura de foto, firma y biometría en la oficina.",
-      "Comprobante de pago de tasa por reporte y duplicado.",
     ],
     steps: [
       "Realiza la denuncia policial por pérdida o robo.",
@@ -212,57 +210,7 @@
     catch { return null; }
   }
 
-  function savePendingTramite(data) {
-    localStorage.setItem("td360_pending_tramite", JSON.stringify(data));
-  }
-
-  function loadPendingTramite() {
-    try { return JSON.parse(localStorage.getItem("td360_pending_tramite")) || null; }
-    catch { return null; }
-  }
-
-  function clearPendingTramite() {
-    localStorage.removeItem("td360_pending_tramite");
-  }
-
   /* ── UI toggles ── */
-  function showTramiteForm() {
-    document.getElementById("tramiteEmpty").hidden = true;
-    document.getElementById("newTramiteForm").hidden = false;
-    document.getElementById("tramiteSuccess").hidden = true;
-  }
-
-  function showTramiteSuccess(data) {
-    document.getElementById("tramiteEmpty").hidden = true;
-    document.getElementById("newTramiteForm").hidden = true;
-    document.getElementById("tramiteSuccess").hidden = false;
-    document.getElementById("successCode").textContent = data.tracking_code || "—";
-    document.getElementById("successTipo").textContent = data.tipo || "—";
-    document.getElementById("successMonto").textContent = data.monto || "—";
-  }
-
-  function updatePagosSection() {
-    const pending = loadPendingTramite();
-    const banner = document.getElementById("pendingPaymentBanner");
-    const bancoStatic = document.getElementById("bancoBodyStatic");
-    const bancoDynamic = document.getElementById("bancoBodyDynamic");
-    const refEl = document.getElementById("bancoRefDynamic");
-    const montoEl = document.getElementById("bancoMontoDynamic");
-    const infoEl = document.getElementById("pendingPaymentInfo");
-    if (pending && banner && bancoStatic && bancoDynamic) {
-      banner.hidden = false;
-      bancoStatic.hidden = true;
-      bancoDynamic.hidden = false;
-      if (refEl) refEl.textContent = pending.tracking_code || "—";
-      if (montoEl) montoEl.textContent = pending.monto || "—";
-      if (infoEl) infoEl.textContent = "Trámite: " + (pending.tipo || "") + " — Código: " + (pending.tracking_code || "");
-    } else if (banner && bancoStatic && bancoDynamic) {
-      banner.hidden = true;
-      bancoStatic.hidden = false;
-      bancoDynamic.hidden = true;
-    }
-  }
-
   function showCitaPanel(panelId) {
     ["citaListPanel", "citaFormPanel", "citaReprogramarPanel", "citaCancelarPanel"].forEach((id) => {
       const el = document.getElementById(id);
@@ -300,11 +248,11 @@
       </button>`
     ).join("");
     const portalCards = PORTAL_LINKS.map((s) =>
-      `<a href="${s.href}" class="wizard-service-card" style="text-decoration:none;">
+      `<button type="button" class="wizard-service-card" data-section="${s.href.replace('#', '')}" style="text-decoration:none;text-align:left;width:100%;">
         <div class="card-icon">${s.icon}</div>
         <h4>${escapeHtml(s.title)}</h4>
         <p>${escapeHtml(s.desc)}</p>
-      </a>`
+      </button>`
     ).join("");
     grid.innerHTML = `
       <div style="grid-column:1/-1"><h4 style="margin:0 0 4px;color:var(--teal)">📋 Trámites de cédula</h4>
@@ -389,27 +337,39 @@
       setVal("profileName", d.full_name);
       setVal("profileCedulaInput", d.cedula);
       setVal("profileEmailInput", d.email);
+      set("idCedula", d.cedula);
+      set("idName", d.full_name);
+      set("idEmail", d.email);
+      if (d.photo) {
+        const photoEl = document.getElementById("idPhoto");
+        if (photoEl) photoEl.innerHTML = `<img src="${d.photo}" style="width:100%;height:100%;object-fit:cover;">`;
+      }
       if (d.created_at) {
         const dt = new Date(d.created_at);
         set("profileMemberSince", dt.toLocaleDateString("es-PA", { year: "numeric", month: "long", day: "numeric" }));
+        set("idIssued", dt.toLocaleDateString("es-PA"));
+        const expiry = new Date(dt.getFullYear() + 10, dt.getMonth(), dt.getDate());
+        set("idExpiry", expiry.toLocaleDateString("es-PA"));
       }
     } catch {}
   }
 
   async function loadMyRequests() {
     const list = document.getElementById("tramiteListContainer");
-    const empty = document.getElementById("tramiteEmpty");
     if (!list) return;
     list.innerHTML = "";
     try {
       const r = await fetch("/api/my-requests", { headers: { Authorization: "Bearer " + getToken() } });
       const d = await r.json();
       const reqs = d.requests || [];
-      if (empty) empty.hidden = reqs.length > 0;
-      if (!reqs.length) return;
+      if (!reqs.length) {
+        list.innerHTML = '<p style="color:var(--muted);text-align:center;padding:32px 0;">No tienes solicitudes registradas.</p>';
+        return;
+      }
       reqs.forEach((r) => {
-        const cls = (r.status === "lista_retiro" || r.status === "cerrada") ? "success" : r.status === "requiere_revision" ? "red" : "pending";
+        const cls = (r.status === "lista_retiro" || r.status === "cerrada") ? "success" : r.status === "requiere_revision" ? "red" : r.status === "cancelada" ? "red" : "pending";
         const pct = r.progress || 0;
+        const canCancel = r.status === "recibida" || r.status === "requiere_revision";
         const card = document.createElement("div");
         card.style.cssText = "border:1px solid var(--line);border-radius:8px;background:var(--white);padding:18px;margin-bottom:12px;";
         card.innerHTML = `
@@ -419,7 +379,10 @@
               ${r.request_type ? `<div style="font-size:13px;color:var(--teal);font-weight:600;margin-top:2px;">${escapeHtml(r.request_type)}</div>` : ""}
               <div style="font-size:13px;color:var(--muted);margin-top:2px;">Código: <span style="font-family:monospace;font-weight:700;color:var(--teal);">${escapeHtml(r.tracking_code)}</span></div>
             </div>
-            <span class="status-badge ${cls}">${escapeHtml(r.statusLabel || r.status)}</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="status-badge ${cls}">${escapeHtml(r.statusLabel || r.status)}</span>
+              ${canCancel ? `<button class="btn-sm btn-delete" data-cancel-request="${r.id}" style="font-size:12px;padding:4px 10px;">Cancelar</button>` : ""}
+            </div>
           </div>
           <div style="background:var(--soft);border-radius:6px;height:6px;margin-bottom:10px;overflow:hidden;">
             <div style="height:100%;width:${pct}%;background:var(--teal);border-radius:6px;transition:width 0.3s;"></div>
@@ -468,7 +431,7 @@
       const docs = d.documents || [];
       document.querySelectorAll(".doc-row").forEach((e) => e.remove());
       if (empty) empty.hidden = docs.length > 0;
-      const tm = { comprobante: "🧾 Comprobante de pago", recibo: "📋 Recibo de solicitud" };
+      const tm = { comprobante: "🧾 Comprobante", recibo: "📋 Recibo de solicitud" };
       docs.forEach((doc) => {
         const row = document.createElement("div");
         row.className = "doc-row";
@@ -476,22 +439,6 @@
         row.innerHTML = `<div><strong>${tm[doc.doc_type] || doc.doc_type}</strong><br><small style="color:var(--muted)">${escapeHtml(doc.filename)} · ${escapeHtml(doc.created_at)}</small></div>
           <button class="secondary-action" type="button" data-doc-download="${doc.id}">Descargar</button>`;
         list.appendChild(row);
-      });
-    } catch {}
-  }
-
-  async function loadReciboTrackingOptions() {
-    const sel = document.getElementById("reciboTrackingSelect");
-    if (!sel) return;
-    sel.innerHTML = '<option value="">Selecciona una solicitud</option>';
-    try {
-      const r = await fetch("/api/my-requests", { headers: { Authorization: "Bearer " + getToken() } });
-      const d = await r.json();
-      (d.requests || []).forEach((req) => {
-        const o = document.createElement("option");
-        o.value = req.tracking_code;
-        o.textContent = req.tracking_code + " — " + (req.service_title || req.service_id);
-        sel.appendChild(o);
       });
     } catch {}
   }
@@ -556,126 +503,33 @@
       if (!r.ok) { alert(d.error || "Error al crear solicitud."); btn.disabled = false; btn.textContent = "Enviar solicitud"; return; }
       const subtype = serviceData?._subtype || "";
       const monto = TRAMITE_MONTO_MAP["cedula_" + subtype]?.monto || "B/. 25.00";
-      savePendingTramite({ tracking_code: d.tracking_code || "—", tipo: tramiteLabel, monto });
       document.getElementById("trackingCode").textContent = d.tracking_code || "—";
       const mc = document.getElementById("successMontoStep5");
       const mv = document.getElementById("montoValueStep5");
       if (mc && mv) { mc.hidden = false; mv.textContent = monto; }
       goToStep(5);
-      updatePagosSection();
     } catch { alert("Error de conexión."); }
     btn.disabled = false;
     btn.textContent = "Enviar solicitud";
   });
 
-  document.getElementById("trackingLinkPagos")?.addEventListener("click", (e) => { e.preventDefault(); switchSection("pagos"); });
-
-  /* ── Mis Trámites: botones ── */
-  document.getElementById("btnSolicitarTramite")?.addEventListener("click", async () => {
-    const tipo = document.getElementById("tramiteTipo").value;
-    const notes = document.getElementById("tramiteNotes").value.trim();
-    const errorEl = document.getElementById("tramiteError");
-    if (!tipo) { errorEl.textContent = "Selecciona un tipo de trámite."; errorEl.hidden = false; return; }
-    errorEl.hidden = true;
-    const citizen = loadCitizenData();
-    const tramiteInfo = TRAMITE_MONTO_MAP[tipo];
+  /* ── Cancelar solicitud ── */
+  document.addEventListener("click", async (e) => {
+    const cancelBtn = e.target.closest("[data-cancel-request]");
+    if (!cancelBtn) return;
+    const requestId = cancelBtn.dataset.cancelRequest;
+    if (!confirm("¿Estás seguro de cancelar esta solicitud?")) return;
+    cancelBtn.disabled = true;
+    cancelBtn.textContent = "Cancelando...";
     try {
-      const r = await fetch("/api/requests", {
-        method: "POST",
+      const r = await fetch("/api/requests/" + requestId + "/cancel", {
+        method: "PATCH",
         headers: { "Content-Type": "application/json", Authorization: "Bearer " + getToken() },
-        body: JSON.stringify({
-          service_id: "cedula",
-          citizen_name: citizen?.full_name || "",
-          citizen_contact: citizen?.cedula || "",
-          notes: (tramiteInfo?.label || tipo) + (notes ? " — " + notes : ""),
-        }),
       });
       const d = await r.json();
-      if (!r.ok) { errorEl.textContent = d.error || "Error al crear el trámite."; errorEl.hidden = false; return; }
-      savePendingTramite({ tracking_code: d.tracking_code || "—", tipo: tramiteInfo?.label || tipo, monto: tramiteInfo?.monto || "—" });
-      showTramiteSuccess(loadPendingTramite());
-      updatePagosSection();
-    } catch { errorEl.textContent = "Error de conexión con el servidor."; errorEl.hidden = false; }
-  });
-
-  document.getElementById("btnIrAPagos")?.addEventListener("click", () => switchSection("pagos"));
-  document.getElementById("btnNuevoTramite")?.addEventListener("click", () => {
-    clearPendingTramite();
-    document.getElementById("tramiteTipo").value = "";
-    document.getElementById("tramiteNotes").value = "";
-    document.getElementById("tramiteSuccess").hidden = true;
-    showTramiteForm();
-    updatePagosSection();
-  });
-
-  /* ── Pagos ── */
-  document.getElementById("btnVerPagoPendiente")?.addEventListener("click", () => {
-    document.getElementById("qrTramiteSelect").value = "";
-    updatePagosSection();
-  });
-
-  const tramiteSelect = document.getElementById("qrTramiteSelect");
-  const selectedMonto = document.getElementById("selectedMonto");
-  const montoValue = document.getElementById("montoValue");
-  if (tramiteSelect && selectedMonto && montoValue) {
-    tramiteSelect.addEventListener("change", () => {
-      const info = TRAMITE_MONTO_MAP[tramiteSelect.value];
-      if (info) { montoValue.textContent = info.monto; selectedMonto.hidden = false; }
-      else { selectedMonto.hidden = true; }
-    });
-  }
-
-  /* ── Pagos: documentos y recibos ── */
-  document.getElementById("btnSubirComprobante")?.addEventListener("click", () => document.getElementById("fileUploadInput").click());
-
-  document.getElementById("fileUploadInput")?.addEventListener("change", async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) { showToast("El archivo no puede superar 5 MB."); return; }
-    try {
-      const b64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result.split(",")[1]); r.onerror = rej; r.readAsDataURL(file); });
-      const r = await fetch("/api/documents/upload", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: "Bearer " + getToken() },
-        body: JSON.stringify({ doc_type: "comprobante", filename: file.name, file_data: b64 }),
-      });
-      if (!r.ok) { showToast("Error al subir."); return; }
-      showToast("Comprobante subido exitosamente.");
-      loadDocuments();
-    } catch { showToast("Error de conexión."); }
-    e.target.value = "";
-  });
-
-  document.getElementById("documentosList")?.addEventListener("click", async (ev) => {
-    const btn = ev.target.closest("[data-doc-download]");
-    if (!btn) return;
-    try {
-      const r = await fetch("/api/documents/" + btn.getAttribute("data-doc-download") + "/download", { headers: { Authorization: "Bearer " + getToken() } });
-      if (!r.ok) { showToast("Error al descargar."); return; }
-      const blob = await r.blob();
-      const disp = r.headers.get("Content-Disposition") || "";
-      const match = disp.match(/filename="?(.+?)"?$/);
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = match ? match[1] : "documento";
-      a.click();
-      URL.revokeObjectURL(a.href);
-    } catch { showToast("Error de conexión."); }
-  });
-
-  document.getElementById("btnGenerarRecibo")?.addEventListener("click", async () => {
-    const code = document.getElementById("reciboTrackingSelect").value;
-    if (!code) { showToast("Selecciona una solicitud."); return; }
-    try {
-      const r = await fetch("/api/documents/generate-receipt", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: "Bearer " + getToken() },
-        body: JSON.stringify({ tracking_code: code }),
-      });
-      if (!r.ok) { const e = await r.json(); showToast(e.error || "Error al generar."); return; }
-      showToast("Recibo generado exitosamente.");
-      loadDocuments();
-    } catch { showToast("Error de conexión."); }
+      if (!r.ok) { alert(d.error || "Error al cancelar."); cancelBtn.disabled = false; cancelBtn.textContent = "Cancelar"; return; }
+      loadMyRequests();
+    } catch { alert("Error de conexión."); cancelBtn.disabled = false; cancelBtn.textContent = "Cancelar"; }
   });
 
   /* ── Citas: agendar ── */
@@ -978,29 +832,47 @@
     });
   }
 
+  /* ── Noticias y avisos (dynamic from API) ── */
+  function timeAgo(dateStr) {
+    const now = new Date();
+    const d = new Date(dateStr);
+    const diff = Math.floor((now - d) / 1000);
+    if (diff < 60) return "Hace un momento";
+    if (diff < 3600) return "Hace " + Math.floor(diff / 60) + " min";
+    if (diff < 86400) return "Hace " + Math.floor(diff / 3600) + " h";
+    if (diff < 604800) return "Hace " + Math.floor(diff / 86400) + " días";
+    return "Hace " + Math.floor(diff / 604800) + " semana" + (Math.floor(diff / 604800) > 1 ? "s" : "");
+  }
+
+  async function loadPortalNotifications() {
+    const newsList = document.querySelector("#section-inicio .news-list");
+    if (!newsList) return;
+    try {
+      const r = await fetch("/api/notifications");
+      if (!r.ok) return;
+      const d = await r.json();
+      const notifs = d.notifications || [];
+      if (notifs.length === 0) return;
+      const tagClass = { "Aviso": "", "Información": " info", "Actualización": " success" };
+      newsList.innerHTML = notifs.map((n) => `
+        <article class="news-item">
+          <span class="news-tag${tagClass[n.notif_type] || ""}">${escapeHtml(n.notif_type)}</span>
+          <p>${escapeHtml(n.message)}</p>
+          <small>${timeAgo(n.created_at)}</small>
+        </article>
+      `).join("");
+    } catch {}
+  }
+
   /* ══════════════════════════════════════════
      INICIALIZACION
      ══════════════════════════════════════════ */
 
   renderServiceGrid();
   loadServices();
+  loadProfile();
+  loadPortalNotifications();
 
-  const citizen = loadCitizenData();
-  if (citizen) {
-    const ni = document.getElementById("tramiteName");
-    const ci = document.getElementById("tramiteCedula");
-    if (ni) ni.value = citizen.full_name || "";
-    if (ci) ci.value = citizen.cedula || "";
-  }
-
-  const pendingTramite = loadPendingTramite();
-  if (pendingTramite) {
-    showTramiteSuccess(pendingTramite);
-  } else {
-    showTramiteForm();
-  }
-
-  updatePagosSection();
   bindCertificadosButtons();
 
   /* ── Preseleccion desde URL ── */
