@@ -45,8 +45,8 @@
           <button class="sidebar-link" data-section="centro-ayuda">Centro de Ayuda</button>
           <button class="sidebar-link" data-section="notificaciones">Notificaciones</button>
           <button class="sidebar-link" data-section="mi-perfil">Mi Perfil</button>
-          <button class="sidebar-link sidebar-link--logout" data-action="logout">Cerrar sesión</button>
         </nav>
+        <button class="sidebar-link sidebar-link--logout" data-action="logout">Cerrar sesión</button>
       </aside>
 
       <main class="portal-content">
@@ -136,45 +136,68 @@
             </div>
           </header>
 
-          <div class="identidad-layout">
-            <div class="identidad-left">
-              <div class="id-card">
-                <div class="id-card-front">
-                  <div class="id-header">
-                    <span class="id-logo">🏛️</span>
-                    <div>
-                      <strong>TRIBUNAL ELECTORAL</strong>
-                      <small>República de Panamá</small>
-                    </div>
+          <div class="cedula-real-wrapper">
+            <div class="cedula-real">
+              <div class="cedula-watermark">REPÚBLICA DE PANAMÁ</div>
+
+              <div class="cedula-top-bar">
+                <div class="cedula-emblem">
+                  <div class="emblem-shield"></div>
+                </div>
+                <div class="cedula-title-block">
+                  <span class="cedula-org">TRIBUNAL ELECTORAL</span>
+                  <span class="cedula-sub">REPÚBLICA DE PANAMÁ</span>
+                </div>
+              </div>
+
+              <div class="cedula-main">
+                <div class="cedula-photo-area">
+                  <div class="cedula-photo" id="idPhoto">
+                    <span class="photo-placeholder">📷</span>
                   </div>
-                  <div class="id-body">
-                    <div class="id-photo" id="idPhoto">
-                      <span class="photo-placeholder">📷</span>
-                    </div>
-                    <dl class="id-fields">
-                      <div><dt>Cédula</dt><dd id="idCedula">Cargando...</dd></div>
-                      <div><dt>Nombre</dt><dd id="idName">Cargando...</dd></div>
-                      <div><dt>Correo</dt><dd id="idEmail">Cargando...</dd></div>
-                      <div><dt>Fecha de emisión</dt><dd id="idIssued">—</dd></div>
-                      <div><dt>Fecha de vencimiento</dt><dd id="idExpiry">—</dd></div>
-                      <div><dt>Estado</dt><dd><span class="status-badge success" id="idStatus">Activo</span></dd></div>
-                    </dl>
+                  <div class="cedula-fingerprint-area">
+                    <svg class="fingerprint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" opacity="0.3"/><path d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z" opacity="0.5"/></svg>
                   </div>
-                  <div class="id-footer">
-                    <span class="id-qr">◆◆◆◆◆◆◆◆◆◆</span>
-                    <small>Documento oficial con validez legal</small>
+                </div>
+
+                <div class="cedula-data">
+                  <div class="cedula-field">
+                    <span class="cedula-label">CÉDULA</span>
+                    <span class="cedula-value" id="idCedula">Cargando...</span>
+                  </div>
+                  <div class="cedula-field">
+                    <span class="cedula-label">NOMBRE</span>
+                    <span class="cedula-value cedula-value--name" id="idName">Cargando...</span>
+                  </div>
+                  <div class="cedula-field">
+                    <span class="cedula-label">CORREO</span>
+                    <span class="cedula-value" id="idEmail">Cargando...</span>
+                  </div>
+                  <div class="cedula-field">
+                    <span class="cedula-label">FECHA DE EMISIÓN</span>
+                    <span class="cedula-value" id="idIssued">—</span>
+                  </div>
+                  <div class="cedula-field">
+                    <span class="cedula-label">FECHA DE VENCIMIENTO</span>
+                    <span class="cedula-value" id="idExpiry">—</span>
+                  </div>
+                  <div class="cedula-field">
+                    <span class="cedula-label">ESTADO</span>
+                    <span class="cedula-value"><span class="cedula-status" id="idStatus">Activo</span></span>
                   </div>
                 </div>
               </div>
-              <div class="identity-actions">
-                <button class="secondary-action" type="button" data-section="solicitar" data-service="cedula" data-subtype="reportar_perdida">Reportar pérdida o robo</button>
-                <a class="primary-action" href="#" data-section="solicitar" data-service="cédula" data-subtype="renovacion">Solicitar renovación</a>
+
+              <div class="cedula-bottom">
+                <div class="cedula-mrz"><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<</div>
+                <span class="cedula-legal">Documento oficial con validez legal</span>
               </div>
             </div>
-<!-- ===== Mi identidad ===== -->
-            <aside class="identidad-eagle" aria-label="Pacto Ético Digital">
-              <img src="Imagenes/Ped cedula 1.2.png" alt="PED" class="identidad-eagle-img" />
-            </aside>
+
+            <div class="cedula-actions">
+              <button class="cedula-btn cedula-btn--outline" type="button" data-section="solicitar" data-service="cedula" data-subtype="reportar_perdida">Reportar pérdida o robo</button>
+              <button class="cedula-btn cedula-btn--solid" type="button" data-section="solicitar" data-service="cedula" data-subtype="renovacion">Solicitar renovación</button>
+            </div>
           </div>
         </section>
 
