@@ -383,9 +383,12 @@
     } catch {}
   }
 
+  let _loadingRequests = false;
   async function loadMyRequests() {
+    if (_loadingRequests) return;
     const list = document.getElementById("tramiteListContainer");
     if (!list) return;
+    _loadingRequests = true;
     list.innerHTML = "";
     try {
       const r = await fetch("/api/my-requests", { headers: { Authorization: "Bearer " + getToken() } });
@@ -423,6 +426,7 @@
         list.appendChild(card);
       });
     } catch { list.innerHTML = '<p style="color:var(--muted);text-align:center;padding:16px;">Error al cargar solicitudes.</p>'; }
+    _loadingRequests = false;
   }
 
   async function loadAppointments() {
