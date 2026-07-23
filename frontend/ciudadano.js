@@ -135,9 +135,15 @@
     const trigger = e.target.closest("[data-section]");
     if (trigger) {
       e.preventDefault();
+      const sectionId = trigger.dataset.section;
+      const sectionEl = document.getElementById("section-" + sectionId);
+      if (sectionEl && sectionEl.style.display === "none") {
+        showToast("Esta opción no está disponible en estos momentos.");
+        return;
+      }
       const subtype = trigger.getAttribute("data-subtype") || "";
-      switchSection(trigger.dataset.section);
-      if (trigger.dataset.section === "solicitar" && subtype) preselectService(subtype);
+      switchSection(sectionId);
+      if (sectionId === "solicitar" && subtype) preselectService(subtype);
     }
   });
 
@@ -884,4 +890,21 @@
     switchSection("solicitar");
     history.replaceState(null, "", window.location.pathname);
   }
+
+  /* ── Auto-refresh: polling cada 10s ── */
+  function getActiveSection() {
+    const active = document.querySelector(".portal-section.is-visible");
+    return active ? active.id.replace("section-", "") : null;
+  }
+
+  setInterval(() => {
+    const section = getActiveSection();
+    if (!section) return;
+    if (section === "mis-tramites") loadMyRequests();
+    else if (section === "citas") loadAppointments();
+    else if (section === "mi-perfil") loadProfile();
+    else if (section === "notificaciones") loadPortalNotifications();
+    else if (section === "inicio") loadPortalNotifications();
+    else if (section === "mi-identidad") loadProfile();
+  }, 30000);
 })();
