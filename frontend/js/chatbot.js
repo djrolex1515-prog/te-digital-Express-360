@@ -48,14 +48,12 @@
   ];
 
   const quickQuestions = [
-    ["Renovar cédula", "renovar cédula"],
-    ["Pedir certificado", "certificado"],
-    ["Centro de votación", "centro de votación"],
-    ["Agendar cita", "cita"],
-    ["Oficinas y Quioscos", "oficinas"],
-    ["Mis trámites", "mis trámites"],
-    ["Requisitos", "requisitos"],
-    ["Horarios", "horario"],
+    { icon: "🪪", label: "Renovar cédula", question: "renovar cédula" },
+    { icon: "📄", label: "Certificados", question: "certificado" },
+    { icon: "🗳️", label: "Centro de votación", question: "centro de votación" },
+    { icon: "📅", label: "Agendar cita", question: "cita" },
+    { icon: "📍", label: "Oficinas", question: "oficinas" },
+    { icon: "📂", label: "Mis trámites", question: "mis trámites" },
   ];
 
   function findBestAnswer(question) {
@@ -80,16 +78,27 @@
     return bestScore >= 2 ? bestAnswer : null;
   }
 
+  function formatTime() {
+    return new Date().toLocaleTimeString("es-PA", { hour: "2-digit", minute: "2-digit" });
+  }
+
   function addAssistantMessage(text, type, isHTML) {
     if (!assistantMessages) return;
-    const message = document.createElement("p");
-    message.className = type;
-    if (isHTML) message.innerHTML = text; else message.textContent = text;
-    assistantMessages.appendChild(message);
+    const wrapper = document.createElement("div");
+    wrapper.className = "chat-msg chat-msg--" + type;
+    const bubble = document.createElement("div");
+    bubble.className = "chat-bubble";
+    if (isHTML) bubble.innerHTML = text; else bubble.textContent = text;
+    const time = document.createElement("span");
+    time.className = "chat-time";
+    time.textContent = formatTime();
+    wrapper.appendChild(bubble);
+    wrapper.appendChild(time);
+    assistantMessages.appendChild(wrapper);
     assistantMessages.scrollTop = assistantMessages.scrollHeight;
     assistantHistory.push({ type, text, isHTML: !!isHTML });
     saveChatHistory();
-    return message;
+    return wrapper;
   }
 
   function setAssistantOpen(isOpen) {
@@ -107,14 +116,22 @@
     if (!cleanQuestion) return;
     setAssistantOpen(true);
     addAssistantMessage(cleanQuestion, "user");
-    const typingMsg = addAssistantMessage('Escribiendo<span class="typing-dots"><span></span><span></span><span></span></span>', "bot", true);
-    typingMsg.classList.add("typing");
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+
+    const typingEl = addAssistantMessage("Escribiendo...", "bot");
+    if (typingEl) typingEl.classList.add("is-typing");
+
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
     const answer = findBestAnswer(cleanQuestion);
-    typingMsg.classList.remove("typing");
-    if (answer) { typingMsg.textContent = answer; }
-    else { typingMsg.textContent = 'No tengo una respuesta específica para esa consulta. ¿Podrías ser más específico? Puedo ayudarte con: cédula, certificados, Registro Civil, centro de votación, citas, oficinas, trámites, perfil y notificaciones del Tribunal Electoral.'; }
-    assistantHistory[assistantHistory.length - 1].text = typingMsg.textContent;
+
+    if (typingEl) typingEl.classList.remove("is-typing");
+
+    const bubble = typingEl?.querySelector(".chat-bubble");
+    if (bubble) {
+      bubble.textContent = answer || "No tengo una respuesta específica para esa consulta. ¿Podrías ser más específico? Puedo ayudarte con: cédula, certificados, Registro Civil, centro de votación, citas, oficinas, trámites y más.";
+    }
+
+    assistantHistory[assistantHistory.length - 1].text = bubble?.textContent || "";
     saveChatHistory();
     assistantMessages.scrollTop = assistantMessages.scrollHeight;
   }
@@ -124,51 +141,79 @@
     const root = document.createElement("aside");
     root.className = "floating-assistant";
     root.setAttribute("aria-label", "Asistente TE Digital Express 360");
+
+    const quickBtns = quickQuestions.map(q =>
+      `<button class="quick-btn" type="button" data-assistant-question="${q.question}">
+        <span class="quick-btn-icon">${q.icon}</span>
+        <span class="quick-btn-label">${q.label}</span>
+      </button>`
+    ).join("");
+
     root.innerHTML = `
       <button class="assistant-toggle" type="button" aria-expanded="false" aria-label="Abrir asistente de ayuda">
-        <span>TE</span><strong>Ayuda</strong>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       </button>
       <section class="floating-chat" role="dialog" aria-label="Asistente ciudadano" hidden>
         <div class="floating-chat-head">
-          <span class="icon-pill teal">TE</span>
-          <div><strong>Asistente TE Digital Express</strong><small>Disponible en todo el proceso</small></div>
-          <button class="assistant-minimize" type="button" aria-label="Minimizar asistente">-</button>
-          <button class="chat-clear" type="button" data-clear-chat aria-label="Borrar historial">Borrar historial</button>
+          <div class="head-avatar">TE</div>
+          <div class="head-info">
+            <strong>Asistente Virtual</strong>
+            <small><span class="status-dot"></span>En línea</small>
+          </div>
+          <button class="assistant-minimize" type="button" aria-label="Minimizar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <button class="chat-clear-btn" type="button" data-clear-chat aria-label="Borrar historial" title="Borrar historial">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
         </div>
-        <div class="floating-quick-questions">
-          ${quickQuestions.map(([label, question]) => `<button type="button" data-assistant-question="${question}">${label}</button>`).join("")}
-        </div>
+
         <div class="chat-body floating-chat-body" data-assistant-messages></div>
+
+        <div class="floating-quick-questions">${quickBtns}</div>
+
         <form class="chat-form floating-chat-form" data-assistant-form>
-          <input name="question" placeholder="Escribe tu consulta..." autocomplete="off" aria-label="Pregunta para el asistente" />
-          <button type="submit">Enviar</button>
+          <input name="question" placeholder="Escribe tu pregunta..." autocomplete="off" aria-label="Pregunta para el asistente" />
+          <button type="submit" aria-label="Enviar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
         </form>
       </section>`;
     document.body.appendChild(root);
+
     assistantPanel = root.querySelector(".floating-chat");
     assistantToggle = root.querySelector(".assistant-toggle");
     assistantMessages = root.querySelector("[data-assistant-messages]");
     assistantInput = root.querySelector("[name='question']");
+
     const savedHistory = loadChatHistory();
     if (savedHistory.length > 0) {
       assistantHistory = savedHistory;
       for (const msg of savedHistory) {
-        const el = document.createElement("p");
-        el.className = msg.type;
-        if (msg.isHTML) el.innerHTML = msg.text; else el.textContent = msg.text;
-        assistantMessages.appendChild(el);
+        const wrapper = document.createElement("div");
+        wrapper.className = "chat-msg chat-msg--" + msg.type;
+        const bubble = document.createElement("div");
+        bubble.className = "chat-bubble";
+        if (msg.isHTML) bubble.innerHTML = msg.text; else bubble.textContent = msg.text;
+        wrapper.appendChild(bubble);
+        assistantMessages.appendChild(wrapper);
       }
       assistantMessages.scrollTop = assistantMessages.scrollHeight;
     } else {
-      const welcome = document.createElement("p");
-      welcome.className = "bot";
-      welcome.textContent = "Hola. Soy el asistente del Tribunal Electoral. Puedo orientarte sobre cédula, BioCed, certificados, Registro Civil, centro de votación, citas, oficinas, trámites, perfil y notificaciones. ¿En qué puedo ayudarte?";
+      const welcome = document.createElement("div");
+      welcome.className = "chat-msg chat-msg--bot";
+      const bubble = document.createElement("div");
+      bubble.className = "chat-bubble";
+      bubble.textContent = "Hola, soy tu asistente virtual del Tribunal Electoral. ¿En qué puedo ayudarte hoy?";
+      welcome.appendChild(bubble);
       assistantMessages.appendChild(welcome);
-      assistantHistory.push({ type: "bot", text: welcome.textContent, isHTML: false });
+      assistantHistory.push({ type: "bot", text: bubble.textContent, isHTML: false });
       saveChatHistory();
     }
+
     assistantToggle.addEventListener("click", () => setAssistantOpen(true));
     root.querySelector(".assistant-minimize").addEventListener("click", () => setAssistantOpen(false));
+
     const clearBtn = root.querySelector("[data-clear-chat]");
     if (clearBtn) {
       clearBtn.addEventListener("click", () => {
@@ -176,14 +221,18 @@
         assistantMessages.innerHTML = "";
         assistantHistory = [];
         saveChatHistory();
-        const welcome = document.createElement("p");
-        welcome.className = "bot";
-        welcome.textContent = "Hola. Soy el asistente del Tribunal Electoral. Puedo orientarte sobre cédula, BioCed, certificados, Registro Civil, centro de votación, citas, oficinas, trámites, perfil y notificaciones. ¿En qué puedo ayudarte?";
+        const welcome = document.createElement("div");
+        welcome.className = "chat-msg chat-msg--bot";
+        const bubble = document.createElement("div");
+        bubble.className = "chat-bubble";
+        bubble.textContent = "Hola, soy tu asistente virtual del Tribunal Electoral. ¿En qué puedo ayudarte hoy?";
+        welcome.appendChild(bubble);
         assistantMessages.appendChild(welcome);
-        assistantHistory.push({ type: "bot", text: welcome.textContent, isHTML: false });
+        assistantHistory.push({ type: "bot", text: bubble.textContent, isHTML: false });
         saveChatHistory();
       });
     }
+
     root.querySelector("[data-assistant-form]").addEventListener("submit", (event) => {
       event.preventDefault();
       const question = assistantInput.value.trim();
@@ -191,6 +240,7 @@
       assistantInput.value = "";
       askFloatingAssistant(question);
     });
+
     if (localStorage.getItem("td360_assistant_open") === "1") setAssistantOpen(true);
   }
 

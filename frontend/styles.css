@@ -796,6 +796,22 @@ h3 { font-size: 20px; }
 }
 .assistant-minimize:hover { background: rgba(255,255,255,0.2); }
 
+.chat-clear-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.chat-clear-btn:hover { background: rgba(239,68,68,0.6); }
+
 .floating-chat-body {
   flex: 1;
   overflow-y: auto;
