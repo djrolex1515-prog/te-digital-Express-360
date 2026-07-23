@@ -362,4 +362,6 @@
         "Estado seleccionado.";
     }
   });
+
+  createThemeToggle();
 })();
