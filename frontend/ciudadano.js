@@ -12,6 +12,29 @@
 
   document.getElementById("bodyRoot").style.display = "";
 
+  /* ── Theme ── */
+  function initTheme() {
+    const saved = localStorage.getItem("td360_theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const theme = saved || (prefersDark ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  }
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute("data-theme");
+    const next = current === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("td360_theme", next);
+  }
+  initTheme();
+  const themeBtn = document.createElement("button");
+  themeBtn.className = "theme-toggle";
+  themeBtn.type = "button";
+  themeBtn.setAttribute("aria-label", "Cambiar tema");
+  themeBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  themeBtn.addEventListener("click", toggleTheme);
+  const sidebarNav = sidebar.querySelector(".sidebar-nav");
+  if (sidebarNav) sidebarNav.appendChild(themeBtn);
+
   /* ── State ── */
   let allServices = [];
   let serviceData = null;
