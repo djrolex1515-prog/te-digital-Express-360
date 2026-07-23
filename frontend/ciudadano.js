@@ -129,6 +129,14 @@
 
   links.forEach((link) => link.addEventListener("click", () => switchSection(link.dataset.section)));
 
+  document.querySelector("[data-action='logout']")?.addEventListener("click", async () => {
+    const t = getToken();
+    if (t) { try { await fetch("/api/citizens/logout", { method: "POST", headers: { Authorization: "Bearer " + t } }); } catch {} }
+    localStorage.removeItem("td360_citizen_token");
+    localStorage.removeItem("td360_citizen_user");
+    window.location.href = "principal.html";
+  });
+
   function preselectService(subtype) {
     serviceData = allServices.find((s) => s.id === "cedula") || { id: "cedula", title: "Cédula", summary: "", requirements: [], steps: [], details: [] };
     if (subtype === "reportar_perdida") {

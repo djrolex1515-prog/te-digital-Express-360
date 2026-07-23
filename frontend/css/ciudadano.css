@@ -82,6 +82,22 @@
   font-weight: 800;
 }
 
+.sidebar-link--logout {
+  margin-top: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  color: #ef4444;
+}
+.sidebar-link--logout:hover {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+[data-theme="dark"] .sidebar-link--logout:hover {
+  background: rgba(239,68,68,0.15);
+  color: #f87171;
+}
+
 /* ===== CONTENT ===== */
 .portal-content {
   flex: 1;
