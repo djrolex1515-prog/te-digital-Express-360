@@ -88,36 +88,72 @@ html { transition: background 300ms ease, color 300ms ease; }
   border-color: #2d3a4e;
 }
 
-[data-theme="dark"] .chat-body {
+[data-theme="dark"] .floating-chat-head {
   background: #0f172a;
 }
 
-[data-theme="dark"] .chat-body .bot {
-  background: #1e293b;
+[data-theme="dark"] .head-info small { color: #94a3b8; }
+
+[data-theme="dark"] .floating-chat-body {
+  background: #0f172a;
 }
+
+[data-theme="dark"] .chat-msg--bot .chat-bubble {
+  background: #1e293b;
+  border-color: #2d3a4e;
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .chat-msg--user .chat-bubble {
+  background: var(--teal);
+  color: #fff;
+}
+
+[data-theme="dark"] .chat-time { color: #64748b; }
 
 [data-theme="dark"] .assistant-toggle {
   box-shadow: 0 18px 34px rgba(200, 63, 73, 0.4);
 }
 
-[data-theme="dark"] .secondary-action,
-[data-theme="dark"] .service-card button,
-[data-theme="dark"] .quick-questions button,
-[data-theme="dark"] .floating-quick-questions button,
-[data-theme="dark"] .assistant-minimize {
-  background: transparent;
+[data-theme="dark"] .floating-quick-questions {
+  background: #1e293b;
+  border-color: #2d3a4e;
+}
+
+[data-theme="dark"] .quick-btn {
+  background: #0f172a;
   border-color: #2d3a4e;
   color: #e2e8f0;
 }
 
-[data-theme="dark"] .secondary-action:hover,
-[data-theme="dark"] .service-card button:hover,
-[data-theme="dark"] .quick-questions button:hover,
-[data-theme="dark"] .floating-quick-questions button:hover,
-[data-theme="dark"] .assistant-minimize:hover {
-  background: #1a2a44;
-  border-color: #2a4a6a;
+[data-theme="dark"] .quick-btn:hover {
+  background: #334155;
+  border-color: #475569;
+  color: #fff;
 }
+
+[data-theme="dark"] .assistant-minimize {
+  background: rgba(255,255,255,0.08);
+  border-color: #334155;
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .assistant-minimize:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+[data-theme="dark"] .floating-chat-form {
+  background: #1e293b;
+  border-color: #2d3a4e;
+}
+
+[data-theme="dark"] .floating-chat-form input {
+  background: #0f172a;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .floating-chat-form input::placeholder { color: #64748b; }
 
 [data-theme="dark"] .trust-row span,
 [data-theme="dark"] .trust-row button,
@@ -167,7 +203,6 @@ html { transition: background 300ms ease, color 300ms ease; }
   background: #0f172a;
 }
 
-[data-theme="dark"] .chat-form input,
 [data-theme="dark"] .request-form-card input,
 [data-theme="dark"] .request-form-card select,
 [data-theme="dark"] .search-box input {
