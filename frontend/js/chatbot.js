@@ -42,7 +42,7 @@
     { keywords: ["seguimiento", "rastrear", "código", "codigo", "tracking", "TE-", "te-"],
       answer: "Rastrea tu trámite con el código de seguimiento (ej: TE-2026-0842) en Mis Trámites. Verás estado en tiempo real, línea de tiempo y documentos asociados." },
     { keywords: ["horario", "horarios", "horas", "abierto", "cierre", "atención", "lunes", "viernes", "sábado"],
-      answer: "Las oficinas del Tribunal Electoral atienden de lunes a viernes de 8:00 a.m. a 4:00 p.m. Para horarios específicos de cada oficina o quiosco, ingresa a:\n\nhttps://www.tribunal-electoral.gob.pa/contactenos/" },
+      answer: "Horario de atención al público:\n\n• Sede principal (Ancón) - Registro Civil y Cedulación: Lunes a viernes, 7:00 a. m. a 3:00 p. m.\n• Demás oficinas, incluyendo la Dirección Regional de Organización Electoral: Lunes a viernes, de 7:30 a. m. a 3:30 p. m.\n\nPara más información ingresa a:\n\nhttps://www.tribunal-electoral.gob.pa/contactenos/" },
     { keywords: ["tribunal electoral", "te", "qué es", "quienes son", "funciones", "institución"],
       answer: "El Tribunal Electoral es el organismo constitucional autónomo que organiza los procesos electorales en Panamá. Administra el Registro Civil, cédula de identidad, padrón electoral y servicios digitales a través de TE Digital Express 360." },
     { keywords: ["gracias", "ok", "vale", "listo", "entendido", "perfecto", "claro", "resuelto"],
