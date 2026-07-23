@@ -24,11 +24,13 @@
     { keywords: ["certificado", "certificados", "solicitar", "pedir", "qr", "código qr", "digital", "documento digital"],
       answer: "Puedes solicitar certificados: de nacimiento, matrimonio, defunción y certificaciones del Registro Civil. Dirígete a los quioscos o institución del Tribunal Electoral más cercano para solicitarlo." },
     { keywords: ["centro de votación", "votación", "votar", "voto", "donde voto", "mesa", "padrón", "padron", "electoral", "electorales", "residencia", "cambio de residencia"],
-      answer: "Servicios Electorales: centro de votación, padrón electoral, cambio de residencia, habilitación y resultados. Todo en \"Servicios Electorales\" del Portal Ciudadano." },
+      answer: "El Tribunal Electoral cuenta con oficinas y quioscos a nivel nacional para servicios electorales como centro de votación, padrón electoral, cambio de residencia y habilitación.\n\nPara ubicar la oficina o quiosco más cercano, ingresa a:\n\nhttps://www.tribunal-electoral.gob.pa/contactenos/" },
     { keywords: ["cita", "citas", "agendar", "reprogramar", "cancelar", "turno", "turno digital"],
       answer: "Gestiona tus citas: agendar, reprogramar, cancelar y consultar. Ingresa a \"Citas\" en el Portal Ciudadano." },
-    { keywords: ["oficina", "oficinas", "quiosco", "quioscos", "kiosco", "ubicación", "dirección", "sucursal", "dónde queda", "atencion"],
-      answer: "El TE cuenta con 15 oficinas regionales a nivel nacional y quioscos de autoservicio en centros comerciales. Ver ubicaciones y horarios en \"Oficinas\" del Portal." },
+    { keywords: ["oficina", "oficinas", "dónde están", "dónde quedan", "ubicación oficinas", "cuantas oficinas"],
+      answer: "El Tribunal Electoral cuenta con oficinas regionales a nivel nacional para atender tus trámites. Para conocer la ubicación de cada oficina, horarios y servicios, ingresa a este link:\n\nhttps://www.tribunal-electoral.gob.pa/contactenos/" },
+    { keywords: ["quiosco", "quioscos", "kiosco", "kioskos", "multiservicio", "dónde están los quioscos", "cuantos quioscos"],
+      answer: "El Tribunal Electoral cuenta con quioscos multiservicio a nivel nacional para trámites rápidos y seguros. Para conocer la cantidad, ubicación y horarios de cada quiosco, ingresa a este link:\n\nhttps://www.tribunal-electoral.gob.pa/quioscos-multiservicio-del-te-para-tramites-rapidos-y-seguros/" },
     { keywords: ["mis trámites", "trámite", "tramite", "trámites", "tramites", "seguimiento", "estado", "solicitud", "solicitudes", "expediente"],
       answer: "En \"Mis Trámites\" puedes dar seguimiento a tus solicitudes: estado actual, línea de tiempo, código de seguimiento, funcionario asignado y fechas clave." },
     { keywords: ["perfil", "mi perfil", "datos personales", "correo", "teléfono", "contraseña", "password"],
@@ -40,7 +42,7 @@
     { keywords: ["seguimiento", "rastrear", "código", "codigo", "tracking", "TE-", "te-"],
       answer: "Rastrea tu trámite con el código de seguimiento (ej: TE-2026-0842) en Mis Trámites. Verás estado en tiempo real, línea de tiempo y documentos asociados." },
     { keywords: ["horario", "horarios", "horas", "abierto", "cierre", "atención", "lunes", "viernes", "sábado"],
-      answer: "Las oficinas atienden de lunes a viernes de 8:00 a.m. a 4:00 p.m. Los quioscos están disponibles 24 horas en centros comerciales seleccionados." },
+      answer: "Las oficinas del Tribunal Electoral atienden de lunes a viernes de 8:00 a.m. a 4:00 p.m. Para horarios específicos de cada oficina o quiosco, ingresa a:\n\nhttps://www.tribunal-electoral.gob.pa/contactenos/" },
     { keywords: ["tribunal electoral", "te", "qué es", "quienes son", "funciones", "institución"],
       answer: "El Tribunal Electoral es el organismo constitucional autónomo que organiza los procesos electorales en Panamá. Administra el Registro Civil, cédula de identidad, padrón electoral y servicios digitales a través de TE Digital Express 360." },
     { keywords: ["gracias", "ok", "vale", "listo", "entendido", "perfecto", "claro", "resuelto"],
@@ -50,10 +52,9 @@
   const quickQuestions = [
     { icon: "🪪", label: "Renovar cédula", question: "renovar cédula" },
     { icon: "📄", label: "Certificados", question: "certificado" },
-    { icon: "🗳️", label: "Centro de votación", question: "centro de votación" },
     { icon: "📅", label: "Agendar cita", question: "cita" },
-    { icon: "📍", label: "Oficinas", question: "oficinas" },
     { icon: "📂", label: "Mis trámites", question: "mis trámites" },
+    { icon: "🕐", label: "Horarios", question: "horario" },
   ];
 
   function findBestAnswer(question) {
