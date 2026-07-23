@@ -22,7 +22,7 @@
     { keywords: ["registro civil", "nacimiento", "matrimonio", "defunción", "acta", "inscripción", "reconocimiento", "hijo", "hijos", "nombre", "cambio de nombre", "corrección"],
       answer: "El Registro Civil agrupa servicios como: inscripción de nacimiento, registro de matrimonio, defunción, reconocimiento de hijos, corrección de datos y cambio de nombre. Todos disponibles en \"Registro Civil\" del Portal Ciudadano." },
     { keywords: ["certificado", "certificados", "solicitar", "pedir", "qr", "código qr", "digital", "documento digital"],
-      answer: "Puedes solicitar certificados digitales oficiales con código QR: de nacimiento, matrimonio, defunción y certificaciones del Registro Civil. Ingresa a \"Certificados\" en tu Portal Ciudadano." },
+      answer: "Puedes solicitar certificados digitales oficiales con código QR: de nacimiento, matrimonio, defunción y certificaciones del Registro Civil. Dirígete a los quioscos o institución del Tribunal Electoral más cercano para solicitarlo." },
     { keywords: ["centro de votación", "votación", "votar", "voto", "donde voto", "mesa", "padrón", "padron", "electoral", "electorales", "residencia", "cambio de residencia"],
       answer: "Servicios Electorales: centro de votación, padrón electoral, cambio de residencia, habilitación y resultados. Todo en \"Servicios Electorales\" del Portal Ciudadano." },
     { keywords: ["cita", "citas", "agendar", "reprogramar", "cancelar", "turno", "turno digital"],
