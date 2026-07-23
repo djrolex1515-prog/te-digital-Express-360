@@ -71,7 +71,6 @@
     const refreshers = {
       usuarios: loadUsers,
       ciudadanos: loadCitizens,
-      servicios: loadServices,
     };
 
     const refresh = refreshers[activePage];
@@ -120,7 +119,6 @@
     pages.forEach((p) => p.hidden = p.id !== "page-" + page);
     if (page === "usuarios") loadUsers();
     if (page === "ciudadanos") loadCitizens();
-    if (page === "servicios") loadServices();
     if (page === "solicitudes") loadRequests();
     if (page === "nueva-solicitud") loadNewRequestForm();
     if (page === "citas") loadAppointments();
@@ -385,80 +383,6 @@
     citizenModal.hidden = true;
     citizenModal.style.display = "";
     loadCitizens();
-  });
-
-  /* ── Servicios ── */
-  async function loadServices() {
-    try {
-      const r = await apiFetch("/api/admin/services");
-      if (!r || !r.ok) return;
-      const d = await r.json();
-      renderServices(d.services || []);
-    } catch {}
-  }
-
-  function renderServices(services) {
-    const tbody = document.getElementById("servicesBody");
-    const empty = document.getElementById("servicesEmpty");
-    if (!tbody) return;
-    if (services.length === 0) { empty.hidden = false; tbody.innerHTML = ""; return; }
-    empty.hidden = true;
-    tbody.innerHTML = services.map((s) => `
-      <tr>
-        <td><code>${escapeHtml(s.id)}</code></td>
-        <td>${escapeHtml(s.title)}</td>
-        <td>${escapeHtml(s.category)}</td>
-        <td><span class="status-badge ${s.is_active ? "active" : "inactive"}">${s.is_active ? "Activo" : "Inactivo"}</span></td>
-        <td class="actions-cell">
-          <button class="btn-sm btn-edit" data-edit-service="${escapeHtml(s.id)}">Editar</button>
-          <button class="btn-sm btn-delete" data-delete-service="${escapeHtml(s.id)}">Eliminar</button>
-        </td>
-      </tr>
-    `).join("");
-  }
-
-  document.getElementById("btnNewService")?.addEventListener("click", async () => {
-    const id = prompt("ID del servicio (ej: cedula_nueva):");
-    if (!id) return;
-    const title = prompt("Título:");
-    if (!title) return;
-    const category = prompt("Categoría:");
-    if (!category) return;
-    const summary = prompt("Resumen:") || "";
-    const r = await apiFetch("/api/admin/services", {
-      method: "POST",
-      body: JSON.stringify({ id, title, category, summary }),
-    });
-    if (r && r.ok) loadServices();
-  });
-
-  document.getElementById("servicesBody")?.addEventListener("click", async (e) => {
-    const editBtn = e.target.closest("[data-edit-service]");
-    if (editBtn) {
-      const sid = editBtn.dataset.editService;
-      const r = await apiFetch("/api/admin/services");
-      if (!r || !r.ok) return;
-      const d = await r.json();
-      const s = (d.services || []).find((x) => x.id === sid);
-      if (!s) return;
-      const newTitle = prompt("Título:", s.title);
-      if (newTitle === null) return;
-      const newCategory = prompt("Categoría:", s.category);
-      if (newCategory === null) return;
-      const newSummary = prompt("Resumen:", s.summary);
-      if (newSummary === null) return;
-      const patchR = await apiFetch(`/api/admin/services/${sid}`, {
-        method: "PATCH",
-        body: JSON.stringify({ title: newTitle, category: newCategory, summary: newSummary }),
-      });
-      if (patchR && patchR.ok) loadServices();
-    }
-    const deleteBtn = e.target.closest("[data-delete-service]");
-    if (deleteBtn) {
-      if (!confirm("Eliminar este servicio?")) return;
-      const r = await apiFetch(`/api/admin/services/${deleteBtn.dataset.deleteService}`, { method: "DELETE" });
-      if (r && r.ok) loadServices();
-    }
   });
 
   /* ── Solicitudes ── */
